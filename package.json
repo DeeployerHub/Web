@@ -1,0 +1,29 @@
+{
+  "name": "deeployer-web",
+  "version": "1.0.0",
+  "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WAAC/d-web.git"
+  },
+  "keywords": [
+    "deeployer",
+    "platform",
+    "startup",
+    "vc",
+    "crowdfunding"
+  ],
+  "author": "Waac inc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WAAC/d-web/issues"
+  },
+  "homepage": "https://github.com/WAAC/d-web#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
