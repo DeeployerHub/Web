@@ -10,6 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/WAAC/d-web.git"
   },
+  "contributors": [
+    {
+      "name": "Mahan Hazrati",
+      "email": "eng.mahan.hazrati@gmail.com"
+    },
+    {
+      "name": "Pooya panahandeh",
+      "email": "Pooya.panahandehpro@gmail.com"
+    }
+  ],
   "keywords": [
     "deeployer",
     "platform",
