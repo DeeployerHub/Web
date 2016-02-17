@@ -4,9 +4,9 @@
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
   "main": "index.js",
   "scripts": {
-    "start": "forever -w index.js",
-    "stop": "forever stop index.js",
-    "restart": "forever restart index.js",
+    "start": "forever start -c supervisor index.js &> /tmp/supervisor.log",
+    "stop": "forever stop -c supervisor index.js &> /tmp/supervisor.log",
+    "restart": "forever restart -c supervisor index.js &> /tmp/supervisor.log",
     "test": "node test.js"
   },
   "repository": {
