@@ -1,8 +1,6 @@
 #!/bin/bash
 
-STARTUP_FILE=/etc/init.d/d-web
-
-echo "cd /home/vagrant/projects/waac/d-web && npm start">STARTUP_FILE
-chmod +x STARTUP_FILE
+echo "cd /home/vagrant/projects/waac/d-web && npm start">/etc/init.d/d-web
+chmod +x /etc/init.d/d-web
 #ln -s STARTUP_FILE /etc/rc.d/
 
