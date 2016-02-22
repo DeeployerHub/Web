@@ -1,12 +1,11 @@
 expressPort = process.env.EXPRESS_PORT || 7000;
 
-var express = require('express');
-var app = express();
+express = require('express');
+app = express();
 
-app.get('/', function (req, res) {
-    res.send('Hello World! 7000');
-});
+require('./config/env.js')(app, express);
+require('./config/routes.js');
 
 app.listen(expressPort, function () {
-    console.log('Example app listening on port ' + expressPort + '!');
+    console.log('App listening on port ' + expressPort + '');
 });
