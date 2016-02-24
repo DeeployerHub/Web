@@ -4,11 +4,12 @@
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
   "main": "index.js",
   "scripts": {
+    "setup": "bower install && gulp && npm test",
     "quick-run": "node index.js",
     "start": "forever start -c supervisor index.js && exit",
     "stop": "forever stop -c supervisor index.js",
     "restart": "forever restart -c supervisor index.js",
-    "test": "node test.js"
+    "test": "echo 'no test yet' && exit"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
   "homepage": "https://github.com/WAAC/d-web#readme",
   "dependencies": {
     "body-parser": "~1.13.2",
+    "bower": "^1.7.7",
     "connect-redis": "^3.0.2",
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",

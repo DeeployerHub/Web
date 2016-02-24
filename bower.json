@@ -1,0 +1,33 @@
+{
+  "name": "deeployer-web",
+  "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
+  "main": "index.js",
+  "authors": [
+    "Mahan hazrati <eng.mahan.hazrati@gmail.com>",
+    "Pooya Panahandeh <pooya.panahandehpro@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "deeployer",
+    "platform",
+    "startup",
+    "vc",
+    "crowdfunding"
+  ],
+  "homepage": "https://github.com/WAAC/d-web",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "owl.carousel": "^2.0.0-beta.3",
+    "bootstrap": "^3.3.6",
+    "jquery.easing": "^1.3.1"
+  }
+}

@@ -2,6 +2,7 @@
 logs
 *.log
 npm-debug.log*
+.idea
 
 # Runtime data
 pids
@@ -35,3 +36,4 @@ node_modules
 
 # assets
 /public/assets/
+bower_components
