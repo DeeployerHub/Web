@@ -25,9 +25,15 @@ module.exports = function(app, express){
         resave: false
     }));
 
+    var swig = require('swig');
+    swig.setDefaults({
+        cache: false
+    });
+    app.engine('html', swig.renderFile);
     // view engine setup
+    app.set('view engine', 'html');
     app.set('views', path.join(__dirname, '../views'));
-    app.set('view engine', 'hbs')
+    app.set('view cache', false);
 
 
     app.use(favicon(path.join(__dirname, '../public/assets/images/favicon.ico')));

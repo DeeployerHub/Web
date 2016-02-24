@@ -4,6 +4,7 @@
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
   "main": "index.js",
   "scripts": {
+    "quick-run": "node index.js",
     "start": "forever start -c supervisor index.js && exit",
     "stop": "forever stop -c supervisor index.js",
     "restart": "forever restart -c supervisor index.js",
@@ -43,9 +44,12 @@
     "debug": "~2.2.0",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "hbs": "~3.1.0",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
     "morgan": "~1.6.1",
     "redis": "^2.4.2",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "swig": "^1.4.2"
   }
 }
