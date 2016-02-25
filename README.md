@@ -8,7 +8,7 @@ sudo npm install bower -g
 * and then setup the environment
 ```
 # this script runs the bower install and gulp
-npm run-script setup
+sudo npm run-script setup
 ```
 
 ## gulp modules
