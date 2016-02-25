@@ -2,50 +2,11 @@
 
 {% block head %}
 {% parent %}
+<script src="/assets/js/app/root/landing-page.js"></script>
 {% endblock %}
 
 {% block content %}
-
-<header role="banner" id="fh5co-header">
-    <div class="container">
-        <nav class="navbar navbar-default">
-            <div class="navbar-header">
-                <a
-                        href="#"
-                        class="js-fh5co-nav-toggle fh5co-nav-toggle"
-                        data-toggle="collapse"
-                        data-target="#navbar"
-                        aria-expanded="false"
-                        aria-controls="navbar"><i></i>
-                </a>
-                <a class="navbar-brand" href="index.html">Deeployer</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active">
-                        <a href="#" data-nav-section="home"><span>Home</span></a>
-                    </li>
-                    <li>
-                        <a href="#" data-nav-section="who-we-are"><span>Who we are</span></a>
-                    </li>
-                    <li>
-                        <a href="#" data-nav-section="services-features"><span>Services / Features</span></a>
-                    </li>
-                    <li>
-                        <a href="blog.html"><span>Blog</span></a>
-                    </li>
-                    <li class="no-action">
-                        <a href="#"><span>|</span></a>
-                    </li>
-                    <li>
-                        <a href="sign-in.html" class="btn"><span>Sign in</span></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</header>
-
+{% include '../../partials/header.html' %}
 <div id="slider" data-section="home">
     <div class="owl-carousel owl-carousel-fullwidth">
         <div class="item item-ideas-are-easy">
@@ -232,41 +193,4 @@
         </div>
     </div>
 </div>
-
-<footer id="footer" role="footer">
-    <div class="container">
-        <div class="col-md-12">
-            <div class="row row-bottom-padded-sm">
-                <p class="text-center">
-                    <a href="terms-and-conditions.html" class="foot-link">Terms and Conditions</a>
-                    <a href="services-and-features.html" class="foot-link">Services / Features</a>
-                    <a href="blog.html" class="foot-link">Blog</a>
-                </p>
-            </div>
-        </div>
-        <div class="row row-bottom-padded-sm">
-            <div class="col-md-12">
-                <p class="copyright text-center">
-                    <a href="waac.html" class="foot-link">
-                        <strong>WAAC</strong>
-                    </a>
-                    &copy;2016
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <ul class="social social-circle">
-                    <li><a href="#"><i class="icon-twitter"></i></a></li>
-                    <li><a href="#"><i class="icon-facebook"></i></a></li>
-                    <li><a href="#"><i class="icon-youtube"></i></a></li>
-                    <li><a href="#"><i class="icon-reddit"></i></a></li>
-                    <li><a href="#"><i class="icon-linkedin"></i></a></li>
-                    <li><a href="#"><i class="icon-github"></i></a></li>
-                    <li><a href="#"><i class="icon-google"></i></a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</footer>
 {% endblock %}

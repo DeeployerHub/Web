@@ -1,4 +1,4 @@
-;(function () {
+(function () {
     'use strict';
 
     // Carousel Feature Slide
@@ -9,7 +9,7 @@
             var current = elem.item.index;
             $(elem.target).find(".owl-item").eq(current).find(".to-animate").removeClass('fadeInUp animated');
             $(elem.target).find(".owl-item").eq(current).find(".to-animate-2").removeClass('fadeInUp animated');
-        
+
         });
         owl.on('initialized.owl.carousel changed.owl.carousel',function(elem){
             setTimeout(function(){
@@ -33,7 +33,7 @@
             autoplay: true,
             autoplayTimeout: 8000,
             autoplayHoverPause: true,
-            navText: [  
+            navText: [
               "<i class='icon-arrow-left2 owl-direction'></i>",
               "<i class='icon-arrow-right2 owl-direction'></i>"
             ]
@@ -82,11 +82,11 @@
     var navigationSection = function() {
 
         var $section = $('div[data-section]');
-        
+
         $section.waypoint(function(direction) {
             if (direction === 'down') {
                 navActive($(this.element).data('section'));
-            
+
             }
         }, {
             offset: '150px'
@@ -99,39 +99,15 @@
         }, {
             offset: function() { return -$(this.element).height() + 155; }
         });
-
     };
 
-
-    // Window Scroll
-    var windowScroll = function() {
-        var lastScrollTop = 0;
-
-        $(window).scroll(function(event){
-
-            var header = $('#fh5co-header'),
-                scrlTop = $(this).scrollTop();
-
-            if ( scrlTop > 500 && scrlTop <= 2000 ) {
-                header.addClass('navbar-fixed-top fh5co-animated slideInDown');
-            } else if ( scrlTop <= 500) {
-                if ( header.hasClass('navbar-fixed-top') ) {
-                    header.addClass('navbar-fixed-top fh5co-animated slideOutUp');
-                    setTimeout(function(){
-                        header.removeClass('navbar-fixed-top fh5co-animated slideInDown slideOutUp');
-                    }, 100 );
-                }
-            } 
-            
-        });
-    };
 
     // Animations
     var publicAnimate = function() {
-        if ( $('.public-section').length > 0 ) {    
+        if ( $('.public-section').length > 0 ) {
             $('.public-section .to-animate').each(function( k ) {
                 var el = $(this);
-                
+
                 setTimeout ( function () {
                     el.addClass('fadeInUp animated');
                 },  k * 200, 'easeInOutExpo' );
@@ -141,20 +117,18 @@
 
     var publicWayPoint = function() {
         if ( $('.public-section').length > 0 ) {
-            $('.public-section').waypoint( function( direction ) {              
+            $('.public-section').waypoint( function( direction ) {
                 if( direction === 'down' && !$(this).hasClass('animated') ) {
                     setTimeout(publicAnimate, 200);
                     $(this.element).addClass('animated');
                 }
             } , { offset: '95%' } );
         }
-    };  
+    };
 
-    // Document on load.
     $(document).ready(function(){
         owlCrouselFeatureSlide();
         clickMenu();
-        windowScroll();
         navigationSection();
 
         publicWayPoint();
