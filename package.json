@@ -4,7 +4,7 @@
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
   "main": "index.js",
   "scripts": {
-    "setup": "bower install && gulp && npm test",
+    "setup": "bower install --allow-root && npm install && gulp && npm test",
     "quick-run": "node index.js",
     "start": "forever start -c supervisor index.js && exit",
     "stop": "forever stop -c supervisor index.js",
