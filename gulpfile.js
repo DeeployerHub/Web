@@ -30,14 +30,14 @@ gulp.task('bower-assets', function () {
 });
 
 gulp.task('assets', function () {
-    var copyList = ['css', 'images', 'js', 'fonts'];
+    var copyList = ['sass', 'css', 'images', 'js', 'fonts'];
 
     for (var i in copyList) {
         gulp.src(dir.assets.source + '/' + copyList[i] + '/**', {base: dir.assets.source + '/' + copyList[i]})
             .pipe(gulp.dest(dir.assets.dest + '/' + copyList[i] + '/'));
     }
 
-    gulp.src(dir.assets.source + '/sass/**/*.scss')
+    gulp.src(dir.assets.source + '/sass/**')
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(sourcemaps.write('./'))
