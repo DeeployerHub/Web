@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/WAAC/d-web.svg?branch=master)](https://travis-ci.org/WAAC/d-web)
+
 ## preparation
 * you need to install the essential dependencies
 ```
