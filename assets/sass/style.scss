@@ -1,10 +1,8 @@
-
-
 $font-primary: 'Source Sans Pro', Arial, sans-serif;
 
 // Overrides
-$grid-gutter-width: 40px !default; 
-$border-radius-base:  4px !default;
+$grid-gutter-width: 40px !default;
+$border-radius-base: 4px !default;
 $padding-base-vertical: 14px !default;
 
 $brand-primary: #6173f4 !default; // purple
@@ -16,7 +14,6 @@ $brand-primary: #6173f4 !default; // purple
 // $brand-primary: #a03232 !default; // brown
 // $brand-primary: #65d269 !default; // green
 
-
 $brand-white: #fff;
 $brand-black: #000;
 $brand-darker: #444;
@@ -27,25 +24,25 @@ $brand-selection-color: #f9f6f0;
 $brand-overlay-color: #3b3d40;
 $brand-bg-color: $brand-white;
 
-$input-border-focus:  $brand-primary !default;
-$form-group-margin-bottom:       30px !default;
-
-
+$input-border-focus: $brand-primary !default;
+$form-group-margin-bottom: 30px !default;
 
 // Mixin
 @mixin transition($transition) {
-    -moz-transition:    $transition ease-in;
-    -o-transition:      $transition ease-in;
+    -moz-transition: $transition ease-in;
+    -o-transition: $transition ease-in;
     -webkit-transition: $transition ease-in;
-    -ms-transition:     $transition ease-in;
-    transition:         $transition ease-in;
+    -ms-transition: $transition ease-in;
+    transition: $transition ease-in;
 }
+
 @mixin inline-block() {
-    display:-moz-inline-stack;
-    display:inline-block;
-    zoom:1;
-    *display:inline;
+    display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
 }
+
 @mixin flex() {
     display: -webkit-box;
     display: -webkit-flex;
@@ -53,25 +50,27 @@ $form-group-margin-bottom:       30px !default;
     display: -ms-flexbox;
     display: flex;
 }
+
 @mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-          border-radius: $radius;
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
 }
+
 @font-face {
     font-family: 'icomoon';
-    src:url('../fonts/icomoon/icomoon.eot?srf3rx');
-    src:url('../fonts/icomoon/icomoon.eot?srf3rx#iefix') format('embedded-opentype'),
-        url('../fonts/icomoon/icomoon.ttf?srf3rx') format('truetype'),
-        url('../fonts/icomoon/icomoon.woff?srf3rx') format('woff'),
-        url('../fonts/icomoon/icomoon.svg?srf3rx#icomoon') format('svg');
+    src: url('../fonts/icomoon/icomoon.eot?srf3rx');
+    src: url('../fonts/icomoon/icomoon.eot?srf3rx#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon/icomoon.ttf?srf3rx') format('truetype'),
+    url('../fonts/icomoon/icomoon.woff?srf3rx') format('woff'),
+    url('../fonts/icomoon/icomoon.svg?srf3rx#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @mixin icomoon() {
-    
+
     font-family: 'icomoon';
     speak: none;
     font-style: normal;
@@ -83,15 +82,12 @@ $form-group-margin-bottom:       30px !default;
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    
+
 }
 
 // Import 
 @import 'bootstrap/mixins';
 @import 'bootstrap/variables';
-
-
-
 
 /* =======================================================
 *
@@ -111,8 +107,9 @@ body {
     background: $brand-bg-color;
     height: 100%;
     position: relative;
-    
+
 }
+
 a {
     color: $brand-primary;
     @include transition(.5s);
@@ -121,6 +118,7 @@ a {
         outline: none;
     }
 }
+
 p {
     margin-bottom: 1.5em;
 }
@@ -130,22 +128,21 @@ h1, h2, h3, h4, h5, h6 {
     font-family: $font-primary;
     font-weight: 400;
 }
+
 ::-webkit-selection {
-  color: $brand-body-color;
-  background: $brand-selection-color;
+    color: $brand-body-color;
+    background: $brand-selection-color;
 }
 
 ::-moz-selection {
-  color: $brand-body-color;
-  background: $brand-selection-color;
+    color: $brand-body-color;
+    background: $brand-selection-color;
 }
 
 ::selection {
-  color: $brand-body-color;
-  background: $brand-selection-color;
+    color: $brand-body-color;
+    background: $brand-selection-color;
 }
-
-
 
 #fh5co-header {
     // position: relative;
@@ -158,24 +155,24 @@ h1, h2, h3, h4, h5, h6 {
     @media screen and (max-width: $screen-sm) {
         margin-top: 0;
         background: $brand-white;
-        -webkit-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
-        -moz-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
-        -ms-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
-        box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
+        -webkit-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+        -moz-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+        -ms-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+        box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
         .navbar-brand {
-            color: $brand-primary!important;
+            color: $brand-primary !important;
         }
         #navbar {
             li {
                 a {
-                    color: rgba(0,0,0,.5)!important;
+                    color: rgba(0, 0, 0, .5) !important;
                     @include transition(.3s);
                     &:hover {
-                        color: $brand-primary!important;
+                        color: $brand-primary !important;
                     }
                     span {
                         &:before {
-                            background: transparent!important;
+                            background: transparent !important;
                         }
                     }
                 }
@@ -183,7 +180,7 @@ h1, h2, h3, h4, h5, h6 {
                     a {
                         background: transparent;
                         background: none;
-                        color: $brand-primary!important;
+                        color: $brand-primary !important;
                         span {
                             &:before {
                                 visibility: visible;
@@ -205,7 +202,7 @@ h1, h2, h3, h4, h5, h6 {
         li {
             a {
                 font-family: $font-primary;
-                color: rgba(255,255,255,.5);
+                color: rgba(255, 255, 255, .5);
                 position: relative;
                 span {
                     position: relative;
@@ -281,15 +278,15 @@ h1, h2, h3, h4, h5, h6 {
         font-weight: 700;
         padding-left: 0;
         color: $brand-white;
-        
+
     }
     &.navbar-fixed-top {
-        position: fixed!important;
+        position: fixed !important;
         background: $brand-white;
-        -webkit-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
-        -moz-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
-        -ms-box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
-        box-shadow: 0 0 9px 0 rgba(0,0,0,.1);
+        -webkit-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+        -moz-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+        -ms-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+        box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
         margin-top: 0px;
         top: 0;
         .navbar-brand {
@@ -298,7 +295,7 @@ h1, h2, h3, h4, h5, h6 {
         #navbar {
             li {
                 a {
-                    color: rgba(0,0,0,.5);
+                    color: rgba(0, 0, 0, .5);
                     @include transition(.3s);
                     &:hover {
                         color: $brand-primary;
@@ -325,7 +322,7 @@ h1, h2, h3, h4, h5, h6 {
         border: transparent;
         background: transparent;
         @include border-radius(0px);
-        
+
         // padding-right: 30px;
         // padding-left: 10px;
 
@@ -334,7 +331,6 @@ h1, h2, h3, h4, h5, h6 {
             padding-right: 0px;
             padding-left: 0px;
         }
-        
 
         .brand-slogan {
             margin: 28px 0 0 15px;
@@ -346,13 +342,12 @@ h1, h2, h3, h4, h5, h6 {
                 font-style: normal;
             }
         }
-        
+
     }
     a {
         @include transition(.0s);
     }
 }
-
 
 .section-heading {
     float: left;
@@ -390,7 +385,7 @@ h1, h2, h3, h4, h5, h6 {
         line-height: 1.5;
         color: #929292;
         @media screen and (max-width: $screen-sm) {
-            font-size: 24px!important;
+            font-size: 24px !important;
             line-height: 34px;
         }
     }
@@ -416,6 +411,7 @@ h1, h2, h3, h4, h5, h6 {
         color: #fff;
     }
 }
+
 #fh5co-about-us, #fh5co-features-services {
     .who-we-are-sub-section {
         p.sub-section-desc {
@@ -433,7 +429,7 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 0px;
         padding-bottom: 0;
     }
-    .foot-link{
+    .foot-link {
         padding: 15px;
         text-decoration: none;
     }
@@ -446,17 +442,17 @@ h1, h2, h3, h4, h5, h6 {
     &.btn-primary {
         background: $brand-primary;
         color: $brand-white;
-        border: none!important;
-        border: 2px solid transparent!important;
+        border: none !important;
+        border: 2px solid transparent !important;
         &:hover, &:active, &:focus {
             box-shadow: none;
             background: $brand-primary;
         }
     }
     &:hover, &:active, &:focus {
-        background: #393e46!important;
+        background: #393e46 !important;
         color: $brand-white;
-        outline: none!important;
+        outline: none !important;
     }
     &.btn-default {
         &:hover, &:focus, &:active {
@@ -502,7 +498,7 @@ h1, h2, h3, h4, h5, h6 {
                 @include border-radius(50%);
             }
             &:hover {
-                background: #393e46!important;
+                background: #393e46 !important;
             }
 
         }
@@ -522,7 +518,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-
 // Components
 
 // Owl Carousel
@@ -538,21 +533,24 @@ h1, h2, h3, h4, h5, h6 {
     }
     .btn-primary {
         &:hover, &:focus, &:active {
-            background: transparent!important;
-            border: 2px solid $brand-white!important;
+            background: transparent !important;
+            border: 2px solid $brand-white !important;
         }
     }
 }
+
 .owl-carousel .owl-controls,
 .owl-carousel-posts .owl-controls, {
     margin-top: 0;
 }
+
 .owl-carousel .owl-controls .owl-nav {
 
     @media screen and (max-width: $screen-sm) {
         display: none;
     }
 }
+
 .owl-carousel .owl-controls .owl-nav .owl-next,
 .owl-carousel .owl-controls .owl-nav .owl-prev {
     top: 50%;
@@ -561,33 +559,37 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     @include transition(.3s);
     i:before {
-        color: rgba(255,255,255,.5);
+        color: rgba(255, 255, 255, .5);
     }
 }
+
 .owl-carousel-posts .owl-controls .owl-nav .owl-next,
 .owl-carousel-posts .owl-controls .owl-nav .owl-prev {
     top: 24%;
 }
+
 .owl-carousel .owl-controls .owl-nav .owl-next {
     right: 0;
     &:hover {
         right: 10px;
         i:before {
-            color: rgba(255,255,255,1);
+            color: rgba(255, 255, 255, 1);
         }
 
     }
 }
+
 .owl-carousel .owl-controls .owl-nav .owl-prev {
     left: 0;
     &:hover {
         left: 10px;
         i:before {
-            color: rgba(255,255,255,1);
-        
+            color: rgba(255, 255, 255, 1);
+
         }
     }
 }
+
 .owl-carousel-posts .owl-controls .owl-nav .owl-next,
 .owl-carousel-posts .owl-controls .owl-nav .owl-prev {
     i {
@@ -595,10 +597,11 @@ h1, h2, h3, h4, h5, h6 {
     }
     &:hover {
         i {
-            color: $brand-black;        
+            color: $brand-black;
         }
     }
 }
+
 .owl-carousel-fullwidth.fh5co-light-arrow .owl-controls .owl-nav .owl-next,
 .owl-carousel-fullwidth.fh5co-light-arrow .owl-controls .owl-nav .owl-prev {
     i {
@@ -610,50 +613,57 @@ h1, h2, h3, h4, h5, h6 {
         }
     }
 }
+
 .owl-theme .owl-controls .owl-nav {
     @media screen and (max-width: $screen-sm) {
         display: none;
     }
 }
+
 .owl-theme .owl-controls .owl-nav [class*="owl-"] {
-        background: none!important;
+    background: none !important;
     i {
         font-size: 30px;
         &:hover, &:focus {
-            background: none!important;
+            background: none !important;
         }
     }
     &:hover, &:focus {
-        background: none!important;
+        background: none !important;
     }
 }
+
 .owl-theme .owl-dots {
     position: absolute;
     bottom: 0;
     width: 100%;
     text-align: center;
 }
+
 .owl-carousel-fullwidth.owl-theme .owl-dots {
-    bottom: 0;  
+    bottom: 0;
     margin-bottom: 2.5em;
 }
+
 .owl-theme .owl-dots .owl-dot span {
-    width:10px;
-    height:10px;
-    background: rgba(255,255,255,.2);
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, .2);
     @include transition(.2s);
     border: 2px solid transparent;
     &:hover {
         background: none;
-        background: rgba(255,255,255,1);
+        background: rgba(255, 255, 255, 1);
     }
 }
+
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
     // background: none;
-    background: rgba(255,255,255,1);
+    background: rgba(255, 255, 255, 1);
     background: transparent;
     border: 2px solid #fff;
 }
+
 .owl-carousel-fullwidth {
     background-color: #000;
     .container {
@@ -696,7 +706,7 @@ h1, h2, h3, h4, h5, h6 {
         img {
             max-width: 100%;
         }
-        
+
         .iphone-image {
             position: relative;
             z-index: 99;
@@ -708,7 +718,7 @@ h1, h2, h3, h4, h5, h6 {
                 @media screen and (max-width: $screen-sm) {
                     bottom: 0em;
                     text-align: center;
-                    float: none!important;
+                    float: none !important;
                     margin: 0 auto;
                     display: block;
                 }
@@ -717,8 +727,6 @@ h1, h2, h3, h4, h5, h6 {
                 }
             }
         }
-    
-        
 
         .fh5co-owl-text {
             display: table-cell;
@@ -729,12 +737,12 @@ h1, h2, h3, h4, h5, h6 {
                 // padding-top: 5em;
             }
             a {
-                color: rgba(255,255,255,1);
-                border-bottom: 1px solid rgba(255,255,255,.5);
+                color: rgba(255, 255, 255, 1);
+                border-bottom: 1px solid rgba(255, 255, 255, .5);
                 &:hover {
                     text-decoration: none;
-                    color: rgba(255,255,255,1);
-                    border-bottom: 1px solid rgba(255,255,255,1);
+                    color: rgba(255, 255, 255, 1);
+                    border-bottom: 1px solid rgba(255, 255, 255, 1);
                 }
             }
             .fh5co-lead, .fh5co-lead-2, .fh5co-sub-lead {
@@ -759,14 +767,14 @@ h1, h2, h3, h4, h5, h6 {
                     line-height: 30px;
                 }
             }
-            
+
             .fh5co-sub-lead {
                 font-size: 30px;
                 line-height: 30px;
                 line-height: 42px;
                 font-weight: 100;
                 margin-bottom: 30px;
-                color: rgba(255,255,255,1);
+                color: rgba(255, 255, 255, 1);
                 // font-family: $font-roboto;
                 @media screen and (max-width: $screen-sm) {
                     font-size: 24px;
@@ -776,12 +784,12 @@ h1, h2, h3, h4, h5, h6 {
         }
     }
 }
+
 .js .to-animate,
 .js .to-animate-2,
 .js .single-animate {
     opacity: 0;
 }
-
 
 // Helper Class
 .col-xxs-12 {
@@ -790,29 +798,32 @@ h1, h2, h3, h4, h5, h6 {
         width: 100%;
     }
 }
+
 .row-bottom-padded-lg {
     padding-bottom: 7em;
-    @media screen and (max-width: $screen-sm ) {
+    @media screen and (max-width: $screen-sm) {
         padding-bottom: 2em;
     }
 }
+
 .row-bottom-padded-md {
     padding-bottom: 4em;
-    @media screen and (max-width: $screen-sm ) {
+    @media screen and (max-width: $screen-sm) {
         padding-bottom: 2em;
-    }   
+    }
 }
+
 .row-bottom-padded-sm {
     padding-bottom: 2em;
-    @media screen and (max-width: $screen-sm ) {
+    @media screen and (max-width: $screen-sm) {
         padding-bottom: 2em;
-    }   
+    }
 }
 
 // Menu Animate
 .fh5co-animated {
-  -webkit-animation-duration: .3s;
-  animation-duration: .3s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
+    -webkit-animation-duration: .3s;
+    animation-duration: .3s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
 }
