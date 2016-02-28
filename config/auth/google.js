@@ -5,8 +5,8 @@ module.exports = function(passport) {
         done(null, user);
     });
 
-    passport.deserializeUser(function(obj, done) {
-        done(null, obj);
+    passport.deserializeUser(function(sessionUser, done) {
+        done(null, sessionUser)
     });
 
     // make sure google+ api is activated in case you have auth problem
