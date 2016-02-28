@@ -85,13 +85,13 @@ $form-group-margin-bottom: 30px !default;
 
 }
 
-// Import 
+// Import
 @import 'bootstrap/mixins';
 @import 'bootstrap/variables';
 
 /* =======================================================
 *
-*   Template Style 
+*   Template Style
 *   Edit this section
 *
 * ======================================================= */
@@ -142,6 +142,13 @@ h1, h2, h3, h4, h5, h6 {
 ::selection {
     color: $brand-body-color;
     background: $brand-selection-color;
+}
+.btn-sign-in {
+    background: transparent !important;
+    border: 2px solid #fff !important;
+    color: white !important;
+    padding: 10px !important;
+    margin-top: 5px;
 }
 
 #fh5co-header {
@@ -396,6 +403,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #fh5co-our-services,
+#fh5co-page,
 #fh5co-about-us,
 #fh5co-features-services {
     padding: 7em 0;
@@ -692,7 +700,7 @@ h1, h2, h3, h4, h5, h6 {
     .item {
         background-position: center;
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: initial;
         position: relative;
         .overlay {
             position: absolute;

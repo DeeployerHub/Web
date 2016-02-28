@@ -3,7 +3,7 @@
 module.exports = function() {
     var router = express.Router();
 
-    router.get('/', function(req, res) {
+    router.get('/', getMiddleware('general.signInCheck'), function(req, res) {
         res.send('user profile!');
     });
 

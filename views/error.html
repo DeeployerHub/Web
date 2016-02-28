@@ -1,3 +1,24 @@
-<h1>{{ message }}</h1>
-<h2>{{ error.status }}</h2>
-<pre>{{ error.stack }}</pre>
+{% extends 'layouts/layout.html' %}
+
+{% block head %}
+{% parent %}
+{% endblock %}
+
+{% block content %}
+{% include 'partials/header-fix.html' %}
+<div id="fh5co-page">
+    <div class="container">
+        <div class="row row-bottom-padded-lg public-section">
+            <div class="col-md-12 section-heading text-center to-animate">
+                <h2>{{ message }}</h2>
+                <h3>{{ error.status }}</h3>
+            </div>
+            {% if env == 'dev' %}
+            <div class="col-md-12 section-heading to-animate">
+                <pre>{{ error.stack }}</pre>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

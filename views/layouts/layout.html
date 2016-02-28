@@ -23,6 +23,8 @@
 {% block content %}{% endblock %}
 
 {% include '../partials/body-finish.html' %}
+{% if !noFooter %}
 {% include '../partials/footer.html' %}
+{% endif %}
 </body>
 </html>

@@ -1,5 +1,3 @@
-expressPort = process.env.EXPRESS_PORT || 7000;
-
 express = require('express');
 app = express();
 

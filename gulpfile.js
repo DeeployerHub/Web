@@ -14,22 +14,12 @@ var dir = {
 
 gulp.task('default', ['assets', 'bower-assets']);
 
-gulp.task('bower-assets', function () {
-    var copyList = [
-        'jquery',
-        'bootstrap',
-        'owl.carousel',
-        'jquery.easing',
-    ];
-
-    for (var i in copyList) {
-        gulp.src(dir.assets.bower + '/' + copyList[i] + '/**', {base: dir.assets.bower + '/' + copyList[i]})
-            .pipe(gulp.dest(dir.assets.dest + '/bower/' + copyList[i] + '/'));
-    }
-
+gulp.task('bower-assets', function() {
+    gulp.src(dir.assets.bower + '/**', {base: dir.assets.bower})
+        .pipe(gulp.dest(dir.assets.dest + '/bower'));
 });
 
-gulp.task('assets', function () {
+gulp.task('assets', function() {
     var copyList = ['sass', 'css', 'images', 'js', 'fonts'];
 
     for (var i in copyList) {
@@ -44,7 +34,7 @@ gulp.task('assets', function () {
         .pipe(gulp.dest(dir.assets.dest + '/css'))
 });
 
-gulp.task('assets:watch', function () {
+gulp.task('assets:watch', function() {
     gulp.watch(dir.assets.source + '/**', ['assets', 'bower-assets']);
     gulp.watch(dir.assets.bower + '/**', ['assets', 'bower-assets']);
 });
