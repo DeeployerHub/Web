@@ -150,6 +150,18 @@ h1, h2, h3, h4, h5, h6 {
     padding: 10px !important;
     margin-top: 5px;
 }
+.navbar-fixed-top {
+    .btn-sign-in {
+        background: transparent !important;
+        border: 2px solid black !important;
+        color: black !important;
+        padding: 10px !important;
+        margin-top: 5px;
+    }
+    .btn-sign-in:hover {
+        color: white !important;
+    }
+}
 
 #fh5co-header {
     // position: relative;
