@@ -1,0 +1,68 @@
+{% extends '../../../layouts/layout.html' %}
+
+{% block head %}
+{% parent %}
+
+<link rel="stylesheet" href="/assets/bower/bootstrap-social/bootstrap-social.css">
+{% endblock %}
+
+{% block content %}
+{% include '../../../partials/header-fix-sign-in.html' %}
+
+<div id="fh5co-page">
+    <div class="container">
+        <div class="row row-bottom-padded-lg public-section" id="who-we-are">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Welcome to Deeployer</h2>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 to-animate">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <p class="to-animate text-justify">
+                                Dear user, thanks for using our platform to grow the communities, and execute your dreams.<br>
+                                In order to go further, you need to pass <strong>Three steps</strong> which each one has <strong>5 points</strong> for you and in the future you can 
+                                use these points to activate the other features of the platform.
+                                <br> 
+                                <br> 
+                                By completing each step you will earn <strong>15 Points</strong> which is the minimum requirement for activation.
+                            </p>
+                            <br>
+                            <br>
+                            <div class="row margin-top-25 text-primary">
+                                <div class="col-sm-4">
+                                    <div class="text-center">
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size:4.5em;"></span>
+                                        <h4><i class="glyphicon glyphicon-ok-circle text-success"></i>Setup your Account</h4>
+                                        <br>
+
+                                        <a href="/account/activation/account" class="btn btn-success btn-sm btn-block">Do it now</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class=" text-center">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true" style="font-size:4.5em;"></span>
+                                        <h4>Compelete your profile</h4>
+                                        <br>
+
+                                        <a href="/account/activation/profile" class="btn btn-success btn-sm btn-block">Do it now</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="text-center">
+                                        <span class="glyphicon glyphicon-share" aria-hidden="true" style="font-size:4.5em;"></span>
+                                        <h4>Share Us</h4>
+                                        <br>
+
+                                        <a href="/account/activation/sharing" class="btn btn-success btn-sm btn-block">Do it now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

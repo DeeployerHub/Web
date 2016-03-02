@@ -5,7 +5,7 @@ module.exports = function() {
     var controller = getController('console/main.js');
 
     // route to specified controllers
-    router.get('/', getMiddleware('general.signInCheck'), controller.console);
+    router.get('/', getMiddleware('account.signInCheck'), controller.console);
 
     return router;
 };

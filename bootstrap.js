@@ -29,5 +29,10 @@ getMiddleware = function(middleware) {
     return require('./middleware/' + middleware[0] + '.js')[middleware[1]];
 };
 
+getRepos = function(repository) {
+    repository = repository.split('.');
+    return require('./repository/' + repository[0] + '.js')[repository[1]];
+}
+
 expressPort = getEnv('EXPRESS_PORT', 7000);
 expressEnv = getEnv('EXPRESS_ENV', 'dev');

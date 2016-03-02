@@ -3,7 +3,7 @@ module.exports = function() {
     var controller = getController('root/main.js');
 
     // route to specified controllers
-    router.get('/', getMiddleware('general.consoleCheck'), controller.landingPage);
+    router.get('/', getMiddleware('account.consoleCheck'), controller.landingPage);
 
     return router;
 };

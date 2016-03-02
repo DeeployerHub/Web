@@ -5,16 +5,16 @@ module.exports = function() {
     var controller = getController('account/main.js');
 
     // route to specified controllers
-    router.get('/sign-in', getMiddleware('general.consoleCheck'), controller.signIn);
+    router.get('/sign-in', getMiddleware('account.consoleCheck'), controller.signIn);
     router.get('/sign-in/google/callback',
-        getMiddleware('general.consoleCheck'),
+        getMiddleware('account.consoleCheck'),
         passport.authenticate('google', {
             failureRedirect: '/account/sign-in',
             successRedirect: '/'
         })
     );
     router.get('/sign-in/google',
-        getMiddleware('general.consoleCheck'),
+        getMiddleware('account.consoleCheck'),
         passport.authenticate('google', {
             scope: [
                 // for more info about scopes, visit:
@@ -23,6 +23,12 @@ module.exports = function() {
             ]
         }));
     router.get('/sign-out', controller.signOut);
+
+    // account activation
+    router.get('/activation', getMiddleware('account.isUserActivated'), controller.activation);
+    router.get('/activation/account', getMiddleware('account.isUserActivated'), controller.activationSteps.account);
+    router.get('/activation/profile', getMiddleware('account.isUserActivated'), controller.activationSteps.profile);
+    router.get('/activation/sharing', getMiddleware('account.isUserActivated'), controller.activationSteps.sharing);
 
     return router;
 };
