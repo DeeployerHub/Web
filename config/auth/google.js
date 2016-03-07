@@ -1,11 +1,13 @@
-module.exports = function(passport) {
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+module.exports = function (passport) {
+    'use strict';
 
-    passport.serializeUser(function(user, done) {
+    var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+    passport.serializeUser(function (user, done) {
         done(null, user);
     });
 
-    passport.deserializeUser(function(sessionUser, done) {
+    passport.deserializeUser(function (sessionUser, done) {
         done(null, sessionUser)
     });
 
@@ -16,8 +18,12 @@ module.exports = function(passport) {
             callbackURL: getDomain() + getConfig('auth')[expressEnv].google.returnUrl,
             passReqToCallback: true
         },
-        function(accessToken, refreshToken, arg1, profile, done) {
-            done(null, profile);
+        function (accessToken, refreshToken, arg1, profile, done) {
+            var userRepos = getRepos('users');
+
+            userRepos.isUserRegistered(profile, profile.emails[0].value, function (res) {
+                done(null, res);
+            });
         }
     ));
 };

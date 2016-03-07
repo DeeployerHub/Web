@@ -17,6 +17,12 @@ module.exports.bootstrap = function () {
     var mongoose = require('mongoose');
     mongoose.connect('mongodb://localhost/db_' + getEnv('EXPRESS_ENV', 'dev'));
 
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function() {
+        console.log('mongo connection has been established');
+    });
+    console.log();
 
     // convert the schema objects to model
     var schemas = {};

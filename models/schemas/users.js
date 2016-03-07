@@ -1,6 +1,12 @@
 module.exports = {
     collectionName: 'users',
     schema: {
-        name: String
+        email: {
+            type: String,
+            index: {
+              unique: true
+            }
+        },
+        activated: Boolean,
     }
 };

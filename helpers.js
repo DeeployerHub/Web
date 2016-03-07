@@ -29,16 +29,37 @@ getDomain = function (domain) {
         getConfig('domain')[getEnv('EXPRESS_ENV', 'dev')][domain || 'main'];
 };
 
+getLib = function (name, lib) {
+    'use strict';
+
+    lib = lib.split('.');
+    return require('./' + name + '/' + lib[0] + '.js')[lib[1]];
+};
+
 getMiddleware = function (middleware) {
     'use strict';
 
-    middleware = middleware.split('.');
-    return require('./middleware/' + middleware[0] + '.js')[middleware[1]];
+    return getLib('middleware', middleware);
 };
 
 getRepos = function (repository) {
     'use strict';
 
-    repository = repository.split('.');
-    return require('./repository/' + repository[0] + '.js')[repository[1]];
+    return require('./repositories/' + repository + '.js');
+};
+
+getModelSchema = function (model) {
+    'use strict';
+
+    if (!globalObject.modelSchemas[model]) {
+        throw new Exception('model "' + model + '" has not staged yet');
+    }
+
+    return globalObject.modelSchemas[model];
+};
+
+getModel = function (model) {
+    'use strict';
+
+    return require('./models/' + model + '.js');
 };

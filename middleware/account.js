@@ -1,21 +1,25 @@
 module.exports = {
-    isUserActivated: function(req, res, next) {
+    isUserActivated: function (req, res, next) {
+        'use strict';
+
         return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
-            signIn: function(req, res, next) {
+            signIn: function (req, res, next) {
                 res.redirect('/console');
             },
-            signOut: function(req, res, next) {
+            signOut: function (req, res, next) {
                 return next(); 
             }
         });
     },
-    consoleCheck: function(req, res, next) {
+    consoleCheck: function (req, res, next) {
+        'use strict';
+
         if (req.isAuthenticated()) {
             return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
-                signIn: function(req, res, next) {
+                signIn: function (req, res, next) {
                     res.redirect('/console');  
                 },
-                signOut: function(req, res, next) {
+                signOut: function (req, res, next) {
                     res.redirect('/account/activation');
                 }
             });
@@ -23,13 +27,15 @@ module.exports = {
             return next();
         }
     },
-    signInCheck: function(req, res, next) {
+    signInCheck: function (req, res, next) {
+        'use strict';
+
         if (req.isAuthenticated()) {
             return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
-                signIn: function(req, res, next) {
+                signIn: function (req, res, next) {
                     return next();
                 },
-                signOut: function(req, res, next) {
+                signOut: function (req, res, next) {
                     res.redirect('/account/activation');
                 }
             });
@@ -37,12 +43,17 @@ module.exports = {
             res.redirect('/account/sign-in');
         }
     },
-    isSignedInUserActivated: function(req, res, next, callback) {
-        // TODO: it suppose to check db to see the user is activated or not
-        if (false) {
-            return callback.signIn(req, res, next);
-        } else {
-            return callback.signOut(req, res, next);
-        }
-    },
+    isSignedInUserActivated: function (req, res, next, callback) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+
+        return userRepos.isUserActivated(req.user.email, function (activationResult) {
+            if (activationResult.activated) {
+                return callback.signIn(req, res, next);
+            } else {
+                return callback.signOut(req, res, next);
+            }
+        });
+    }
 };
