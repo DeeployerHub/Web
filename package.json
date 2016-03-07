@@ -49,6 +49,7 @@
     "gulp": "^3.9.1",
     "gulp-sass": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
+    "mongoose": "^4.4.6",
     "morgan": "~1.6.1",
     "passport": ">= 0.0.0",
     "passport-google-oauth": "^1.0.0",
