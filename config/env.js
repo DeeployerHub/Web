@@ -17,10 +17,10 @@ module.exports = function(app, express) {
         secret: 'redis-secret',
         // create new redis store.
         store: new redisStore({
-            host: '127.0.0.1',
-            port: 6379,
+            host: getEnvConfig('redis').host,
+            port: getEnvConfig('redis').port,
             client: client,
-            ttl: 2600000
+            ttl: getEnvConfig('redis').ttl
         }),
         proxy: true,
         resave: true,

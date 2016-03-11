@@ -1,13 +1,19 @@
-getController = function (name) {
-    'use strict';
-
-    return require('./controllers/' + name);
-};
-
 getConfig = function (config) {
     'use strict';
 
     return globalObject[config];
+};
+
+getEnvConfig = function (config) {
+    'use strict';
+
+    return globalObject.envConfig[config];
+};
+
+getController = function (name) {
+    'use strict';
+
+    return require('./controllers/' + name);
 };
 
 getEnv = function (env, defaultValue) {
@@ -19,14 +25,14 @@ getEnv = function (env, defaultValue) {
 getProtocol = function () {
     'use strict';
 
-    return 'http://';
+    return getEnvConfig('app').request.protocol;
 };
 
 getDomain = function (domain) {
     'use strict';
 
     return getProtocol() +
-        getConfig('domain')[getEnv('EXPRESS_ENV', 'dev')][domain || 'main'];
+        getEnvConfig('app').request.domains[domain || 'main'];
 };
 
 getLib = function (name, lib) {

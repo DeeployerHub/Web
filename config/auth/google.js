@@ -8,14 +8,14 @@ module.exports = function (passport) {
     });
 
     passport.deserializeUser(function (sessionUser, done) {
-        done(null, sessionUser)
+        done(null, sessionUser);
     });
 
     // make sure google+ api is activated in case you have auth problem
     passport.use(new GoogleStrategy({
-            clientID: getConfig('auth')[expressEnv].google.clientId,
-            clientSecret: getConfig('auth')[expressEnv].google.clientSecret,
-            callbackURL: getDomain() + getConfig('auth')[expressEnv].google.returnUrl,
+            clientID: getEnvConfig('tokens').google.oauth.clientId,
+            clientSecret: getEnvConfig('tokens').google.oauth.clientSecret,
+            callbackURL: getDomain() + '/account/sign-in/google/callback',
             passReqToCallback: true
         },
         function (accessToken, refreshToken, arg1, profile, done) {
@@ -24,6 +24,6 @@ module.exports = function (passport) {
             userRepos.isUserRegistered(profile, profile.emails[0].value, function (res) {
                 done(null, res);
             });
-        }
-    ));
+        })
+    );
 };
