@@ -1,4 +1,4 @@
-module.exports = function (passport) {
+module.exports = function () {
     'use strict';
 
     var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;

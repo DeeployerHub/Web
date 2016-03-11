@@ -6,6 +6,7 @@ module.exports = function (app, express) {
     var logger = require('morgan');
     var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
+    var util = require('util');
 
     // session on redis
     var redis = require("redis");
@@ -45,8 +46,7 @@ module.exports = function (app, express) {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, '../public')));
 
-    passport = require('passport');
-    require('./auth/google.js')(passport);
+    require('./auth/google.js')();
 
     app.use(passport.initialize());
     app.use(passport.session());
