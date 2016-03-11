@@ -1,17 +1,17 @@
-module.exports = function(app, express) {
+module.exports = function (app, express) {
+    'use strict';
+
     var path = require('path');
     var favicon = require('serve-favicon');
     var logger = require('morgan');
     var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
 
-
     // session on redis
     var redis = require("redis");
     var session = require('express-session');
     var redisStore = require('connect-redis')(session);
     var client = redis.createClient();
-    var util = require('util');
 
     app.use(session({
         secret: 'redis-secret',
