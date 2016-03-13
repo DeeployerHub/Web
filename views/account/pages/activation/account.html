@@ -2,32 +2,64 @@
 
 {% block head %}
 {% parent %}
-
-<link rel="stylesheet" href="/assets/bower/bootstrap-social/bootstrap-social.css">
-
-<script src='/assets/js/app/activation/account.js'></script>
+<link rel="stylesheet" href="/assets/css/app/account/activation/account.css">
+<script src='/assets/js/app/account/activation/account.js'></script>
 {% endblock %}
 
 {% block content %}
 {% include '../../../partials/header-fix-sign-in.html' %}
 
-<div id="fh5co-about-us" data-section="who-we-are">
+<div id="fh5co-page" ng-controller="account">
     <div class="container">
         <div class="row row-bottom-padded-lg public-section" id="who-we-are">
             <div class="col-md-12 section-heading text-center">
                 <h2>Account</h2>
+                <br>
                 <div class="row">
-                    <div class="col-md-12">
-                        <page-activation-account>Loading</page-activation-account>
-                    </div>
-                    <div class="clearfix"></div>
+                    <form name="accountForm" ng-submit="submitForm(accountForm)" role="form" novalidate>
+                        <div class="col-md-12">
+                            <p>
+                                First of all you need to set your username and your avatar that you wish to work with in to the system.
+                            </p>
+                            <div class="avatar-wrapper">
+                                <img
+                                    ng-click="avatarClick()"
+                                    class="img-thumbnail avatar"
+                                    src="/assets/images/users/default.png" 
+                                    alt="avatar"
+                                    title="avatar"
+                                    width="200px">
+                                <i
+                                    ng-click="avatarClick()"
+                                    class="glyphicon glyphicon-edit"></i>
+                            </div>
+                            <p ng-model="picValidationText"></p>
+                            <br>
+                            <input
+                                class="form-control username text-center"
+                                type="text"
+                                name="username"
+                                ng-model="username"
+                                required="required"
+                                placeholder="@Username">
+
+                            <br>
+                            <a
+                                href="/account/activation"
+                                class="btn btn-primary backButton">
+                                Back
+                            </a>
+                            <button
+                                ng-disabled="!accountForm.$valid"
+                                type="submit"
+                                class="btn btn-success submitButton">
+                                +5 Points
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script type="text/ng-template" id="/activation-account-wrapper.tpl">
-hello test
-</script>
 {% endblock %}

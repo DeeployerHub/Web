@@ -1,7 +1,8 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var dir = {
+const del = require('del');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const dir = {
     assets: {
         source: './assets',
         dest: './public/assets',
@@ -10,15 +11,7 @@ var dir = {
     }
 };
 
-var assets = {
-    node: [
-        'angular2',
-        'es6-promise',
-        'es6-shim',
-        'reflect-metadata',
-        'rxjs',
-        'zone.js'
-    ],
+const assets = {
     public: [
         'sass',
         'css',
@@ -28,16 +21,17 @@ var assets = {
     ]
 };
 
-gulp.task('default', ['assets', 'bower-assets', 'node-assets']);
+gulp.task('default', ['assets', 'bower-assets']);
 
-gulp.task('node-assets', function () {
+gulp.task('assets-cleanup', function () {
     'use strict';
 
-    assets.node.forEach(function (item) {
-        gulp.src(dir.assets.node + '/' + item + '/**', {base: dir.assets.node})
-            .pipe(gulp.dest(dir.assets.dest + '/node'));
+    return del(dir.assets.dest, {
+        dryRun: true,
+        force: true
     });
 });
+
 gulp.task('bower-assets', function () {
     'use strict';
 
@@ -45,7 +39,7 @@ gulp.task('bower-assets', function () {
         .pipe(gulp.dest(dir.assets.dest + '/bower'));
 });
 
-gulp.task('assets', function () {
+gulp.task('assets', ['assets-cleanup'], function () {
     'use strict';
 
     assets.public.forEach(function (item) {

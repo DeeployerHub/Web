@@ -28,7 +28,9 @@ module.exports = {
         aws: {
             s3: {
                 accessKeyId: 'ask manager for token code',
-                secretAccessKey: 'ask manager for token code'
+                secretAccessKey: 'ask manager for token code',
+                regin: 'us-west-2',
+                bucket: 'deeployerdev'
             }
         }
     }

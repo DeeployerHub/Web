@@ -1,0 +1,29 @@
+.username {
+    width: 200px;
+    margin:auto;
+}
+.avatar {
+    cursor: pointer;
+    margin:auto
+}
+.submitButton, .backButton {
+    width: 200px;
+    margin:auto;
+}
+.avatar-wrapper {
+    width: 200px;
+    margin:auto;
+    position:relative;
+    i {
+        cursor: pointer;
+        background: white;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 50px;
+        position: absolute;
+        right: 32%;
+        top: 32%;
+        font-size: 2em;
+        opacity: 0.5;
+    }
+}
