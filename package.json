@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "bower install --allow-root && npm install && gulp && npm test",
-    "quick-run": "node index.js",
-    "start": "forever start -c supervisor index.js && exit",
-    "stop": "forever stop -c supervisor index.js",
-    "restart": "forever restart -c supervisor index.js",
+    "dev-run": "node index.js",
     "test": "echo 'no test yet' && exit"
   },
   "repository": {
