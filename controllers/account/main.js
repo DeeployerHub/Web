@@ -35,7 +35,7 @@ module.exports = {
             var savedFile = '';
 
             busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-                savedFile = path.join(os.tmpDir() + '/tmp', uuid.v4() + path.extname(filename));
+                savedFile = path.join(os.tmpDir() + '/upload', uuid.v4() + path.extname(filename));
                 file.pipe(fs.createWriteStream(savedFile));
             });
             busboy.on('finish', function() {
