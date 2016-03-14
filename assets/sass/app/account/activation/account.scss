@@ -14,7 +14,7 @@
     width: 200px;
     margin:auto;
     position:relative;
-    i {
+    i, .cssload-container {
         cursor: pointer;
         background: white;
         padding: 16px;
@@ -25,5 +25,14 @@
         top: 32%;
         font-size: 2em;
         opacity: 0.5;
+    }
+    .cssload-container {
+        top: 43%;
+        right: 42%;
+    }
+    .cssload-whirlpool {
+        position: relative;
+        top: 26px;
+        left: 26px;
     }
 }

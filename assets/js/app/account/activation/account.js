@@ -6,6 +6,7 @@
         '$scope', '$http', 
         function ($scope, $http) {
             var avatarDefault = '/assets/images/users/default.png';
+            $scope.waiting = false;
             $scope.avatar = avatarDefault;
             $scope.username = '';
             $scope.picValidationText = '';
@@ -21,6 +22,7 @@
 
             $scope.avatarUploadChange = function () {
                 var file = this.files.length > 0 ? this.files[0] : null;
+                $scope.waiting = true;
 
                 if (file) {
                     var fd = new FormData();
@@ -35,9 +37,11 @@
                     .error(function(result){
                         $scope.avatar = avatarDefault;
                         $scope.picValidationText = 'Process Failed! Please Try again.';
+                        $scope.waiting = false;
                     });
                 } else {
                     $scope.picValidationText = 'Process Failed! Please Try again.';
+                    $scope.waiting = false;
                 }
             };
 
@@ -50,6 +54,12 @@
                     }
                     // TODO: next
                 }
+            };
+
+            $scope.stopWaiting = function (message) {
+                $scope.picValidationText = message;
+                $scope.editIconStatus = false;
+                $scope.waiting = false;
             };
         }
     ]);
