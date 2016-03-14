@@ -40,4 +40,3 @@ node_modules
 # assets
 /public/assets/
 bower_components
-/upload/
