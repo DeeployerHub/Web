@@ -49,7 +49,6 @@
                 if (form.$valid) {
                     if ($scope.avatar === avatarDefault) {
                         $scope.picValidationText = 'You need to choose a Picture for your profile';
-
                         return;
                     }
                     // TODO: next
