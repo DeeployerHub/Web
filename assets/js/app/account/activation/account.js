@@ -28,7 +28,7 @@ app.controller("account", [
                     headers: {'Content-Type': undefined}
                 })
                 .success(function(result){
-                    console.log(result);
+                    console.log(result.data.file);
                     return result.data;
                 })
                 .error(function(result){

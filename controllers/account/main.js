@@ -32,68 +32,59 @@ module.exports = {
 
             var busboyPackage = require('busboy');
             var busboy = new busboyPackage({ headers: req.headers });
+            var savedFileName = '';
             var savedFile = '';
 
             busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-                savedFile = path.join(os.tmpDir() + '/upload', uuid.v4() + path.extname(filename));
+                savedFileName = uuid.v4() + path.extname(filename);
+                savedFile = path.join(os.tmpDir() + '/upload', savedFileName);
                 file.pipe(fs.createWriteStream(savedFile));
             });
             busboy.on('finish', function() {
-                del(savedFile,{
-                    dryRun: true,
-                    force: true
+                var aws = require('aws-sdk');
+
+                aws.config.update({
+                    accessKeyId: getEnvConfig('tokens').aws.s3.accessKeyId, 
+                    secretAccessKey: getEnvConfig('tokens').aws.s3.secretAccessKey
                 });
-                res.json({
-                    status: true,
-                    data: {
-                        file: savedFile
-                    }
+
+                var s3 = new aws.S3();
+                var s3_params = {
+                    Bucket: getEnvConfig('tokens').aws.s3.bucket,
+                    Key: savedFileName,
+                    ContentType: req.query.file_type,
+                    ACL: 'public-read'
+                };
+
+                var fileStream = fs.createReadStream(savedFile);
+                fileStream.on('open', function () {
+                    var s3 = new aws.S3();
+                    s3.putObject({
+                        Bucket: getEnvConfig('tokens').aws.s3.bucket,
+                        Key: savedFileName,
+                        Body: fileStream,
+                        ACL: 'public-read'
+                    }, function (err, data) {
+                        fs.unlink(savedFile);
+
+                        if (err) {
+                            res.json({
+                                status: false,
+                                reason: err
+                            }); 
+                        } else {
+                            res.json({
+                                status: true,
+                                data: {
+                                    file: 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + savedFileName
+                                }
+                            });
+                        }
+                    });
                 });
             });
 
             req.pipe(busboy);
-
-            // var aws = require('aws-sdk');
-
-            // aws.config.region = getEnvConfig('tokens').aws.s3.regin;
-
-
-            // aws.config.update({
-            //     accessKeyId: getEnvConfig('tokens').aws.s3.accessKeyId, 
-            //     secretAccessKey: getEnvConfig('tokens').aws.s3.secretAccessKey
-            // });
-
-            // var fileName = uuid.v4();
-            // var s3 = new aws.S3();
-            // var s3_params = {
-            //     Bucket: getEnvConfig('tokens').aws.s3.bucket,
-            //     Key: fileName,
-            //     ContentType: req.query.file_type,
-            //     ACL: 'public-read'
-            // };
-            // s3.getSignedUrl('putObject', s3_params, function(err, data){
-            //     if(err){
-            //         console.log(err);
-            //         res.json({
-            //             status: false,
-            //         });
-            //     }
-            //     else{
-            //         var return_data = {
-            //             signed_request: data,
-            //             url: 'https://' +
-            //             getEnvConfig('tokens').aws.s3.bucket +
-            //             '.s3.amazonaws.com/' + fileName
-            //         };
-
-            //         res.json({
-            //             status: true,
-            //             data: {
-            //                 file: return_data
-            //             }
-            //         });
-            //     }
-            // });
         },
         profile: function (req, res) {
             'use strict';
