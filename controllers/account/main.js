@@ -73,11 +73,18 @@ module.exports = {
                                 reason: err
                             }); 
                         } else {
-                            res.json({
-                                status: true,
-                                data: {
-                                    file: 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + savedFileName
-                                }
+                            var s3file = 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + savedFileName;
+
+                            // update the user's avatar into database
+                            var userRepos = getRepos('users');
+
+                            userRepos.updateAvatar(req.user._id, s3file, function () {
+                                res.json({
+                                    status: true,
+                                    data: {
+                                        file: s3file
+                                    }
+                                });
                             });
                         }
                     });

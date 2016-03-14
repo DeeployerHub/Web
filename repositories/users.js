@@ -23,5 +23,14 @@ module.exports = {
             return callback(findRes);
         });
     },
+    updateAvatar: function (userId, avatarPath, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        return model.updateUserAvatarById(userId, avatarPath, function (result) {
+            return callback(result);
+        });
+    },
 
 };
