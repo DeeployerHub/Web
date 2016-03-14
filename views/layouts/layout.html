@@ -21,7 +21,7 @@
     {% endblock %}
     <script src='/assets/js/app/directives.js'></script>
 </head>
-<body ng-app="deeployer">
+<body {% block angularSection %}{% endblock %}>
     {% block content %}{% endblock %}
 
     {% include '../partials/body-finish.html' %}
