@@ -10,12 +10,12 @@
     <div class="container">
         <div class="row row-bottom-padded-lg public-section">
             <div class="col-md-12 section-heading text-center to-animate">
-                <h2>{{ error.status }}</h2>
-                <h3>{{ message }}</h3>
+                <h2>[[ error.status ]]</h2>
+                <h3>[[ message ]]</h3>
             </div>
             {% if env == 'dev' %}
             <div class="col-md-12 section-heading to-animate">
-                <pre>{{ error.stack }}</pre>
+                <pre>[[ error.stack ]]</pre>
             </div>
             {% endif %}
         </div>

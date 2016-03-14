@@ -1,0 +1,3 @@
+(function(angular) {
+
+})(window.angular);

@@ -15,17 +15,17 @@
 
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
+    <script src='/assets/js/app/main.js'></script>
     {% include '../partials/head.html' %}
     {% block head %}
     {% endblock %}
-    <script src='/assets/js/app/main.js'></script>
 </head>
 <body ng-app="deeployer">
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 
-{% include '../partials/body-finish.html' %}
-{% if !noFooter %}
-{% include '../partials/footer.html' %}
-{% endif %}
+    {% include '../partials/body-finish.html' %}
+    {% if !noFooter %}
+    {% include '../partials/footer.html' %}
+    {% endif %}
 </body>
 </html>

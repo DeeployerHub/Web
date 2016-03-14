@@ -30,6 +30,7 @@ module.exports = function (app, express) {
 
     var swig = require('swig');
     swig.setDefaults({
+        varControls: ['[[', ']]'], 
         cache: false
     });
     app.engine('html', swig.renderFile);

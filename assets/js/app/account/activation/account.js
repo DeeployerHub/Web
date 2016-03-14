@@ -1,48 +1,56 @@
-var app = angular.module("deeployer", []);
+(function(angular) {
+    'use strict';
 
-app.controller("account", [
-    '$scope', '$http', 
-    function ($scope, $http) {
-        'use strict';
+    angular.module("deeployer", [])
+    .controller("AccountController", [
+        '$scope', '$http', 
+        function ($scope, $http) {
+            var avatarDefault = '/assets/images/users/default.png';
+            $scope.avatar = avatarDefault;
+            $scope.username = '';
+            $scope.picValidationText = '';
 
-        $scope.username = '';
-        $scope.picValidationText = '';
+            $scope.avatarClick = function () {
+                var file     = document.createElement('input');
+                file.type    = 'file';
+                file.accept  = 'image/*';
+                $(file).change($scope.avatarUploadChange);
 
-        $scope.avatarClick = function () {
-            var file     = document.createElement('input');
-            file.type    = 'file';
-            file.accept  = 'image/*';
-            $(file).change($scope.avatarUploadChange);
+                file.click();
+            };
 
-            file.click();
-        };
+            $scope.avatarUploadChange = function () {
+                var file = this.files.length > 0 ? this.files[0] : null;
 
-        $scope.avatarUploadChange = function () {
-            var file = this.files.length > 0 ? this.files[0] : null;
+                if (file) {
+                    var fd = new FormData();
+                    fd.append("file", file);
+                    $http.post('/account/activation/account/avatar-upload', fd, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    })
+                    .success(function(result){
+                        $scope.avatar = result.data.file;
+                    })
+                    .error(function(result){
+                        $scope.avatar = avatarDefault;
+                        $scope.picValidationText = 'Process Failed! Please Try again.';
+                    });
+                } else {
+                    $scope.picValidationText = 'Process Failed! Please Try again.';
+                }
+            };
 
-            if (file) {
-                var fd = new FormData();
-                fd.append("file", file);
-                $http.post('/account/activation/account/avatar-upload', fd, {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                .success(function(result){
-                    console.log(result.data.file);
-                    return result.data;
-                })
-                .error(function(result){
-                    console.log(result);
-                });
-            } else {
-                $scope.picValidationText = 'Process Failed! Please Try again.';
-            }
-        };
+            $scope.submitForm = function (form) {
+                if (form.$valid) {
+                    if ($scope.avatar === avatarDefault) {
+                        $scope.picValidationText = 'You need to choose a Picture for your profile';
 
-        $scope.submitForm = function (form) {
-            if (form.$valid) {
-
-            }
-        };
-    }
-]);
+                        return;
+                    }
+                    // TODO: next
+                }
+            };
+        }
+    ]);
+})(window.angular);

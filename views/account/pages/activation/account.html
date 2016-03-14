@@ -9,9 +9,9 @@
 {% block content %}
 {% include '../../../partials/header-fix-sign-in.html' %}
 
-<div id="fh5co-page" ng-controller="account">
+<div id="fh5co-page" ng-controller="AccountController">
     <div class="container">
-        <div class="row row-bottom-padded-lg public-section" id="who-we-are">
+        <div class="row row-bottom-padded-lg public-section">
             <div class="col-md-12 section-heading text-center">
                 <h2>Account</h2>
                 <br>
@@ -23,9 +23,9 @@
                             </p>
                             <div class="avatar-wrapper">
                                 <img
+                                    ng-src="{{ avatar }}"
                                     ng-click="avatarClick()"
                                     class="img-thumbnail avatar"
-                                    src="/assets/images/users/default.png" 
                                     alt="avatar"
                                     title="avatar"
                                     width="200px">
@@ -33,7 +33,6 @@
                                     ng-click="avatarClick()"
                                     class="glyphicon glyphicon-edit"></i>
                             </div>
-                            <p ng-model="picValidationText"></p>
                             <br>
                             <input
                                 class="form-control username text-center"
@@ -43,6 +42,7 @@
                                 required="required"
                                 placeholder="@Username">
 
+                            <p>{{ picValidationText }}</p>
                             <br>
                             <a
                                 href="/account/activation"
@@ -62,4 +62,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
