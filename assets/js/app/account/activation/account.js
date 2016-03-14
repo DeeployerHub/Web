@@ -5,13 +5,14 @@
     .controller("AccountController", [
         '$scope', '$http', 
         function ($scope, $http) {
-            var avatarDefault = '/assets/images/users/default.png';
             $scope.waiting = false;
-            $scope.avatar = avatarDefault;
+            $scope.avatarDefault = '/assets/images/users/default.png';
+            $scope.avatar = window.angularControllerValues.avatar || $scope.avatarDefault;
             $scope.username = '';
             $scope.picValidationText = '';
 
             $scope.avatarClick = function () {
+                $scope.picValidationText = '';
                 var file     = document.createElement('input');
                 file.type    = 'file';
                 file.accept  = 'image/*';
@@ -33,9 +34,10 @@
                     })
                     .success(function(result){
                         $scope.avatar = result.data.file;
+                        window.angularControllerValues.avatar = $scope.avatar;
                     })
                     .error(function(result){
-                        $scope.avatar = avatarDefault;
+                        $scope.avatar = scope.avatarDefault;
                         $scope.picValidationText = 'Process Failed! Please Try again.';
                         $scope.waiting = false;
                     });
@@ -45,20 +47,51 @@
                 }
             };
 
-            $scope.submitForm = function (form) {
-                if (form.$valid) {
-                    if ($scope.avatar === avatarDefault) {
-                        $scope.picValidationText = 'You need to choose a Picture for your profile';
-                        return;
-                    }
-                    // TODO: next
-                }
-            };
-
             $scope.stopWaiting = function (message) {
                 $scope.picValidationText = message;
                 $scope.editIconStatus = false;
                 $scope.waiting = false;
+            };
+
+            $scope.submitForm = function (form) {
+                $scope.collectPointError = '';
+                $scope.picValidationText = '';
+                if (form.$valid) {
+                    if ($scope.avatar === $scope.avatarDefault) {
+                        $scope.picValidationText = 'You need to choose a Picture for your profile';
+                        return;
+                    }
+
+                    var fd = new FormData();
+                    fd.append("username", $scope.username);
+
+                    $http({
+                        method: 'POST',
+                        url: '/account/activation/account/collect-point',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: $.param({
+                            username: $scope.username
+                        })
+                    })
+                    .then(function(result){
+                        console.log(result.data) ;
+                        if (result.data.status) {
+                            window.location.href = '/account/activation/profile';
+                        } else {
+                            switch (result.data.reoson) {
+                                case 'username-already-exists':
+                                    $scope.collectPointError = 'Username already exists.';
+                                    break;
+                                default:
+                                    $scope.collectPointError = 'Process Failed! Please Try again.';
+                            }
+                        }
+                    }, function(result){
+                        $scope.collectPointError = 'Process Failed! Please Try again.'
+                    });
+                }
             };
         }
     ])

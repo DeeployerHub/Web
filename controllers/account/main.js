@@ -19,7 +19,17 @@ module.exports = {
         account: function (req, res) {
             'use strict';
 
-            res.render('account/pages/activation/account');
+            var userRepos = getRepos('users');
+
+            userRepos.getUserInfo(req.user.email, function (userInfo) {
+                if (userInfo.avatar && userInfo.username) {
+                    res.redirect(301, '/account/activation/profile');
+                } else {
+                    res.render('account/pages/activation/account', {
+                        user: userInfo
+                    });
+                }
+            })
         },
         accountAvatarUpload: function (req, res) {
             'use strict';
@@ -92,6 +102,46 @@ module.exports = {
             });
 
             req.pipe(busboy);
+        },
+        accountCollectPoint: function (req, res) {
+            'use strict';
+
+            var userRepos = getRepos('users');
+
+            var username = req.body.username;
+            if (username) {
+                // validate the username
+                userRepos.isUsernameExists(username, function (err) {
+                    var returnData = {
+                        status: true
+                    };
+
+                    if (err) {
+                        returnData.status = false,
+                        returnData.reason = 'username-already-exists'
+                    }
+
+                    if (returnData.status) {
+                        userRepos.updateUsername(req.user._id, username, function () {
+                            // increase the users's point for 50
+                            dispatchEvent('earnPoint', {
+                                point: 50,
+                                type: 'activation',
+                                reason: 'account-section-completed',
+                                description: ''
+                            });
+
+                           res.json(returnData); 
+                        })
+                    } else {
+                        res.json(returnData);
+                    }
+                });
+            } else {
+                res.json({
+                    status: false
+                });
+            }
         },
         profile: function (req, res) {
             'use strict';

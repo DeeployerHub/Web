@@ -26,6 +26,7 @@ module.exports = function() {
 
     // account activation
     router.get('/activation', getMiddleware('account.isUserActivated'), controller.activation);
+    router.post('/activation/account/collect-point', getMiddleware('account.isUserActivated'), controller.activationSteps.accountCollectPoint);
     router.post('/activation/account/avatar-upload', getMiddleware('account.isUserActivated'), controller.activationSteps.accountAvatarUpload);
     router.get('/activation/account', getMiddleware('account.isUserActivated'), controller.activationSteps.account);
     router.get('/activation/profile', getMiddleware('account.isUserActivated'), controller.activationSteps.profile);

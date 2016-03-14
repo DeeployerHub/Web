@@ -8,11 +8,11 @@ module.exports.bootstrap = function () {
     var schemasTmp = fs.readdirSync('./models/schemas');
 
     // fetch the schema objects
-    for (var i in schemasTmp) {
-        if (path.extname(schemasTmp[i]) === '.js') {
-            schemasObj.push(require('../models/schemas/' + schemasTmp[i]));
+    schemasTmp.forEach(function (schema) {
+        if (path.extname(schema) === '.js') {
+            schemasObj.push(require('../models/schemas/' + schema));
         }
-    }
+    });
 
     var mongoose = require('mongoose');
     mongoose.connect(
@@ -27,12 +27,12 @@ module.exports.bootstrap = function () {
 
     // convert the schema objects to model
     var schemas = {};
-    for (var i in schemasObj) {
-        schemas[schemasObj[i].collectionName] = mongoose.model(
-            schemasObj[i].collectionName,
-            schemasObj[i].schema
+    schemasObj.forEach(function (schema) {
+        schemas[schema.collectionName] = mongoose.model(
+            schema.collectionName,
+            schema.schema
         );
-    }
+    });
 
     return schemas;
 };

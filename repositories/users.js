@@ -1,4 +1,30 @@
 module.exports = {
+    isUsernameExists: function (username, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        model.findUserWithUsername(username, function (findRes) {
+            if (findRes) {
+                callback(findRes);
+            } else {
+                callback(null);
+            }
+        });
+    },
+    getUserInfo: function (email, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        model.findUserWithEmail(email, function (findRes) {
+            if (findRes) {
+                callback(findRes);
+            } else {
+                callback(null);
+            }
+        });
+    },
     isUserRegistered: function (profile, email, callback) {
         'use strict';
 
@@ -32,5 +58,13 @@ module.exports = {
             return callback(result);
         });
     },
+    updateUsername: function (userId, username, callback) {
+        'use strict';
 
+        var model = getModel('users');
+
+        return model.updateUsernameById(userId, username, function (result) {
+            return callback(result);
+        });
+    }
 };

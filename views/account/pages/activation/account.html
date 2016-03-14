@@ -4,6 +4,11 @@
 {% parent %}
 <link rel="stylesheet" href="/assets/css/app/account/activation/account.css">
 <script src='/assets/js/app/account/activation/account.js'></script>
+<script>
+    window.angularControllerValues = {
+        avatar: '[[user.avatar]]'
+    };
+</script>
 {% endblock %}
 
 {% block angularSection %}
@@ -54,7 +59,7 @@
                                 ng-model="username"
                                 required="required"
                                 placeholder="@Username">
-                            <p class="text-danger">{{ picValidationText }}</p>
+                            <p class="text-danger">{{ picValidationText || collectPointError}}</p>
                             <br>
                             <a
                                 href="/account/activation"
