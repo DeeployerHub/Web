@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "bower install --allow-root && npm install && gulp && npm test",
+    "dev-run-supervisor": "supervisor index.js",
     "dev-run": "node index.js",
     "test": "echo 'no test yet' && exit"
   },

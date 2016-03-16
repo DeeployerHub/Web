@@ -65,7 +65,7 @@ module.exports = {
             mongoose.Types.ObjectId(userId),
             { 
                 $set: {
-                    username: username
+                    username: username.toLowerCase()
                 }
             },
             function (err, resObj) {

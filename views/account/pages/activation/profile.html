@@ -15,13 +15,38 @@
             <div class="col-md-12 section-heading text-center">
                 <h2 class="to-animate">Profile</h2>
                 <div class="row">
-                    <div class="col-md-12 to-animate">
-                        <h3>
-                        </h3>
-                        <br>
-                    </div>
-                    <div class="clearfix"></div>
+                    <form name="profileForm" ng-submit="submitForm(profileForm)" role="form" novalidate>
+                        <div class="col-md-12">
+                            <p class="text-success">
+                                Congratulation <strong>[[ user.username | title ]]</strong>, you just earned <strong>+50</strong> points by completing the first step.
+                            </p>
+                            <p>
+                                Now it's time to complete your profile in order to earn another 50 points.
+                            </p>
 
+                            <br>
+                            <input
+                                class="form-control username text-center"
+                                type="text"
+                                name="username"
+                                ng-minlength="3"
+                                ng-model="username"
+                                required="required"
+                                placeholder="@Username">
+                            <br>
+                            <a
+                                href="/account/activation"
+                                class="btn btn-primary backButton">
+                                Back
+                            </a>
+                            <button
+                                ng-disabled="!profileForm.$valid"
+                                type="submit"
+                                class="btn btn-success submitButton">
+                                +5 Points
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

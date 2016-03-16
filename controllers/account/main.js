@@ -29,7 +29,7 @@ module.exports = {
                         user: userInfo
                     });
                 }
-            })
+            });
         },
         accountAvatarUpload: function (req, res) {
             'use strict';
@@ -37,67 +37,42 @@ module.exports = {
             var path = require('path'),
                 os = require('os'),
                 uuid = require('node-uuid'),
-                del = require('del'),
                 fs = require('fs');
 
+            var userRepos = getRepos('users');
+            var amazon = getRepos('amazon');
             var busboyPackage = require('busboy');
             var busboy = new busboyPackage({ headers: req.headers });
-            var savedFileName = '';
+            var fileToken = '';
             var savedFile = '';
 
             busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-                savedFileName = uuid.v4() + path.extname(filename);
-                savedFile = path.join(os.tmpDir() + '/upload', savedFileName);
+                fileToken = uuid.v4() + path.extname(filename);
+                savedFile = path.join(os.tmpDir() + '/upload', fileToken);
                 file.pipe(fs.createWriteStream(savedFile));
             });
             busboy.on('finish', function() {
-                var aws = require('aws-sdk');
+                amazon.s3Upload(savedFile, fileToken, req.query.file_type, function(err, data) {
+                    fs.unlink(savedFile);
+                    if (err) {
+                        res.json({
+                            status: false,
+                            reason: err
+                        }); 
+                    } else {
+                        var s3file = 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + fileToken;
 
-                aws.config.update({
-                    accessKeyId: getEnvConfig('tokens').aws.s3.accessKeyId, 
-                    secretAccessKey: getEnvConfig('tokens').aws.s3.secretAccessKey
-                });
+                        // update the user's avatar into database
 
-                var s3 = new aws.S3();
-                var s3_params = {
-                    Bucket: getEnvConfig('tokens').aws.s3.bucket,
-                    Key: savedFileName,
-                    ContentType: req.query.file_type,
-                    ACL: 'public-read'
-                };
-
-                var fileStream = fs.createReadStream(savedFile);
-                fileStream.on('open', function () {
-                    var s3 = new aws.S3();
-                    s3.putObject({
-                        Bucket: getEnvConfig('tokens').aws.s3.bucket,
-                        Key: savedFileName,
-                        Body: fileStream,
-                        ACL: 'public-read'
-                    }, function (err, data) {
-                        fs.unlink(savedFile);
-
-                        if (err) {
+                        userRepos.updateAvatar(req.user._id, s3file, function () {
                             res.json({
-                                status: false,
-                                reason: err
-                            }); 
-                        } else {
-                            var s3file = 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + savedFileName;
-
-                            // update the user's avatar into database
-                            var userRepos = getRepos('users');
-
-                            userRepos.updateAvatar(req.user._id, s3file, function () {
-                                res.json({
-                                    status: true,
-                                    data: {
-                                        file: s3file
-                                    }
-                                });
+                                status: true,
+                                data: {
+                                    file: s3file
+                                }
                             });
-                        }
-                    });
+                        });
+                    }
                 });
             });
 
@@ -117,8 +92,8 @@ module.exports = {
                     };
 
                     if (err) {
-                        returnData.status = false,
-                        returnData.reason = 'username-already-exists'
+                        returnData.status = false;
+                        returnData.reason = 'username-already-exists';
                     }
 
                     if (returnData.status) {
@@ -146,7 +121,17 @@ module.exports = {
         profile: function (req, res) {
             'use strict';
 
-            res.render('account/pages/activation/profile');
+            var userRepos = getRepos('users');
+
+            userRepos.getUserInfo(req.user.email, function (userInfo) {
+                if (!(userInfo.avatar && userInfo.username)) {
+                    res.redirect('/account/activation/account');
+                } else {
+                    res.render('account/pages/activation/profile', {
+                        user: userInfo
+                    });
+                }
+            });
         },
         sharing: function (req, res) {
             'use strict';

@@ -6,9 +6,7 @@ module.exports = {
     schema: {
         username: {
             type: String,
-            trim: true,
-            lowercase: true,
-            minlength: 3
+            trim: true
         },
         avatar: {
             type: String,

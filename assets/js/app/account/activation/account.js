@@ -37,7 +37,7 @@
                         window.angularControllerValues.avatar = $scope.avatar;
                     })
                     .error(function(result){
-                        $scope.avatar = scope.avatarDefault;
+                        $scope.avatar = $scope.avatarDefault;
                         $scope.picValidationText = 'Process Failed! Please Try again.';
                         $scope.waiting = false;
                     });
