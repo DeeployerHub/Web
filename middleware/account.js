@@ -2,25 +2,30 @@ module.exports = {
     isUserActivated: function (req, res, next) {
         'use strict';
 
-        return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
-            signIn: function (req, res, next) {
-                res.redirect('/console');
-            },
-            signOut: function (req, res, next) {
-                return next(); 
-            }
-        });
+
+        if (req.isAuthenticated()) {
+            return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
+                signIn: function (reqIn, resIn, nextIn) {
+                    resIn.redirect('/console');
+                },
+                signOut: function (reqIn, resIn, nextIn) {
+                    return nextIn(); 
+                }
+            });
+        } else {
+            res.redirect('/account/sign-in');
+        }
     },
     consoleCheck: function (req, res, next) {
         'use strict';
 
         if (req.isAuthenticated()) {
             return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
-                signIn: function (req, res, next) {
-                    res.redirect('/console');  
+                signIn: function (reqIn, resIn, nextIn) {
+                    resIn.redirect('/console');  
                 },
-                signOut: function (req, res, next) {
-                    res.redirect('/account/activation');
+                signOut: function (reqIn, resIn, nextIn) {
+                    resIn.redirect('/account/activation');
                 }
             });
         } else {
@@ -32,11 +37,11 @@ module.exports = {
 
         if (req.isAuthenticated()) {
             return getMiddleware('account.isSignedInUserActivated')(req, res, next, {
-                signIn: function (req, res, next) {
-                    return next();
+                signIn: function (reqIn, resIn, nextIn) {
+                    return nextIn();
                 },
-                signOut: function (req, res, next) {
-                    res.redirect('/account/activation');
+                signOut: function (reqIn, resIn, nextIn) {
+                    resIn.redirect('/account/activation');
                 }
             });
         } else {
@@ -48,12 +53,16 @@ module.exports = {
 
         var userRepos = getRepos('users');
 
-        return userRepos.isUserActivated(req.user.email, function (activationResult) {
-            if (activationResult.activated) {
-                return callback.signIn(req, res, next);
-            } else {
-                return callback.signOut(req, res, next);
-            }
-        });
+        if (req.isAuthenticated()) {
+            return userRepos.isUserActivated(req.user.email, function (activationResult) {
+                if (activationResult.activated) {
+                    return callback.signIn(req, res, next);
+                } else {
+                    return callback.signOut(req, res, next);
+                }
+            });
+        } else {
+            res.redirect('/account/sign-in');
+        }
     }
 };

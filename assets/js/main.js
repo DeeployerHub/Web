@@ -51,12 +51,13 @@
 
     // Page Nav
     var clickMenu = function () {
-        $('a:not([class="external"])').click(function (event) {
+        $('a[data-nav-section]').click(function (event) {
             var section = $(this).data('nav-section'),
                 navbar = $('#navbar');
+
             $('html, body').animate({
                 scrollTop: $('[data-section="' + section + '"]').offset().top
-            }, 500);
+            }, 200);
 
             if (navbar.is(':visible')) {
                 navbar.removeClass('in');
@@ -71,19 +72,15 @@
 
     // Reflect scrolling in navigation
     var navActive = function (section) {
-
         var $el = $('#navbar > ul');
         $el.find('li').removeClass('active');
         $el.each(function () {
             $(this).find('a[data-nav-section="' + section + '"]').closest('li').addClass('active');
         });
-
     };
 
     var navigationSection = function () {
-
         var $section = $('div[data-section]');
-
         $section.waypoint(function (direction) {
             if (direction === 'down') {
                 navActive($(this.element).data('section'));
@@ -121,7 +118,7 @@
         if ($('.public-section').length > 0) {
             $('.public-section').waypoint(function (direction) {
                 if (direction === 'down' && !$(this).hasClass('animated')) {
-                    setTimeout(publicAnimate, 200);
+                    setTimeout(publicAnimate, 1);
                     $(this.element).addClass('animated');
                 }
             }, {offset: '95%'});

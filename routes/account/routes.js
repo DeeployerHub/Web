@@ -19,18 +19,19 @@ module.exports = function() {
             scope: [
                 // for more info about scopes, visit:
                 // https://developers.google.com/identity/protocols/googlescopes#oauth2v2
-                'https://www.googleapis.com/auth/plus.me https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+                // https://www.googleapis.com/auth/plus.me https://www.google.com/m8/feeds
+                'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
             ]
         }));
     router.get('/sign-out', controller.signOut);
 
     // account activation
-    router.get('/activation', getMiddleware('account.isUserActivated'), controller.activation);
     router.post('/activation/account/collect-point', getMiddleware('account.isUserActivated'), controller.activationSteps.accountCollectPoint);
     router.post('/activation/account/avatar-upload', getMiddleware('account.isUserActivated'), controller.activationSteps.accountAvatarUpload);
     router.get('/activation/account', getMiddleware('account.isUserActivated'), controller.activationSteps.account);
     router.get('/activation/profile', getMiddleware('account.isUserActivated'), controller.activationSteps.profile);
     router.get('/activation/sharing', getMiddleware('account.isUserActivated'), controller.activationSteps.sharing);
+    router.get('/activation', getMiddleware('account.isUserActivated'), controller.activation);
 
     return router;
 };

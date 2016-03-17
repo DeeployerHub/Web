@@ -33,7 +33,7 @@ module.exports = {
             lastname: String,
             country: String,
             countryCode: String,
-            phoneNumber: String,
+            phone: String,
             geoLocation: String
         })],
         point: Number,
