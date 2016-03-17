@@ -32,9 +32,12 @@ module.exports = {
             firstname: String,
             lastname: String,
             country: String,
-            countryCode: String,
             phone: String,
-            geoLocation: String
+            geoLocation: String,
+            registerAt: {
+                type: Date,
+                default: Date.now
+            }
         })],
         point: Number,
         pointsHistory: [new Schema({

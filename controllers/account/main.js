@@ -127,16 +127,76 @@ module.exports = {
                 if (!(userInfo.avatar && userInfo.username)) {
                     res.redirect('/account/activation/account');
                 } else {
-                    res.render('account/pages/activation/profile', {
-                        user: userInfo
-                    });
+                    // check if user already inserted the profile
+                    if (userInfo.profile && userInfo.profile.length > 0) {
+                        res.redirect('/account/activation/sharing');
+                    } else {
+                        res.render('account/pages/activation/profile', {
+                            user: userInfo,
+                            countries: getConfig('countries')
+                        });
+                    }
                 }
             });
+        },
+        profileCollectPoint: function (req, res) {
+            'use strict';
+
+            var userRepos = getRepos('users');
+
+            var profile = {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                phone: req.body.phone,
+                country: req.body.country,
+                gender: req.body.gender,
+                geoLocation: req.body.geoLocation
+            };
+
+            if (
+                profile.firstname &&
+                profile.lastname &&
+                profile.phone &&
+                profile.country &&
+                profile.gender
+                ) {
+                userRepos.updateProfile(req.user._id, profile, function () {
+                    dispatchEvent('earnPoint', {
+                        point: 50,
+                        type: 'activation',
+                        reason: 'profile-section-completed',
+                        description: ''
+                    });
+
+                    res.json({
+                        status: true
+                    }); 
+                })
+            } else {
+                res.json({
+                    status: false
+                });
+            }
         },
         sharing: function (req, res) {
             'use strict';
 
-            res.render('account/pages/activation/sharing');
+            var userRepos = getRepos('users');
+
+            userRepos.getUserInfo(req.user.email, function (userInfo) {
+                if (!(userInfo.avatar && userInfo.username)) {
+                    res.redirect('/account/activation/account');
+                } else {
+                    // check if user already inserted the profile
+                    if (!(userInfo.profile && userInfo.profile.length > 0)) {
+                        res.redirect('/account/activation/profile');
+                    } else {
+                        res.render('account/pages/activation/sharing', {
+                            user: userInfo
+                        });
+                    }
+                }
+            });
         }
     }
 };

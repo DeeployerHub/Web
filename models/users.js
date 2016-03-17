@@ -76,5 +76,33 @@ module.exports = {
                 result();
             }
         );
+    },
+    updateProfileById: function(userId, profile, result) {
+        var mongoose = require('mongoose');
+
+        var usersSchema = getModelSchema('users');
+
+        usersSchema.findByIdAndUpdate(
+            mongoose.Types.ObjectId(userId),
+            { 
+                $set: {
+                    profile: [{
+                        gender: profile.gender,
+                        firstname: profile.firstname.toLowerCase(),
+                        lastname: profile.lastname.toLowerCase(),
+                        country: profile.country,
+                        phone: profile.phone,
+                        geoLocation: profile.geoLocation
+                    }]
+                }
+            },
+            function (err, resObj) {
+                if (err) {
+                    return console.error(err);
+                }
+
+                result();
+            }
+        );
     }
 };

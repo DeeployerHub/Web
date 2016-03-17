@@ -5,6 +5,11 @@
 
 <!-- <link rel="stylesheet" href="/assets/css/app/account/activation/profile.css"> -->
 <script src='/assets/js/app/account/activation/profile.js'></script>
+<script>
+    window.angularControllerValues = {
+        countries: [[countries|raw|json_encode]]
+    };
+</script>
 {% endblock %}
 
 
@@ -19,7 +24,7 @@
     <div class="container">
         <div class="row row-bottom-padded-lg public-section">
             <div class="col-md-12 section-heading text-center">
-                <h2 class="to-animate">Profile</h2>
+                <h2>Profile</h2>
                 <div class="row">
                     <form name="profileForm" ng-submit="submitForm(profileForm)" role="form" novalidate>
                         <div class="col-md-12">
@@ -33,61 +38,64 @@
                             <div class="col-md-6 col-md-offset-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Firstname" 
-                                            ng-name="firstname">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Lastname" 
-                                            ng-name="lastname">
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <select
                                             class="form-control" 
-                                            ng-name="gender"
+                                            ng-model="profile.gender"
                                         >
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="other">Other</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                 </div>
+                                <div class="clearfix"></div>
                                 <div class="col-md-6">
-                                    <span>{{ geoLocationSpan }}</span>
+                                    <div class="form-group">
+                                        <input
+                                            type="text"
+                                            required="required"
+                                            class="form-control"
+                                            placeholder="Firstname"
+                                            ng-model="profile.firstname">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input
+                                            type="text"
+                                            required="required"
+                                            class="form-control"
+                                            placeholder="Lastname"
+                                            ng-model="profile.lastname">
+                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <select
                                             class="form-control" 
-                                            ng-name="country"
+                                            ng-model="profile.country"
                                         >
                                             <option value="United State" country-code="+1">United State (+1)</option>
-                                            <option value="Thailand" country-code="+66">Thailand (+66)</option>
-                                            <option value="Hungary" country-code="+36">Hungary (+36)</option>
+                                            <option value="Thailand">Thailand (+66)</option>
+                                            <option value="Hungary">Hungary (+36)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input 
-                                            type="text" 
-                                            class="form-control" 
-                                            placeholder="Phone Number" 
-                                            ng-name="phone">
+                                            type="number"
+                                            required="required"
+                                            class="form-control"
+                                            ng-minlength="9"
+                                            ng-maxlength="12"
+                                            placeholder="Phone Number"
+                                            ng-model="profile.phone">
                                     </div>
                                 </div>
-
+                                <div class="clearfix"></div>
+                                <p class="text-danger">{{ collectPointError }}</p>
                                 <div class="clearfix"></div>
 
                                 <a

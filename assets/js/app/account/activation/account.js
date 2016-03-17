@@ -62,9 +62,6 @@
                         return;
                     }
 
-                    var fd = new FormData();
-                    fd.append("username", $scope.username);
-
                     $http({
                         method: 'POST',
                         url: '/account/activation/account/collect-point',
@@ -76,11 +73,10 @@
                         })
                     })
                     .then(function(result){
-                        console.log(result.data) ;
                         if (result.data.status) {
                             window.location.href = '/account/activation/profile';
                         } else {
-                            switch (result.data.reoson) {
+                            switch (result.data.reason) {
                                 case 'username-already-exists':
                                     $scope.collectPointError = 'Username already exists.';
                                     break;
