@@ -2,16 +2,8 @@
 
 {% block head %}
 {% parent %}
-
-<!-- <link rel="stylesheet" href="/assets/css/app/account/activation/profile.css"> -->
 <script src='/assets/js/app/account/activation/profile.js'></script>
-<script>
-    window.angularControllerValues = {
-        countries: [[countries|raw|json_encode]]
-    };
-</script>
 {% endblock %}
-
 
 {% block angularSection %}
     ng-app="deeployer"
