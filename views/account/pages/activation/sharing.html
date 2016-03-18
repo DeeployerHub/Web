@@ -2,6 +2,7 @@
 
 {% block head %}
 {% parent %}
+<link rel="stylesheet" href="/assets/bower/bootstrap-social/bootstrap-social.css">
 <script src='/assets/js/app/account/activation/sharing.js'></script>
 {% endblock %}
 
@@ -11,19 +12,45 @@
 
 {% block content %}
 {% include '../../../partials/header-fix-sign-in.html' %}
-
 <div id="fh5co-page" ng-controller="SharingController">
     <div class="container">
         <div class="row row-bottom-padded-lg public-section">
             <div class="col-md-12 section-heading text-center">
                 <h2>Sharing</h2>
+                <br>
                 <div class="row">
-                    <div class="col-md-12">
-                        <h3>
-                        </h3>
-                        <br>
-                    </div>
-                    <div class="clearfix"></div>
+                    <form name="sharingForm" ng-submit="submitForm(sharingForm)" role="form" novalidate>
+                        <div class="col-md-12">
+                            <p class="text-success">
+                                Congratulation <strong>[[ user.username | title ]]</strong>, you just earned <strong>+50</strong> points by completing your profile.<br>
+                                Your current points : <strong>+100</strong> points
+                            </p>
+                            <p>
+                                This is the final step and easy one.<br>
+                                you need to share our website on one of the social networks below in order to activate your account.
+                            </p>
+                            <br>
+
+                            <div class="col-md-4 col-md-offset-4">
+                                <button class="btn btn-block btn-social btn-facebook">
+                                    <span class="fa fa-facebook"></span>
+                                    Share on Facebook
+                                </button>
+                                <button class="btn btn-block btn-social btn-twitter">
+                                    <span class="fa fa-twitter"></span>
+                                    Share on Twitter
+                                </button>
+                                <!-- <button class="btn btn-block btn-social btn-google">
+                                    <span class="fa fa-google"></span>
+                                    Share on Google plus
+                                </button>
+                                <button class="btn btn-block btn-social btn-linkedin">
+                                    <span class="fa fa-linkedin"></span>
+                                    Share on Linkedin
+                                </button> -->
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
