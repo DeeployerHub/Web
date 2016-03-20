@@ -5,19 +5,22 @@
     .controller("SharingController", [
         '$scope', '$http', 
         function ($scope, $http) {
+            // facebook
             $scope.facebookSharing = function () {
-                FB.ui({
-                    method: 'share',
-                    href: 'http://deeployer.com'
-                }, function(response) {
-                    if (typeof response === 'object') {
-                        $scope.userShared('facebook');
-                    }
-                });
+                if (window.FB) {
+                    FB.ui({
+                        method: 'share',
+                        href: 'http://deeployer.com'
+                    });
+                }
             };
 
-            $scope.userShared = function (bridge) {
-                // TODO: send request to server to activate the user
+            // twitter
+            twttr.ready(function (twttr) {
+                twttr.events.bind('tweet', function ( event ) {});
+            });
+            $scope.agreeWithConditions = function () {
+                
             };
         }
     ]);

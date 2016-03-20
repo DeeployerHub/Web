@@ -6,6 +6,7 @@
 <script src='/assets/js/app/account/activation/sharing.js'></script>
 
 {% include '../../../partials/facebook-sdk.html' %}
+{% include '../../../partials/twitter-sdk.html' %}
 {% endblock %}
 
 {% block angularSection %}
@@ -23,35 +24,45 @@
                 <div class="row">
                     <form name="sharingForm" role="form" novalidate>
                         <div class="col-md-12">
-                            <p class="text-success">
-                                Congratulation <strong>[[ user.username | title ]]</strong>, you just earned <strong>+50</strong> points by completing your profile.<br>
-                                Your current points : <strong>+100</strong> points
-                            </p>
-                            <p>
-                                in order to activate your account. you need to agree upon the platform's l
-                                you need to share our website on one of the social networks below in order to activate your account.
-                            </p>
+
+                            <div class="col-md-6 col-md-offset-3 text-justify">
+                                <p class="text-success">
+                                    Congratulation <strong>[[ user.username | title ]]</strong>, you just earned <strong>+50</strong> points by completing your profile.<br>
+                                    Your current points : <strong>+100</strong> points
+                                </p>
+                                <p>
+                                    Our comunity is growing and getting bigger and bigger. but you can also help us to grow faster by sharing us on the social networks.
+                                </p>
+                            </div>
                             <br>
 
                             <div class="col-md-4 col-md-offset-4">
-                                <button ng-click="facebookSharing()" class="btn btn-block btn-social btn-facebook">
+                                <button
+                                    ng-click="facebookSharing()"
+                                    class="btn btn-block btn-social btn-facebook">
                                     <span class="fa fa-facebook"></span>
                                     Share on Facebook
                                 </button>
-                                <!-- 
-                                <button ng-click="twitterSharing()" class="btn btn-block btn-social btn-twitter">
+                                <a
+                                    href="https://twitter.com/intent/tweet?url=http://www.deeployer.com&text=I'm%20a%20%23deeployer%2C%20join%20and%20execute%20your%20ideas%20with%20me%2C%20today%20is%20already%20late%2C"
+
+                                    class="btn btn-block btn-social btn-twitter">
                                     <span class="fa fa-twitter"></span>
                                     Share on Twitter
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
+                            <br>
+                            <br>
+
+                            <div class="col-md-6 col-md-offset-3">
+                                <a href="/terms-and-conditions">Read the Terms and conditions</a>
+                                <button
+                                    ng-click="agreeWithConditions()"
+                                    class="btn btn-block btn-success">
+                                    I'm Agree with Terms and conditions<br>
+                                    Activate my account now.
                                 </button>
-                                <button ng-click="googleSharing()" class="btn btn-block btn-social btn-google">
-                                    <span class="fa fa-google"></span>
-                                    Share on Google plus
-                                </button>
-                                <button ng-click="linkedinSharing()" class="btn btn-block btn-social btn-linkedin">
-                                    <span class="fa fa-linkedin"></span>
-                                    Share on Linkedin
-                                </button> 
-                                -->
                             </div>
                         </div>
                     </form>
