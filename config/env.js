@@ -15,6 +15,9 @@ module.exports = function (app, express) {
     var logger = require('morgan');
     var fs = require('fs');
 
+    logger.token('pid', function getPid(req) {
+      return process.pid;
+    });
     var fileStreamRotator = require('file-stream-rotator');
     var logDirectory = __dirname + '/../logs';
 
@@ -26,8 +29,12 @@ module.exports = function (app, express) {
       verbose: false
     });
 
-    app.use(logger('combined', {
-        stream: accessLogStream
+    app.use(logger(
+        '[:pid] [:date[clf]] :method :url :status (:response-time ms)  ":referrer" ":user-agent"', {
+        stream: accessLogStream,
+        skip: function (req, res) {
+            return res.statusCode <= 400;
+        }
     }));
 
     app.use(session({
