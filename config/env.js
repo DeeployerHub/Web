@@ -20,7 +20,7 @@ module.exports = function (app, express) {
 
     fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
     var accessLogStream = fileStreamRotator.getStream({
-      date_format: 'YYYYMMDD',
+      date_format: 'YYYY-MM-DD',
       filename: logDirectory + '/access-%DATE%.log',
       frequency: 'daily',
       verbose: false
