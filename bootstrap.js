@@ -15,10 +15,12 @@ var path = require('path');
 var eventDir = fs.readdirSync('./models/schemas');
 
 eventDir.forEach(function (eventFile) {
+    'use strict';
+
     if (path.extname(eventFile) === '.js') {
         require('./events/' + eventFile);
     }
-})
+});
 
 expressPort = getEnvConfig('app').expressPort;
 expressEnv = getEnvConfig('app').expressEnv;

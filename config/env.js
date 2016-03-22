@@ -21,7 +21,10 @@ module.exports = function (app, express) {
     var fileStreamRotator = require('file-stream-rotator');
     var logDirectory = __dirname + '/../logs';
 
-    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+    if (!fs.existsSync(logDirectory)) {
+        fs.mkdirSync(logDirectory);
+    }
+    
     var accessLogStream = fileStreamRotator.getStream({
       date_format: 'YYYY-MM-DD',
       filename: logDirectory + '/access-%DATE%.log',

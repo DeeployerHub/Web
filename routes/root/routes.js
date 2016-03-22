@@ -1,4 +1,6 @@
 module.exports = function() {
+    'use strict';
+
     var router = express.Router();
     var controller = getController('root/main.js');
 

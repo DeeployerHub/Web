@@ -71,17 +71,21 @@ getModel = function (model) {
 };
 
 addEventListener = function (name, method) {
+    'use strict';
+
     if (globalObject.events[name] && typeof globalObject.events[name] === 'object') {
         globalObject.events[name].push = method;
     } else {
         globalObject.events[name] = [ method ];
     }
-}
+};
 
 dispatchEvent = function (name, arg) {
+    'use strict';
+
     if (globalObject.events[name]) {
         globalObject.events[name].forEach(function (event) {
             event(arg);
-        })
+        });
     }
-}
+};

@@ -13,16 +13,23 @@
     "noarg"         : true,     // true: Prohibit use of `arguments.caller` and `arguments.callee`
     "noempty"       : true,     // true: Prohibit use of empty blocks
     "nonbsp"        : true,     // true: Prohibit "non-breaking whitespace" characters.
-    "undef"         : true,     // true: Require all non-global variables to be declared (prevents global leaks)
-    "unused"        : true,     // Unused variables:
+    "undef"         : false,     // true: Require all non-global variables to be declared (prevents global leaks)
+    "unused"        : "var",     // Unused variables:
                                 //   true     : all variables, last function parameter
                                 //   "vars"   : all variables only
                                 //   "strict" : all variables, all function parameters
-    "strict"        : false,     // true: Requires all functions run in ES5 Strict Mode
+    "strict"        : true,     // true: Requires all functions run in ES5 Strict Mode
     "node"          : true,    // Node.js
 
+    "predef": [ 
+        "getMiddleware",
+        "getController"
+    ],
     // Custom Globals
     "globals"       : {
-        "express": "express"
+        "express": true,
+        "passport": true,
+        "getMiddleware": true,
+        "getController": true
     }
 }

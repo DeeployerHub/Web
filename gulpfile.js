@@ -1,8 +1,8 @@
-const del = require('del');
-const gulp = require('gulp');
-const sass = require('gulp-sass');
-const sourcemaps = require('gulp-sourcemaps');
-const dir = {
+var del = require('del');
+var gulp = require('gulp');
+var sass = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var dir = {
     assets: {
         source: './assets',
         dest: './public/assets',
@@ -11,7 +11,7 @@ const dir = {
     }
 };
 
-const assets = {
+var assets = {
     public: [
         'sass',
         'css',

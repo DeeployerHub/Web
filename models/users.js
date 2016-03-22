@@ -1,5 +1,7 @@
 module.exports = {
     findUserWithUsername: function(username, result) {
+        'use strict';
+
         var usersSchema = getModelSchema('users');
 
         usersSchema.find({ username: username }, function(err, res){
@@ -11,6 +13,8 @@ module.exports = {
         });
     },
     findUserWithEmail: function(userEmail, result) {
+        'use strict';
+
         var usersSchema = getModelSchema('users');
 
         usersSchema.find({ email: userEmail }, function(err, res){
@@ -22,6 +26,8 @@ module.exports = {
         });
     },
     registerNewUser: function(email, result) {
+        'use strict';
+
         var usersSchema = getModelSchema('users');
         var newUser = new usersSchema({ 
             email: email
@@ -36,6 +42,8 @@ module.exports = {
         });
     },
     updateUserAvatarById: function(userId, avatarPath, result) {
+        'use strict';
+
         var mongoose = require('mongoose');
 
         var usersSchema = getModelSchema('users');
@@ -57,6 +65,8 @@ module.exports = {
         );
     },
     updateUsernameById: function(userId, username, result) {
+        'use strict';
+
         var mongoose = require('mongoose');
 
         var usersSchema = getModelSchema('users');
@@ -78,6 +88,8 @@ module.exports = {
         );
     },
     updateProfileById: function(userId, profile, result) {
+        'use strict';
+
         var mongoose = require('mongoose');
 
         var usersSchema = getModelSchema('users');

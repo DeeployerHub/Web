@@ -5,9 +5,9 @@
   "main": "boot.js",
   "scripts": {
     "setup": "bower install --allow-root && npm install && gulp && npm test",
-    "dev-run-supervisor": "supervisor -i public,upload,assets,node_modules,bower_components boot.js",
-    "dev-run": "node boot.js",
-    "test": "echo 'no test yet' && exit"
+    "dev-run-supervisor": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
+    "dev-run": "npm test && node boot.js",
+    "test": "jshint ."
   },
   "repository": {
     "type": "git",

@@ -8,5 +8,5 @@ require('./config/routes.js');
 app.listen(expressPort, function () {
     'use strict';
 
-    console.log(`{LISTEN] PID: "${process.pid}" PORT: "${expressPort}"`);
+    console.log('{LISTEN] PID: "' + process.pid + '" PORT: "' + expressPort + '"');
 });

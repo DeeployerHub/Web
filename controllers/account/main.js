@@ -107,7 +107,7 @@ module.exports = {
                             });
 
                            res.json(returnData); 
-                        })
+                        });
                     } else {
                         res.json(returnData);
                     }
@@ -171,7 +171,7 @@ module.exports = {
                     res.json({
                         status: true
                     }); 
-                })
+                });
             } else {
                 res.json({
                     status: false
