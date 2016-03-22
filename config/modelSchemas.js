@@ -21,9 +21,6 @@ module.exports.bootstrap = function () {
 
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
-    db.once('open', function() {
-        console.log('mongo connection has been established');
-    });
 
     // convert the schema objects to model
     var schemas = {};

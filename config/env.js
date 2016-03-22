@@ -3,7 +3,6 @@ module.exports = function (app, express) {
 
     var path = require('path');
     var favicon = require('serve-favicon');
-    var logger = require('morgan');
     var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
     var util = require('util');
@@ -13,6 +12,23 @@ module.exports = function (app, express) {
     var session = require('express-session');
     var redisStore = require('connect-redis')(session);
     var client = redis.createClient();
+    var logger = require('morgan');
+    var fs = require('fs');
+
+    var fileStreamRotator = require('file-stream-rotator');
+    var logDirectory = __dirname + '/../logs';
+
+    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+    var accessLogStream = fileStreamRotator.getStream({
+      date_format: 'YYYYMMDD',
+      filename: logDirectory + '/access-%DATE%.log',
+      frequency: 'daily',
+      verbose: false
+    });
+
+    app.use(logger('combined', {
+        stream: accessLogStream
+    }));
 
     app.use(session({
         secret: 'redis-secret',
@@ -41,7 +57,6 @@ module.exports = function (app, express) {
 
 
     app.use(favicon(path.join(__dirname, '../public/assets/images/favicon.ico')));
-    app.use(logger('dev'));
     app.use(bodyParser.json());
 
     app.use(bodyParser.urlencoded({

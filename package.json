@@ -2,11 +2,11 @@
   "name": "deeployer-web",
   "version": "1.0.0",
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
-  "main": "index.js",
+  "main": "boot.js",
   "scripts": {
     "setup": "bower install --allow-root && npm install && gulp && npm test",
-    "dev-run-supervisor": "supervisor -i public,upload,assets,node_modules,bower_components index.js",
-    "dev-run": "node index.js",
+    "dev-run-supervisor": "supervisor -i public,upload,assets,node_modules,bower_components boot.js",
+    "dev-run": "node boot.js",
     "test": "echo 'no test yet' && exit"
   },
   "repository": {
