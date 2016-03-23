@@ -6,6 +6,7 @@
         '$scope', '$http', 
         function ($scope, $http) {
             // facebook
+            $scope.message = '';
             $scope.facebookSharing = function () {
                 if (window.FB) {
                     FB.ui({
@@ -21,18 +22,15 @@
             });
 
             $scope.agreeWithConditions = function () {
-                $http.post('/account/activation/sharing/agree', fd, {
+                $http.post('/account/activation/sharing/agree', null, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 })
                 .success(function(result){
-                    $scope.avatar = result.data.file;
-                    window.angularControllerValues.avatar = $scope.avatar;
+                    window.location.href = '/';
                 })
                 .error(function(result){
-                    $scope.avatar = $scope.avatarDefault;
-                    $scope.picValidationText = 'Process Failed! Please Try again.';
-                    $scope.waiting = false;
+                    $scope.message = 'Process Failed! Please Try again.';
                 });
             };
         }

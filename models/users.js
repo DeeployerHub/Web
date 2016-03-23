@@ -116,5 +116,28 @@ module.exports = {
                 result();
             }
         );
+    },
+    updateActivationById: function(userId, value, result) {
+        'use strict';
+
+        var mongoose = require('mongoose');
+
+        var usersSchema = getModelSchema('users');
+
+        usersSchema.findByIdAndUpdate(
+            mongoose.Types.ObjectId(userId),
+            { 
+                $set: {
+                    activated: value
+                }
+            },
+            function (err, resObj) {
+                if (err) {
+                    return console.error(err);
+                }
+
+                result();
+            }
+        );
     }
 };

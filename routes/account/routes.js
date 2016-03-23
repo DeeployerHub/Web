@@ -66,6 +66,11 @@ module.exports = function() {
         getMiddleware('account.isUserActivated'),
         controller.activationSteps.sharing
     );
+    router.post(
+        '/activation/sharing/agree',
+        getMiddleware('account.isUserActivated'),
+        controller.activationSteps.agree
+    );
     router.get(
         '/activation',
         getMiddleware('account.isUserActivated'),

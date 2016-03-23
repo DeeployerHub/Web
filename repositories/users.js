@@ -75,5 +75,14 @@ module.exports = {
         return model.updateProfileById(userId, profile, function (result) {
             return callback(result);
         });
+    },
+    updateActivation: function (userId, value, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        return model.updateActivationById(userId, value, function (result) {
+            return callback(result);
+        });
     }
 };

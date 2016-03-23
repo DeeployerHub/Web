@@ -197,6 +197,32 @@ module.exports = {
                     }
                 }
             });
+        },
+        agree: function (req, res) {
+            'use strict';
+
+            var userRepos = getRepos('users');
+
+            userRepos.getUserInfo(req.user.email, function (userInfo) {
+                if (!(userInfo.avatar && userInfo.username)) {
+                    res.json({
+                        status: false
+                    });
+                } else {
+                    // check if user already inserted the profile
+                    if (!(userInfo.profile && userInfo.profile.length > 0)) {
+                        res.json({
+                            status: false
+                        });
+                    } else {
+                        userRepos.updateActivation(req.user._id, true, function () {
+                            res.json({
+                                status: true
+                            }); 
+                        });
+                    }
+                }
+            });
         }
     }
 };
