@@ -19,8 +19,21 @@
             twttr.ready(function (twttr) {
                 twttr.events.bind('tweet', function ( event ) {});
             });
+
             $scope.agreeWithConditions = function () {
-                
+                $http.post('/account/activation/sharing/agree', fd, {
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                })
+                .success(function(result){
+                    $scope.avatar = result.data.file;
+                    window.angularControllerValues.avatar = $scope.avatar;
+                })
+                .error(function(result){
+                    $scope.avatar = $scope.avatarDefault;
+                    $scope.picValidationText = 'Process Failed! Please Try again.';
+                    $scope.waiting = false;
+                });
             };
         }
     ]);

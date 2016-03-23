@@ -41,6 +41,12 @@ module.exports = function (app, express) {
     }));
 
     app.use(session({
+        cookie: {
+              path: '/',
+              httpOnly: true,
+              maxAge: getEnvConfig('redis').ttl
+        },
+        key: 'dskey',
         secret: 'redis-secret',
         // create new redis store.
         store: new redisStore({

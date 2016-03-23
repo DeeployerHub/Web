@@ -3,8 +3,7 @@
 ## preparation
 * you need to install the essential dependencies
 ```
-sudo npm install gulp -g
-sudo npm install bower -g
+sudo make -f Makefile
 ```
 
 * and then setup the environment
@@ -15,9 +14,11 @@ sudo npm run-script setup
 
 * quick run
 ```
+# normal run
 sudo npm run-script dev-run
+# supervisor run - incase you want to reset the app on each change
+sudo npm run-script dev-run-supervisor
 ```
-* never use ```node index```, this may cause some problem on running uploading to AWS S3
 
 ## gulp modules
 * compile the assets from ./assets directory to public directory
