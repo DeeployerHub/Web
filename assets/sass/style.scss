@@ -289,6 +289,62 @@ h1, h2, h3, h4, h5, h6 {
                 }
             }
         }
+        .header-search-box {
+            padding-top:10px;
+            input[type="text"] {
+                width: 250px;
+                border-radius: 20px !important;
+            }
+        }
+
+        .dropdown-username {
+            color: #000;
+            font-size: 15px;
+        }
+        .text-muted {
+            color: #999 !important;
+            font-size: 11px !important;
+            font-weight: bold !important;
+        }
+        .dropdown-notification {
+            ul {
+                li {
+                    font-size: 13px;
+                    clear: both;
+                    padding: 0 10px 0;
+                    width: 275px;
+                    border-bottom: 1px #dfdfdf solid;
+                    &:nth-last-child(1) {
+                        border-bottom: initial !important;
+                    }
+                    &:hover, &:focus, &:active {
+                        background-color: #fbfbfb;
+                    }
+                    a {
+                        display: initial;
+                        padding: initial;
+                        clear: initial;
+                        font-weight: initial;
+                        line-height: initial;
+                        color: initial;
+                        white-space: initial;
+                    }
+                    img {
+                        float: left;
+                        margin-top: 5px;
+                    }
+                    .notify-desc {
+                        text-align: left;
+                        vertical-align: top;
+                        float: left;
+                        width: 223px;
+                        display: inline-block;
+                        min-height: 10px;
+                        padding-left: 6px;
+                    }
+                }
+            }
+        }
     }
     .navbar-brand {
         float: left;
@@ -410,10 +466,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-.btn {
-    @include transition(.3s);
-}
-
 #fh5co-our-services,
 #fh5co-page,
 #fh5co-about-us,
@@ -454,7 +506,6 @@ h1, h2, h3, h4, h5, h6 {
         text-decoration: none;
     }
 }
-
 .btn {
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -479,7 +530,66 @@ h1, h2, h3, h4, h5, h6 {
             border-color: transparent;
         }
     }
+    &.btn-profile {
+        background: #000 !important;
+        color: #fff !important;
+        border: 2px solid #000 !important;
+        padding: 2px 2px !important;
+        margin-top: 5px;
+        text-transform: none !important;
+        letter-spacing: 0px !important;
+        font-size: 15px;
+        &:hover, &:focus, &:active {
+            background: #fff !important;
+            color: #000 !important;
+        }
+    }
+    &.btn-idea {
+        background: #fff !important;
+        color: #000 !important;
+        border: 2px solid #000 !important;
+        padding: 7px 7px 9px !important;
+        margin-top: 5px;
+        text-transform: capitalize !important;
+        letter-spacing: 0px !important;
+        font-size: 15px;
+        font-weight: bold;
+
+        i {
+            font-size: 20px;
+            vertical-align: bottom;
+        }
+
+        &:hover, &:focus, &:active {
+            background: #000 !important;
+            color: #fff !important;
+        }
+    }
+    &.btn-notification {
+        background: #fff !important;
+        color: #000 !important;
+        border: 2px solid #fff !important;
+        padding: 7px 7px 2px !important;
+        margin-top: 5px;
+        text-transform: capitalize !important;
+        letter-spacing: 0px !important;
+        font-size: 20px;
+        &:hover, &:focus, &:active {
+            background: #000 !important;
+            color: #fff !important;
+            border: 2px solid #000 !important;
+        }
+        .label {
+            position: absolute;
+            font-size: 11px;
+            top: 8px;
+            right: 2px;
+            border-radius: 8px;
+        }
+    }
+
 }
+
 
 // Social
 .social {
