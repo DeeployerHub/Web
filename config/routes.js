@@ -1,3 +1,12 @@
+app.use(function(req, res, next) {
+    'use strict';
+
+    app.locals.request = req;
+    app.locals.env = expressEnv;
+
+    next();
+});
+
 app.use('/', require('../routes/root/routes.js')());
 app.use('/profile', require('../routes/profile/routes.js')());
 app.use('/account', require('../routes/account/routes.js')());
@@ -22,7 +31,6 @@ if (app.get('env') === 'development') {
 
         res.status(err.status || 500);
         res.render('error', {
-            env: expressEnv,
             message: err.message,
             error: err
         });
@@ -36,7 +44,6 @@ app.use(function(err, req, res, next) {
 
     res.status(err.status || 500);
     res.render('error', {
-        env: expressEnv,
         message: err.message,
         error: {}
     });

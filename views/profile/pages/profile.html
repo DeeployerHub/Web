@@ -1,0 +1,87 @@
+{% set noFooter = true %}
+{% extends '../../layouts/layout.html' %}
+
+{% block head %}
+{% parent %}
+<link rel="stylesheet" href="/assets/css/app/profile/profile.css">
+
+{% endblock %}
+
+{% block content %}
+{% include '../../partials/header-fix-sign-in-menu.html' %}
+    <div class="timeline-cover">
+        <img src="images/slider/who-we-are.jpg" class="img-responsive">
+    </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div>
+            <div class="navbar-header">
+                <div>
+                    <a class="navbar-brand" href="#">Follower</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="row row-timeline">
+        <div class="col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> 2.13.2014</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Last seen</strong></span> Yesterday</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Real name</strong></span> Mahan
+                Pooya</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Role: </strong></span>CEO,CTO,COO,CFO
+                </li>
+            </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">active project
+
+                </div>
+                <div class="panel-body"><i style="color:green" class="fa fa-check-square">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Deeployer</i>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i>
+                </div>
+                <div class="panel-body"><a href="http://mahanhazrati.com" class="">Mahan Hazrati</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group" style="padding:14px;">
+                        <textarea class="form-control" placeholder="first step of executing..."></textarea>
+                    </div>
+                    <button class="btn btn-success pull-right" type="button">Post</button>
+                    <ul class="list-inline">
+                        <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
+                        <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
+                        <li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <!-- right side -->
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i>
+
+                </div>
+                <div class="panel-body"><a href="http://mahanhazrati.com" class="">Mahan Hazrati</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- <div id="fh5co-page">
+    <div class="container">
+        <div class="row row-bottom-padded-lg public-section">
+            <div class="col-md-12">
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock %}
