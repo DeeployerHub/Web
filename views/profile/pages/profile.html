@@ -9,25 +9,46 @@
 
 {% block content %}
 {% include '../../partials/header-fix-sign-in-menu.html' %}
+    {% set userProfile = user.profile|last %}
     <div class="timeline-cover">
-        <img src="images/slider/who-we-are.jpg" class="img-responsive">
+        <img src="[[ user.coverPicture || '' ]]" class="img-responsive">
     </div>
     <nav class="navbar navbar-default" role="navigation">
-        <div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
             <div class="navbar-header">
-                <div>
+                <!-- <div>
                     <a class="navbar-brand" href="#">Follower</a>
-                </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="navbar-header">
+                <!-- <div>
+                    <a class="navbar-brand" href="#">Follower</a>
+                </div> -->
             </div>
         </div>
     </nav>
     <div class="row row-timeline">
         <div class="col-md-3">
+            <div class="text-center">
+                <img
+                    src="[[ user.avatar ]]"
+                    class="img-thumbnail profile-avatar"
+                    alt="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]"
+                    title="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]">
+            </div>
+
             <ul class="list-group">
                 <li class="list-group-item">
-                    <h4>Profile</h4>
+                    <h3>[[ userProfile.firstname | title + ' ' + userProfile.lastname | title ]]</h3>
                     <p>
-                        lorem ipsom
+                        <i class="glyphicon glyphicon-user"></i>&nbsp;@[[ user.username | title]]<br>
+                        <i class="glyphicon glyphicon-earphone"></i>&nbsp;0[[ userProfile.phone ]]<br>
+                        <i class="glyphicon glyphicon-globe"></i>&nbsp;Lives in [[ userProfile.country | title ]]
                     </p>
                 </li>
             </ul>

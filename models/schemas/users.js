@@ -12,6 +12,10 @@ module.exports = {
             type: String,
             trim: true
         },
+        coverPicture: {
+            type: String,
+            trim: true
+        },
         email: {
             type: String,
             trim: true,
