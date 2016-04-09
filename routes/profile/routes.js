@@ -11,6 +11,11 @@ module.exports = function() {
         getMiddleware('account.signInCheck'),
         controller.profileAvatarUpload
     );
+    router.post(
+        '/cover-upload',
+        getMiddleware('account.signInCheck'),
+        controller.profileCoverUpload
+    );
 
     return router;
 };

@@ -4,6 +4,13 @@
 {% block head %}
 {% parent %}
 
+<script>
+    angular.module("deeployer", []);
+</script>
+{% endblock %}
+
+{% block angularSection %}
+    ng-app="deeployer"
 {% endblock %}
 
 {% block content %}

@@ -64,6 +64,29 @@ module.exports = {
             }
         );
     },
+    updateUserCoverById: function(userId, coverPath, result) {
+        'use strict';
+
+        var mongoose = require('mongoose');
+
+        var usersSchema = getModelSchema('users');
+
+        usersSchema.findByIdAndUpdate(
+            mongoose.Types.ObjectId(userId),
+            { 
+                $set: {
+                    coverPicture: coverPath
+                }
+            },
+            function (err, resObj) {
+                if (err) {
+                    return console.error(err);
+                }
+
+                result();
+            }
+        );
+    },
     updateUsernameById: function(userId, username, result) {
         'use strict';
 

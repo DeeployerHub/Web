@@ -2,42 +2,42 @@
     'use strict';
 
     angular.module("deeployer")
-    .controller("ProfileAvatarController", [
+    .controller("ProfileCoverController", [
         '$scope', '$http', 
         function ($scope, $http) {
             $scope.waiting = false;
-            $scope.avatar = window.angularControllerValues.avatar;
+            $scope.cover = window.angularControllerValues.cover || '';
 
             $scope.stopWaiting = function (message) {
                 $scope.picValidationText = message;
-                $scope.editIconStatus = false;
+                $scope.editCoverIconStatus = false;
                 $scope.waiting = false;
             };
 
-            $scope.avatarClick = function () {
+            $scope.coverClick = function () {
                 $scope.picValidationText = '';
                 var file     = document.createElement('input');
                 file.type    = 'file';
                 file.accept  = 'image/*';
-                $(file).change($scope.avatarUploadChange);
+                $(file).change($scope.coverUploadChange);
 
                 file.click();
             };
 
-            $scope.avatarUploadChange = function () {
+            $scope.coverUploadChange = function () {
                 var file = this.files.length > 0 ? this.files[0] : null;
                 $scope.waiting = true;
 
                 if (file) {
                     var fd = new FormData();
                     fd.append("file", file);
-                    $http.post('/profile/avatar-upload', fd, {
+                    $http.post('/profile/cover-upload', fd, {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     })
                     .success(function(result){
-                        $scope.avatar = result.data.file;
-                        window.angularControllerValues.avatar = $scope.avatar;
+                        $scope.cover = result.data.file;
+                        window.angularControllerValues.cover = $scope.cover;
                     })
                     .error(function(result){
                         $scope.picValidationText = 'Process Failed! Please Try again.';
@@ -51,10 +51,10 @@
 
         }
     ])
-    .directive('imageOnloadWaiting', function() {
+    .directive('coverImageOnloadWaiting', function() {
         return {
             restrict: 'EA',
-            controller: 'ProfileAvatarController',
+            controller: 'ProfileCoverController',
             link: function($scope, $element, $attrs) {
                 $element.bind('load', function() {
                     $scope.$apply(function() {
@@ -69,4 +69,5 @@
             }
         };
     });
+    
 })(window.angular);

@@ -58,6 +58,15 @@ module.exports = {
             return callback(result);
         });
     },
+    updateCover: function (userId, coverPath, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        return model.updateUserCoverById(userId, coverPath, function (result) {
+            return callback(result);
+        });
+    },
     updateUsername: function (userId, username, callback) {
         'use strict';
 
