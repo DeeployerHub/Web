@@ -4,7 +4,16 @@
 {% block head %}
 {% parent %}
 <link rel="stylesheet" href="/assets/css/app/profile/profile.css">
+<script src='/assets/js/app/profile/avatar.js'></script>
+<script>
+    window.angularControllerValues = {
+        avatar: '[[user.avatar]]'
+    };
+</script>
+{% endblock %}
 
+{% block angularSection %}
+    ng-app="deeployer"
 {% endblock %}
 
 {% block content %}
@@ -34,12 +43,26 @@
     </nav>
     <div class="row row-timeline">
         <div class="col-md-3">
-            <div class="text-center">
+            <div class="text-center avatar-wrapper" ng-controller="ProfileAvatarController">
                 <img
-                    src="[[ user.avatar ]]"
-                    class="img-thumbnail profile-avatar"
+                    ng-mouseover="editIconStatus = true" 
+                    ng-mouseleave="editIconStatus = false"
+                    ng-src="{{ avatar }}"
+                    ng-click="avatarClick()"
+                    class="img-thumbnail avatar profile-avatar"
                     alt="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]"
-                    title="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]">
+                    title="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]"
+                    width="200px"
+                    height="200px"
+                    image-onload-waiting>
+                <i
+                    ng-mouseover="editIconStatus = true" 
+                    ng-show="!waiting && editIconStatus"
+                    ng-click="avatarClick()"
+                    class="glyphicon glyphicon-edit"></i>
+                <div ng-show="waiting" class="cssload-container">
+                    <div class="cssload-whirlpool"></div>
+                </div>
             </div>
 
             <ul class="list-group">
@@ -87,22 +110,12 @@
         <div class="col-md-3">
             <ul class="list-group">
                 <li class="list-group-item">
-                    <h4>Trends</h4>
+                    <h4>Friends</h4>
                     <p>
-                        lorem ipsom
+                        invite your friends here to 
                     </p>
                 </li>
             </ul>
         </div>
     </div>
-
-
-<!-- <div id="fh5co-page">
-    <div class="container">
-        <div class="row row-bottom-padded-lg public-section">
-            <div class="col-md-12">
-            </div>
-        </div>
-    </div>
-</div> -->
 {% endblock %}

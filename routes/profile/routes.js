@@ -6,5 +6,11 @@ module.exports = function() {
 
     router.get('/', getMiddleware('account.signInCheck'), controller.profile);
 
+    router.post(
+        '/avatar-upload',
+        getMiddleware('account.signInCheck'),
+        controller.profileAvatarUpload
+    );
+
     return router;
 };

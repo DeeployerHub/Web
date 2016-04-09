@@ -24,5 +24,32 @@ $brand-body-color: #015;
 .profile-avatar {
     width:200px;
     height:200px;
-    margin-top: -200px;
+}
+
+.avatar-wrapper {
+    top: -210px;
+    margin:auto auto -200px auto;
+    width: 200px;
+    position:relative;
+    i, .cssload-container {
+        cursor: pointer;
+        background: white;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 50px;
+        position: absolute;
+        right: 32%;
+        top: 32%;
+        font-size: 2em;
+        opacity: 0.5;
+    }
+    .cssload-container {
+        top: 43%;
+        right: 42%;
+    }
+    .cssload-whirlpool {
+        position: relative;
+        top: 26px;
+        left: 26px;
+    }
 }
