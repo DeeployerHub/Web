@@ -24,7 +24,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <div class="dropdown dropdown-notification" ng-controller="HeaderSignInMenuNotificationsController">
+                        <div class="dropdown dropdown-notification">
                             <button
                                 class="btn btn-lg btn-notification"
                                 data-toggle="dropdown"
@@ -98,19 +98,29 @@
                         &nbsp;
                     </li>
                     <li>
-                        <div class="dropdown dropdown-notification">
+                        <div class="dropdown dropdown-notification" ng-controller="HeaderSignInMenuNotificationsController">
                             <button
+                                ng-click="getNotifications()"
                                 class="btn btn-lg btn-notification"
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false">
                                 <i class="glyphicon glyphicon-globe"></i>
-                                <span class="label label-danger">5</span>
+                                <span class="label label-danger" ng-show="unreadCount > 0">
+                                {{
+                                    unreadCount > 99
+                                    ? '+99'
+                                    : unreadCount
+                                }}
+                                </span>
                             </button>
                             <ul
                                 class="dropdown-menu"
                                 aria-labelledby="dLabel">
-                                <li>
+                                <li class="active text-center">
+                                    <span>No Notification</span>
+                                </li>
+                                <li ng-repeat="notify in list">
                                     <img
                                         class="img-rounded dropdown-avatar"
                                         width="32px"
@@ -123,48 +133,16 @@
                                     </div>
                                     <div class="clearfix"></div>
                                 </li>
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> Liked your Idea about <a href="#">making the would a better ...</a>
+                                <li
+                                    class="dropdown-header dropdown-wait"
+                                    ng-show="notificationsWaiting">
+                                    <div class="cssload-container">
+                                        <div class="cssload-whirlpool"></div>
                                     </div>
-                                    <div class="clearfix"></div>
                                 </li>
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> Liked your Idea about <a href="#">making the would a better ...</a>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> Liked your Idea about <a href="#">making the would a better ...</a>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <li class="text-center">
+                                <!-- <li class="text-center">
                                     <a href="#">See all notifications</a>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
                     </li>

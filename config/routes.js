@@ -11,6 +11,7 @@ app.use('/', require('../routes/root/routes.js')());
 app.use('/profile', require('../routes/profile/routes.js')());
 app.use('/account', require('../routes/account/routes.js')());
 app.use('/console', require('../routes/console/routes.js')());
+app.use('/notifications', require('../routes/notifications/routes.js')());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
