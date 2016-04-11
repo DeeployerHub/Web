@@ -1,2 +1,0 @@
-addEventListener('earnPoint', function (arg) {
-});

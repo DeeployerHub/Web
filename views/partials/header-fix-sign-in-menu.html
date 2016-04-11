@@ -23,7 +23,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
+                    <!-- <li>
                         <div class="dropdown dropdown-notification">
                             <button
                                 class="btn btn-lg btn-notification"
@@ -49,54 +49,12 @@
                                     </div>
                                     <div class="clearfix"></div>
                                 </li>
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> requested to follow you
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> requested to follow you
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> requested to follow you
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <li class="text-center">
-                                    <a href="#">See all follow requests</a>
-                                </li>
                             </ul>
                         </div>
                     </li>
                     <li>
                         &nbsp;
-                    </li>
+                    </li> -->
                     <li>
                         <div class="dropdown dropdown-notification" ng-controller="HeaderSignInMenuNotificationsController">
                             <button
@@ -117,10 +75,20 @@
                             <ul
                                 class="dropdown-menu"
                                 aria-labelledby="dLabel">
-                                <li class="active text-center">
+                                <li
+                                    ng-show="!notificationsWaiting && list.length === 0"
+                                    class="active text-center"
+                                    >
                                     <span>No Notification</span>
                                 </li>
-                                <li ng-repeat="notify in list">
+                                <li
+                                    ng-show="
+                                    list.length === 0
+                                        ? !notificationsWaiting
+                                        : true
+                                    "
+                                    ng-repeat="notify in list"
+                                    >
                                     <img
                                         class="img-rounded dropdown-avatar"
                                         width="32px"
@@ -134,15 +102,13 @@
                                     <div class="clearfix"></div>
                                 </li>
                                 <li
+                                    ng-show="notificationsWaiting"
                                     class="dropdown-header dropdown-wait"
-                                    ng-show="notificationsWaiting">
+                                    >
                                     <div class="cssload-container">
                                         <div class="cssload-whirlpool"></div>
                                     </div>
                                 </li>
-                                <!-- <li class="text-center">
-                                    <a href="#">See all notifications</a>
-                                </li> -->
                             </ul>
                         </div>
                     </li>

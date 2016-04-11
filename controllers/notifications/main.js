@@ -10,10 +10,9 @@ module.exports = {
             var items = [];
             setTimeout(function() {
                 res.status(200).json({
-                    items: [],
+                    items: items,
                     start: start,
-                    length: length,
-                    totalCount: items.length
+                    length: length
                 });
             }, 1000);
         });
