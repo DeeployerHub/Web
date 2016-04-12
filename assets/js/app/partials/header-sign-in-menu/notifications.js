@@ -5,41 +5,54 @@
     .controller("HeaderSignInMenuNotificationsController", [
         '$scope', '$http', 
         function ($scope, $http) {
+            $scope.lastNotifyDownloaded = false;
             $scope.initialized = false;
             $scope.notificationsWaiting = false;
             $scope.unreadCount = 0;
             $scope.list = [];
             $scope.start = 0;
 
-
             $scope.getNotifications = function() {
-                if (!$scope.isDropdownOpen()) {
+                if (!$scope.isDropdownOpen() && !$scope.lastNotifyDownloaded) {
                     $scope.notificationsWaiting = true;
                     if (!$scope.initialized) {
-                        $scope.request([], function (result) {
-                            if (result.statusText === 'OK') {
-                                $scope.renderNotifications(result.data.items);
-                                $scope.start = result.data.items.length;
-                                $scope.initialized = true;
-                            }
-
-                            $scope.notificationsWaiting = false;
-                        }, function () {
-                            $scope.notificationsWaiting = false;
-                        });
-                    } else {
-                        $scope.request([], function (result) {
-                            if (result.statusText === 'OK') {
-                                $scope.renderNotifications(result.data.items);
-                                $scope.start += result.data.items.length;
-                            }
-
-                            $scope.notificationsWaiting = false;
-                        }, function () {
-                            $scope.notificationsWaiting = false;
-                        });
+                        $scope.getNotifyNotInitialized();
                     }
                 }
+            };
+
+            $scope.getNotificationsScrollDown = function() {
+                if (!$scope.lastNotifyDownloaded) {
+                    $scope.notificationsWaiting = true;
+                    if ($scope.initialized) {
+                        $scope.getNotifyInitialized();
+                    }
+                }
+            };
+
+            $scope.getNotifyInitialized = function() {
+                $scope.request(function (result) {
+                    if (result.statusText === 'OK') {
+                        $scope.renderNotifications(result.data.items);
+                        $scope.start += result.data.items.length;
+                    }
+                    $scope.notificationsWaiting = false;
+                }, function () {
+                    $scope.notificationsWaiting = false;
+                });
+            };
+
+            $scope.getNotifyNotInitialized = function() {
+                $scope.request(function (result) {
+                    if (result.statusText === 'OK') {
+                        $scope.renderNotifications(result.data.items);
+                        $scope.start = result.data.items.length;
+                        $scope.initialized = true;
+                    }
+                    $scope.notificationsWaiting = false;
+                }, function () {
+                    $scope.notificationsWaiting = false;
+                });
             };
 
             $scope.renderNotifications = function (items) {
@@ -52,20 +65,47 @@
                 return $('.dropdown-notification').hasClass('open');
             };
 
-            $scope.request = function (data, ok, fail) {
+            $scope.request = function (ok, fail) {
                 $http({
                     method: 'GET',
-                    url: '/notifications/get-json',
+                    url: '/notifications/get-json?start=' + $scope.start.toString(),
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 })
                 .then(function(result){
+                    // don't allow to request being send anymore incase the last request being empty
+                    if(
+                        result.data.items.length === 0 && $scope.start !== 0
+                    ) {
+                        $scope.lastNotifyDownloaded = true;
+                    }
                     ok(result);
                 }, function(result){
                     fail();
                 });
             };
         }
-    ]);
+    ])
+    .directive("scroll", function ($window) {
+        return {
+            restrict: 'EA',
+            controller: 'HeaderSignInMenuNotificationsController',
+            link: function($scope, $element, $attrs) {
+                $element.bind('scroll', function() {
+                    $scope.$apply(function() {
+                        if (
+                            $element[0].offsetHeight + $element[0].scrollTop >=
+                            $element[0].scrollHeight - 10
+                        ) {
+                            // load the rest of notifications when scrollbar reached the end
+                            if(!$scope.notificationsWaiting) {
+                                $scope.getNotificationsScrollDown();
+                            }
+                        }
+                    });
+                });
+            }
+        };
+    });
 })(window.angular);

@@ -1,20 +1,42 @@
 module.exports = {
-    getJson: function(req, res) {
+    getJson: function (req, res) {
         'use strict';
 
-        var start = req.body.start || 0;
-        var length = req.body.length || 10;
         var userRepos = getRepos('users');
+        var notificationRepos = getRepos('notifications');
+        var start = req.query.start || 0;
+        var length = req.query.length || 10;
 
         userRepos.getUserInfo(req.user.email, function (userInfo) {
-            var items = [];
-            setTimeout(function() {
-                res.status(200).json({
-                    items: items,
-                    start: start,
-                    length: length
-                });
-            }, 1000);
+            notificationRepos.getNotifications(
+                req.user._id,
+                start,
+                length,
+                [
+                    'isRead',
+                    'type',
+                    'attributes',
+                    'registerAt'
+                ],
+                function (items) {
+                    setTimeout(function() {
+                        if (items) {
+                            res.status(200).json({
+                                items: items,
+                                start: start,
+                                length: length
+                            });
+                        } else {
+                            res.status(200).json({
+                                items: [],
+                                start: start,
+                                length: length
+                            });
+                        }
+                        
+                    }, 1000);
+                }
+            );
         });
     }
 };
