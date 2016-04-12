@@ -5,7 +5,7 @@ module.exports = {
         var userRepos = getRepos('users');
         var notificationRepos = getRepos('notifications');
         var start = req.query.start || 0;
-        var length = req.query.length || 10;
+        var length = req.query.length || 5;
 
         userRepos.getUserInfo(req.user.email, function (userInfo) {
             notificationRepos.getNotifications(
@@ -19,22 +19,19 @@ module.exports = {
                     'registerAt'
                 ],
                 function (items) {
-                    setTimeout(function() {
-                        if (items) {
-                            res.status(200).json({
-                                items: items,
-                                start: start,
-                                length: length
-                            });
-                        } else {
-                            res.status(200).json({
-                                items: [],
-                                start: start,
-                                length: length
-                            });
-                        }
-                        
-                    }, 1000);
+                    if (items) {
+                        res.status(200).json({
+                            items: items,
+                            start: start,
+                            length: length
+                        });
+                    } else {
+                        res.status(200).json({
+                            items: [],
+                            start: start,
+                            length: length
+                        });
+                    }
                 }
             );
         });
