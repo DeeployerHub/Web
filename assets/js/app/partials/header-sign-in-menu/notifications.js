@@ -15,7 +15,7 @@
             $scope.getNotifications = function() {
                 if (!$scope.isDropdownOpen() && !$scope.lastNotifyDownloaded) {
                     $scope.notificationsWaiting = true;
-                    if (!$scope.initialized) {
+                    if (!$scope.initialized || $scope.list.length === 0) {
                         $scope.getNotifyNotInitialized();
                     }
                 }

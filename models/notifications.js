@@ -18,8 +18,8 @@ module.exports = {
             .sort({
                 registerAt: -1
             })
-            .skip(start)
-            .limit(length)
+            .skip(parseInt(start))
+            .limit(parseInt(length))
             .exec(function (err, res) {
                 if (err) {
                     return console.error(err);
