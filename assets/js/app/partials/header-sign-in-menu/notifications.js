@@ -17,6 +17,12 @@
                     $scope.notificationsWaiting = true;
                     if (!$scope.initialized || $scope.list.length === 0) {
                         $scope.getNotifyNotInitialized();
+                    } else {
+                        if ($scope.list.length < 10) {
+                            $scope.getNotifyInitialized();
+                        } else {
+                            $scope.notificationsWaiting = false;
+                        }
                     }
                 }
             };
