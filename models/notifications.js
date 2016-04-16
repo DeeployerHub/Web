@@ -27,5 +27,25 @@ module.exports = {
 
                 result(res);
             });
+    },
+    newNotificationByOwnerId: function (ownerId, type, attributes, result) {
+        'use strict';
+
+        var mongoose = require('mongoose');
+        var notificationsSchema = getModelSchema('notifications');
+        var newNotification = new notificationsSchema({ 
+            ownerId: mongoose.Types.ObjectId(ownerId),
+            isRead: false,
+            type: type,
+            attributes: attributes
+        });
+
+        newNotification.save(function(err, res){
+            if (err) {
+                return console.error(err);
+            }
+
+            result(res[0]);
+        });
     }
 };

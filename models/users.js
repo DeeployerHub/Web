@@ -162,5 +162,51 @@ module.exports = {
                 result();
             }
         );
+    },
+    increasePoints: function(userId, increasePointsValue, attributes, result) {
+        'use strict';
+
+        var mongoose = require('mongoose');
+
+        var usersSchema = getModelSchema('users');
+
+        usersSchema.find({
+            _id: mongoose.Types.ObjectId(userId)
+        }, function(err, res){
+            if (err) {
+                return console.error(err);
+            }
+
+            var pointBeforeAction = res[0].points || 0;
+            var pointAfterAction = pointBeforeAction + increasePointsValue;
+
+            var pointsHistory = {
+                points: increasePointsValue,
+                pointBeforeAction: pointBeforeAction,
+                pointAfterAction: pointAfterAction,
+                type: attributes.type,
+                reason: attributes.reason,
+                description: attributes.description
+            };
+
+            usersSchema.findByIdAndUpdate(
+                mongoose.Types.ObjectId(userId),
+                { 
+                    $set: {
+                        points: pointAfterAction
+                    },
+                    $push: {
+                        pointsHistory: pointsHistory
+                    }
+                },
+                function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+
+                    result(pointAfterAction);
+                }
+            );
+        });
     }
 };

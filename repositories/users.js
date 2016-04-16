@@ -93,5 +93,14 @@ module.exports = {
         return model.updateActivationById(userId, value, function (result) {
             return callback(result);
         });
+    },
+    earnPoint: function (userId, value, attributes, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        return model.increasePoints(userId, value, attributes, function (result) {
+            return callback(result);
+        });
     }
 };

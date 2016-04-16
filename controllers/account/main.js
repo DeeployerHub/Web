@@ -82,6 +82,7 @@ module.exports = {
             'use strict';
 
             var userRepos = getRepos('users');
+            var notificationRepos = getRepos('notifications');
 
             var username = req.body.username;
             if (username) {
@@ -99,14 +100,20 @@ module.exports = {
                     if (returnData.status) {
                         userRepos.updateUsername(req.user._id, username, function () {
                             // increase the users's point for 50
-                            dispatchEvent('earnPoint', {
+                            userRepos.earnPoint(req.user._id, 50, {
                                 point: 50,
                                 type: 'activation',
                                 reason: 'account-section-completed',
                                 description: ''
+                            }, function (pointsAfterAction) {
+                                // send a notification
+                                notificationRepos.sendNotification(req.user._id, 'normal', {
+                                    text: 'Congrats, you earned +50 Points for setup your account.'
+                                }, function () {
+                                    returnData.pointsAfterAction = pointsAfterAction;
+                                    res.json(returnData);
+                                });
                             });
-
-                           res.json(returnData); 
                         });
                     } else {
                         res.json(returnData);
@@ -143,6 +150,7 @@ module.exports = {
             'use strict';
 
             var userRepos = getRepos('users');
+            var notificationRepos = getRepos('notifications');
 
             var profile = {
                 firstname: req.body.firstname,
@@ -161,16 +169,22 @@ module.exports = {
                 profile.gender
                 ) {
                 userRepos.updateProfile(req.user._id, profile, function () {
-                    dispatchEvent('earnPoint', {
+                    // increase the users's point for 50
+                    userRepos.earnPoint(req.user._id, 50, {
                         point: 50,
                         type: 'activation',
                         reason: 'profile-section-completed',
                         description: ''
+                    }, function () {
+                        // send a notification
+                        notificationRepos.sendNotification(req.user._id, 'normal', {
+                            text: 'Congrats, you earned +50 Points for Compelete your profile.'
+                        }, function () {
+                            res.json({
+                                status: true
+                            });
+                        });
                     });
-
-                    res.json({
-                        status: true
-                    }); 
                 });
             } else {
                 res.json({
@@ -218,7 +232,7 @@ module.exports = {
                         userRepos.updateActivation(req.user._id, true, function () {
                             res.json({
                                 status: true
-                            }); 
+                            });
                         });
                     }
                 }
