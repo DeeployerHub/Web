@@ -3,6 +3,18 @@ $brand-body-color: #015;
 
 .navbar {
     margin-bottom: 0px;
+    .row-timeline {
+        padding-top: 0;
+        .navbar-right {
+            margin-right: 0 !important;
+        }
+        .btn-follow {
+            margin-top: 8px;
+        }
+        .btn-primary {
+            height: 34px;
+        }
+    }
 }
 .row-timeline{
     padding: 20px;
