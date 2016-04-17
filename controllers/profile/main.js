@@ -1,12 +1,46 @@
 module.exports = {
-    profile: function(req, res) {
+    profile: function(req, res, page) {
         'use strict';
 
         var userRepos = getRepos('users');
 
         userRepos.getUserInfo(req.user.email, function (userInfo) {
             res.render('profile/pages/profile', {
-                user: userInfo
+                user: userInfo,
+                page: page
+            });
+        });
+    },
+    profileAboutUpdate: function(req, res) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+
+        // preparing input data
+        var profileData = req.body;
+        var row = profileData.row;
+        delete profileData.row;
+
+        var data = {};
+        if (row === 'name') {
+            data.firstname = profileData.firstname;
+            data.lastname = profileData.lastname;
+        }
+        if (row === 'phone') {
+            data.phone = profileData.phone;
+        }
+        if (row === 'country') {
+            data.country = profileData.country;
+        }
+        if (row === 'gender') {
+            data.gender = profileData.gender;
+        }
+
+        userRepos.getUserInfo(req.user.email, function (userInfo) {
+            userRepos.updateProfileEntities(req.user._id, userInfo.profile, data, function () {
+                res.json({
+                    status: true
+                });
             });
         });
     },

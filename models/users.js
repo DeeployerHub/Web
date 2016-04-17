@@ -120,15 +120,15 @@ module.exports = {
         usersSchema.findByIdAndUpdate(
             mongoose.Types.ObjectId(userId),
             { 
-                $set: {
-                    profile: [{
+                $push: {
+                    profile: {
                         gender: profile.gender,
                         firstname: profile.firstname.toLowerCase(),
                         lastname: profile.lastname.toLowerCase(),
                         country: profile.country,
                         phone: profile.phone,
                         geoLocation: profile.geoLocation
-                    }]
+                    }
                 }
             },
             function (err, resObj) {

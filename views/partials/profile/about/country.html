@@ -1,0 +1,65 @@
+<form
+    class="form-inline"
+    ng-submit="rowSave('country', countryForm)"
+    name="countryForm"
+    role="form"
+    novalidate
+>
+    Country:
+    <div class="form-group" ng-show="rowVisibility.country === 'show'">
+        {{ userProfile.country }}
+    </div>
+    <button
+        type="button"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.country === 'show'"
+        ng-click="rowVisibility.country = 'edit'"
+    >
+    <i class="glyphicon glyphicon-edit"></i>
+    </button>
+
+    <div class="form-group" ng-show="rowVisibility.country === 'edit'">
+        <label class="sr-only" for="profile-country">country</label>
+        <select
+            id="profile-country"
+            required="required"
+            class="form-control input-sm"
+            type="text"
+            placeholder="country"
+            value="[[ userProfile.country ]]"
+            ng-model="userProfile.country"
+            ng-disabled="waiting.country"
+        >
+            <option value="United State" country-code="+1">United State (+1)</option>
+            <option value="Thailand">Thailand (+66)</option>
+            <option value="Hungary">Hungary (+36)</option>
+        </select>
+    </div>
+    <button
+        ng-disabled="!countryForm.$valid || waiting.country"
+        type="submit"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.country === 'edit'"
+    >
+        <img
+            src="/assets/images/common/waiting.gif"
+            ng-show="waiting.country"
+        >
+        <i
+            class="glyphicon glyphicon-save"
+            ng-show="!waiting.country"
+        ></i>&nbsp;Save
+    </button>
+    <button
+        type="button"
+        ng-disabled="waiting.country"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.country === 'edit'"
+        ng-click="
+            userProfile.country = userProfileDefault.country;
+            rowVisibility.country = 'show';
+        "
+    >
+        <i class="glyphicon glyphicon-remove-circle"></i>&nbsp;cancel
+    </button>
+</form>

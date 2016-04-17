@@ -1,0 +1,61 @@
+<form
+    class="form-inline"
+    ng-submit="rowSave('phone', phoneForm)"
+    name="phoneForm"
+    role="form"
+    novalidate
+>
+    Phone:
+    <div class="form-group" ng-show="rowVisibility.phone === 'show'">
+        0{{ userProfile.phone }}
+    </div>
+    <button
+        type="button"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.phone === 'show'"
+        ng-click="rowVisibility.phone = 'edit'"
+    >
+    <i class="glyphicon glyphicon-edit"></i>
+    </button>
+
+    <div class="form-group" ng-show="rowVisibility.phone === 'edit'">
+        <label class="sr-only" for="profile-phone">Phone</label>
+        <input
+            id="profile-phone"
+            required="required"
+            class="form-control input-sm"
+            type="text"
+            placeholder="Phone"
+            value="[[ userProfile.phone ]]"
+            ng-model="userProfile.phone"
+            ng-disabled="waiting.phone"
+        >
+    </div>
+    <button
+        ng-disabled="!phoneForm.$valid || waiting.phone"
+        type="submit"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.phone === 'edit'"
+    >
+        <img
+            src="/assets/images/common/waiting.gif"
+            ng-show="waiting.phone"
+        >
+        <i
+            class="glyphicon glyphicon-save"
+            ng-show="!waiting.phone"
+        ></i>&nbsp;Save
+    </button>
+    <button
+        type="button"
+        ng-disabled="waiting.phone"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.phone === 'edit'"
+        ng-click="
+            userProfile.phone = userProfileDefault.phone;
+            rowVisibility.phone = 'show';
+        "
+    >
+        <i class="glyphicon glyphicon-remove-circle"></i>&nbsp;cancel
+    </button>
+</form>

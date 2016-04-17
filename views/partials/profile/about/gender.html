@@ -1,0 +1,65 @@
+<form
+    class="form-inline"
+    ng-submit="rowSave('gender', genderForm)"
+    name="genderForm"
+    role="form"
+    novalidate
+>
+    Gender:
+    <div class="form-group" ng-show="rowVisibility.gender === 'show'">
+        {{ userProfile.gender }}
+    </div>
+    <button
+        type="button"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.gender === 'show'"
+        ng-click="rowVisibility.gender = 'edit'"
+    >
+    <i class="glyphicon glyphicon-edit"></i>
+    </button>
+
+    <div class="form-group" ng-show="rowVisibility.gender === 'edit'">
+        <label class="sr-only" for="profile-gender">gender</label>
+        <select
+            id="profile-gender"
+            required="required"
+            class="form-control input-sm"
+            type="text"
+            placeholder="gender"
+            value="[[ userProfile.gender ]]"
+            ng-model="userProfile.gender"
+            ng-disabled="waiting.gender"
+        >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+    <button
+        ng-disabled="!genderForm.$valid || waiting.gender"
+        type="submit"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.gender === 'edit'"
+    >
+        <img
+            src="/assets/images/common/waiting.gif"
+            ng-show="waiting.gender"
+        >
+        <i
+            class="glyphicon glyphicon-save"
+            ng-show="!waiting.gender"
+        ></i>&nbsp;Save
+    </button>
+    <button
+        type="button"
+        ng-disabled="waiting.gender"
+        class="btn btn-default btn-xs"
+        ng-show="rowVisibility.gender === 'edit'"
+        ng-click="
+            userProfile.gender = userProfileDefault.gender;
+            rowVisibility.gender = 'show';
+        "
+    >
+        <i class="glyphicon glyphicon-remove-circle"></i>&nbsp;cancel
+    </button>
+</form>

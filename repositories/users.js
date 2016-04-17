@@ -102,5 +102,22 @@ module.exports = {
         return model.increasePoints(userId, value, attributes, function (result) {
             return callback(result);
         });
-    }
+    },
+    updateProfileEntities: function (userId, oldProfileEntities, profileEntities, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        oldProfileEntities = oldProfileEntities.pop();
+
+        for (var index in profileEntities) {
+            if (index) {
+                oldProfileEntities[index] = profileEntities[index];
+            }
+        }
+
+        return model.updateProfileById(userId, oldProfileEntities, function (result) {
+            return callback(result);
+        });
+    },
 };

@@ -1,0 +1,33 @@
+<script src='/assets/js/app/partials/profile/about.js'></script>
+<div ng-controller="PartialsProfileAboutController" ng-init="
+        userProfileDefault = {
+            firstname: '[[ userProfile.firstname ]]',
+            lastname : '[[ userProfile.lastname ]]',
+            phone    : '[[ userProfile.phone ]]',
+            country  : '[[ userProfile.country ]]',
+            gender   : '[[ userProfile.gender ]]',
+        };
+        userProfile = cloneObject(userProfileDefault);
+        rowVisibility = {
+            name   : 'show',
+            phone  : 'show',
+            country: 'show',
+            gender : 'show'
+        };
+        waiting = {
+            name   : false,
+            phone  : false,
+            country: false,
+            gender : false
+        };
+    ">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <h4><i class="glyphicon glyphicon-user"></i>&nbsp;About [[ user.username | title]]</h4>
+            {% include 'about/gender.html'  %}
+            {% include 'about/name.html'  %}
+            {% include 'about/country.html'  %}
+            {% include 'about/phone.html'  %}
+        </li>
+    </ul>
+</div>

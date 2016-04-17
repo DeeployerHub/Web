@@ -47,9 +47,9 @@
         <div class="col-md-9">
             <div class="navbar-header">
                 <div class="profile-list-links">
-                    <a class="navbar-brand" href="/profile">Posts</a>
-                    <a class="navbar-brand" href="/profile/about">About</a>
-                    <a class="navbar-brand" href="/profile/followers">Followers</a>
+                    <a class="navbar-brand {% if page === 'posts' %} active{% endif %}" href="/profile">Posts</a>
+                    <a class="navbar-brand {% if page === 'about' %} active{% endif %}" href="/profile/about">About</a>
+                    <a class="navbar-brand {% if page === 'followers' %} active{% endif %}" href="/profile/followers">Followers</a>
                 </div>
             </div>
         </div>
@@ -90,34 +90,8 @@
             </ul>
         </div>
         <div class="col-md-6">
-            <ul class="list-group">
-                <!-- <li class="list-group-item well">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group" style="padding:14px;">
-                            <textarea class="form-control" placeholder="first step of executing..."></textarea>
-                        </div>
-                        <button class="btn btn-success pull-right" type="button">Post</button>
-                        <ul class="list-inline">
-                            <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li>
-                        </ul>
-                    </form>
-                </li>
-                <li class="list-group-item">
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group" style="padding:14px;">
-                            <textarea class="form-control" placeholder="first step of executing..."></textarea>
-                        </div>
-                        <button class="btn btn-success pull-right" type="button">Post</button>
-                        <ul class="list-inline">
-                            <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li>
-                        </ul>
-                    </form>
-                </li> -->
-            </ul>
+            {% set profilePartialPage = '../../partials/profile/' + page + '.html' %}
+            {% include profilePartialPage %}
         </div>
         <!-- right side -->
         <div class="col-md-3">
