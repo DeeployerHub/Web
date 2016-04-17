@@ -75,3 +75,17 @@ $brand-body-color: #015;
         left: 26px;
     }
 }
+
+.profile-list-links {
+    .navbar-brand {
+        &.active {
+            color: #6173f4;
+            border-bottom: 2px solid #6173f4;
+        }
+
+        &:hover {
+            border-bottom: 2px solid #000;
+            transition: none;
+        }
+    }
+}
