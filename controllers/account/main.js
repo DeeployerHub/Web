@@ -178,7 +178,7 @@ module.exports = {
                     }, function () {
                         // send a notification
                         notificationRepos.sendNotification(req.user._id, 'normal', {
-                            text: 'Congrats, you earned +50 Points for Compelete your profile.'
+                            text: 'Congrats, you earned +50 Points for Complete your profile.'
                         }, function () {
                             res.json({
                                 status: true
