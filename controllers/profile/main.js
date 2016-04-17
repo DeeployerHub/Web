@@ -1,15 +1,49 @@
 module.exports = {
-    profile: function(req, res, page) {
+    profile: function(req, res, page, username) {
         'use strict';
 
         var userRepos = getRepos('users');
 
-        userRepos.getUserInfo(req.user.email, function (userInfo) {
-            res.render('profile/pages/profile', {
-                user: userInfo,
-                page: page
+        if (username) {
+            if (req.isAuthenticated()) {
+                userRepos.getUserInfo(req.user.email, function (signedInUser) {
+                    userRepos.getUserInfoByUsername(username, function (userInfo) {
+                        if (userInfo) {
+                            res.render('profile/pages/profile', {
+                                user         : signedInUser,
+                                requestedUser: userInfo,
+                                signedInUser : signedInUser,
+                                page         : page
+                            });
+                        } else {
+                            errorPageRender(res, 404, 'Sorry, this page isn\'t available');
+                        }
+                    });
+                });
+            } else {
+                userRepos.getUserInfoByUsername(username, function (userInfo) {
+                    if (userInfo) {
+                        res.render('profile/pages/profile', {
+                            user         : signedInUser,
+                            requestedUser: userInfo,
+                            signedInUser : null,
+                            page         : page
+                        });
+                    } else {
+                        errorPageRender(res, 404, 'Sorry, this page isn\'t available');
+                    }
+                });
+            }
+        } else {
+            userRepos.getUserInfo(req.user.email, function (signedInUser) {
+                res.render('profile/pages/profile', {
+                    user         : signedInUser,
+                    requestedUser: signedInUser,
+                    signedInUser : signedInUser,
+                    page         : page
+                });
             });
-        });
+        }
     },
     profileAboutUpdate: function(req, res) {
         'use strict';

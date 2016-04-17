@@ -11,8 +11,8 @@
 <script src='/assets/js/app/profile/avatar.js'></script>
 <script>
     window.angularControllerValues = {
-        avatar: '[[user.avatar]]',
-        cover: '[[user.coverPicture]]'
+        avatar: '[[requestedUser.avatar]]',
+        cover: '[[requestedUser.coverPicture]]'
     };
 </script>
 {% endblock %}
@@ -23,7 +23,7 @@
 
 {% block content %}
 {% include '../../partials/header-fix-sign-in-menu.html' %}
-    {% set userProfile = user.profile|last %}
+    {% set userProfile = requestedUser.profile|last %}
     <div class="timeline-cover" ng-controller="ProfileCoverController">
         <img
             class="img-responsive"
@@ -47,9 +47,24 @@
         <div class="col-md-9">
             <div class="navbar-header">
                 <div class="profile-list-links">
-                    <a class="navbar-brand {% if page === 'posts' %} active{% endif %}" href="/profile">Posts</a>
-                    <a class="navbar-brand {% if page === 'about' %} active{% endif %}" href="/profile/about">About</a>
-                    <a class="navbar-brand {% if page === 'followers' %} active{% endif %}" href="/profile/followers">Followers</a>
+                    <a
+                        class="navbar-brand {% if page === 'posts' %} active{% endif %}"
+                        href="/profile{% if signedInUser.username !== requestedUser.username %}/[[ requestedUser.username ]]{% endif %}"
+                    >
+                        Posts
+                    </a>
+                    <a
+                        class="navbar-brand {% if page === 'about' %} active{% endif %}"
+                        href="/profile{% if signedInUser.username !== requestedUser.username %}/[[ requestedUser.username ]]{% endif %}/about"
+                    >
+                        About
+                    </a>
+                    <a
+                        class="navbar-brand {% if page === 'followers' %} active{% endif %}"
+                        href="/profile{% if signedInUser.username !== requestedUser.username %}/[[ requestedUser.username ]]{% endif %}/followers"
+                    >
+                        Followers
+                    </a>
                 </div>
             </div>
         </div>
@@ -82,7 +97,7 @@
                 <li class="list-group-item">
                     <h3>[[ userProfile.firstname | title + ' ' + userProfile.lastname | title ]]</h3>
                     <p>
-                        <i class="glyphicon glyphicon-user"></i>&nbsp;@[[ user.username | title]]<br>
+                        <i class="glyphicon glyphicon-user"></i>&nbsp;@[[ requestedUser.username | title]]<br>
                         <i class="glyphicon glyphicon-earphone"></i>&nbsp;0[[ userProfile.phone ]]<br>
                         <i class="glyphicon glyphicon-globe"></i>&nbsp;Lives in [[ userProfile.country | title ]]
                     </p>

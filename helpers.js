@@ -89,3 +89,13 @@ dispatchEvent = function (name, arg) {
         });
     }
 };
+
+errorPageRender = function (res, code, message) {
+    var err = new Error(message);
+    err.status = code;
+    res.status(err.status);
+    res.render('error', {
+        message: message,
+        error: err
+    });
+}
