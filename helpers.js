@@ -91,6 +91,8 @@ dispatchEvent = function (name, arg) {
 };
 
 errorPageRender = function (res, code, message) {
+    'use strict';
+
     var err = new Error(message);
     err.status = code;
     res.status(err.status);
@@ -98,4 +100,4 @@ errorPageRender = function (res, code, message) {
         message: message,
         error: err
     });
-}
+};
