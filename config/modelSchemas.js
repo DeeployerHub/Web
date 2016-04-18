@@ -23,11 +23,12 @@ module.exports.bootstrap = function () {
     db.on('error', console.error.bind(console, 'connection error:'));
 
     // convert the schema objects to model
+    var schemaObject = mongoose.Schema;
     var schemas = {};
     schemasObj.forEach(function (schema) {
         schemas[schema.collectionName] = mongoose.model(
             schema.collectionName,
-            schema.schema
+            new schemaObject(schema.schema, schema.conditions || {})
         );
     });
 

@@ -45,7 +45,7 @@ module.exports = {
         })],
         points: Number,
         pointsHistory: [new Schema({
-            occuredAt: {
+            occurredAt: {
                 type: Date,
                 default: Date.now
             },
