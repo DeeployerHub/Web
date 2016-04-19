@@ -38,6 +38,19 @@ module.exports = {
             }
         });
     },
+    getUserInfoById: function (userId, callback) {
+        'use strict';
+
+        var model = getModel('users');
+
+        model.findUserWithId(userId, function (findRes) {
+            if (findRes) {
+                callback(findRes);
+            } else {
+                callback(null);
+            }
+        });
+    },
     isUserRegistered: function (profile, email, callback) {
         'use strict';
 

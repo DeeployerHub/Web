@@ -25,6 +25,22 @@ module.exports = {
             result(res[0]);
         });
     },
+    findUserWithId: function(userId, result) {
+        'use strict';
+
+        var mongoose = require('mongoose');
+        var usersSchema = getModelSchema('users');
+
+        usersSchema.find({
+            _id: mongoose.Types.ObjectId(userId)
+        }, function(err, res){
+            if (err) {
+                return console.error(err);
+            }
+
+            result(res[0]);
+        });
+    },
     registerNewUser: function(email, result) {
         'use strict';
 

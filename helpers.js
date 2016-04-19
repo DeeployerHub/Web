@@ -101,3 +101,7 @@ errorPageRender = function (res, code, message) {
         error: err
     });
 };
+
+ucfirst = function (string) {
+    return string[0].toUpperCase() + string.slice(1);
+};

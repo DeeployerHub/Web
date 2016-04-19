@@ -90,13 +90,14 @@ module.exports = {
 
         var userRepos = getRepos('users');
         var userRelationRepos = getRepos('usersRelations');
+        var notificationRepos = getRepos('notifications');
 
         // preparing input data
         var action         = req.body.action;
-        var responseUserId = req.body.user;
+        var responseUsername = req.body.user;
 
         if (action === 'follow') {
-            userRepos.getUserInfoByUsername(responseUserId, function (responseUser) {
+            userRepos.getUserInfoByUsername(responseUsername, function (responseUser) {
                 if (!responseUser) {
                     res.status(400);
                     res.json({
@@ -104,16 +105,31 @@ module.exports = {
                     });
                 }
 
-                userRelationRepos.follow(req.user._id, responseUser._id, function (followRes) {
-                    res.json({
-                        status: followRes
+                userRepos.getUserInfoById(req.user._id, function (requestUser) {
+                    userRelationRepos.follow(requestUser._id, responseUser._id, function (followRes) {
+                        // notify user
+                        notificationRepos.sendNotification(responseUser._id, 'follow', {
+                            text   : ucfirst(requestUser.username) + ' just followed you.',
+                            pattern: '%requestUser.username% just followed you.',
+                            arg    : {
+                                requestUser: {
+                                    _id     : requestUser._id,
+                                    username: requestUser.username,
+                                    email   : requestUser.email
+                                }
+                            }
+                        }, function () {
+                            res.json({
+                                status: followRes
+                            });
+                        });
                     });
                 });
             });
         }
 
         if (action === 'unfollow') {
-            userRepos.getUserInfoByUsername(responseUserId, function (responseUser) {
+            userRepos.getUserInfoByUsername(responseUsername, function (responseUser) {
                 if (!responseUser) {
                     res.status(400);
                     res.json({
