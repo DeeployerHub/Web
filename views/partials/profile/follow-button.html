@@ -10,7 +10,7 @@
     <div ng-show="status === 'not-following'">
         <button
             class="btn btn-success btn-follow"
-            ng-click="followUser()"
+            ng-click="followUser('[[ requestedUser.username ]]')"
         >
             Follow&nbsp;<i class="glyphicon glyphicon-plus"></i>
         </button>
@@ -18,7 +18,7 @@
     <div ng-show="status === 'following'">
         <button
             class="btn btn-primary btn-follow"
-            ng-click="unFollowUser()"
+            ng-click="unFollowUser('[[ requestedUser.username ]]')"
         >
             Following&nbsp;<i class="glyphicon glyphicon-ok"></i>
         </button>
