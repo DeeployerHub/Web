@@ -1,11 +1,16 @@
 <script src='/assets/js/app/partials/profile/follow-button.js'></script>
 <div ng-controller="PartialsProfileFollowButtonController" ng-init="
-            status = 'not-following';
+            {% if signedInUser.username === requestedUser.username %}
+                status = 'empty';
+            {% else %}
+
+                status = '[[ followed ]]';
+            {% endif %}
         ">
     <div ng-show="status === 'not-following'">
         <button
             class="btn btn-success btn-follow"
-            ng-click="status='following'"
+            ng-click="followUser()"
         >
             Follow&nbsp;<i class="glyphicon glyphicon-plus"></i>
         </button>
@@ -13,7 +18,7 @@
     <div ng-show="status === 'following'">
         <button
             class="btn btn-primary btn-follow"
-            ng-click="status='not-following'"
+            ng-click="unFollowUser()"
         >
             Following&nbsp;<i class="glyphicon glyphicon-ok"></i>
         </button>

@@ -3,17 +3,22 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
+        var userRelationRepos = getRepos('usersRelations');
 
         if (username) {
             if (req.isAuthenticated()) {
                 userRepos.getUserInfo(req.user.email, function (signedInUser) {
                     userRepos.getUserInfoByUsername(username, function (userInfo) {
                         if (userInfo) {
-                            res.render('profile/pages/profile', {
-                                user         : signedInUser,
-                                requestedUser: userInfo,
-                                signedInUser : signedInUser,
-                                page         : page
+                            var followed = '';
+                            userRelationRepos.isFollowed(signedInUser._id, userInfo._id, function (followed) {
+                                res.render('profile/pages/profile', {
+                                    user         : signedInUser,
+                                    requestedUser: userInfo,
+                                    signedInUser : signedInUser,
+                                    page         : page,
+                                    followed     : (!followed ? 'not-' : '') + 'following'
+                                });
                             });
                         } else {
                             errorPageRender(res, 404, 'Sorry, this page isn\'t available');
@@ -27,7 +32,8 @@ module.exports = {
                             user         : signedInUser,
                             requestedUser: userInfo,
                             signedInUser : null,
-                            page         : page
+                            page         : page,
+                            followed     : 'empty'
                         });
                     } else {
                         errorPageRender(res, 404, 'Sorry, this page isn\'t available');
@@ -40,7 +46,8 @@ module.exports = {
                     user         : signedInUser,
                     requestedUser: signedInUser,
                     signedInUser : signedInUser,
-                    page         : page
+                    page         : page,
+                    followed     : 'empty'
                 });
             });
         }

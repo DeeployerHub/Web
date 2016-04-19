@@ -5,6 +5,7 @@
     .controller("HeaderSignInMenuNotificationsController", [
         '$scope', '$http', 
         function ($scope, $http) {
+            $scope.moduleLoaded = true;
             $scope.lastNotifyDownloaded = false;
             $scope.initialized = false;
             $scope.notificationsWaiting = false;

@@ -64,7 +64,7 @@
                                 aria-haspopup="true"
                                 aria-expanded="false">
                                 <i class="glyphicon glyphicon-globe"></i>
-                                <span class="label label-danger" ng-show="unreadCount > 0">
+                                <span class="label label-danger ng-hide" ng-show="unreadCount > 0 && moduleLoaded">
                                 {{
                                     unreadCount > 99
                                     ? '+99'

@@ -55,6 +55,11 @@ module.exports = {
 
         if (req.isAuthenticated()) {
             return userRepos.isUserActivated(req.user.email, function (activationResult) {
+                if (!activationResult) {
+                    req.logout();
+                    return callback.signIn(req, res, next);
+                }
+
                 if (activationResult.activated) {
                     return callback.signIn(req, res, next);
                 } else {

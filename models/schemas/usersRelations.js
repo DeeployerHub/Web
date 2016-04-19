@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 module.exports = {
     collectionName: 'usersRelations',
     schema: {
-        request: {
+        requestUserId: {
             Types: Schema.Types.ObjectId
         },
-        response: {
+        responseUserId: {
             Types: Schema.Types.ObjectId
         },
         followedAt: {
