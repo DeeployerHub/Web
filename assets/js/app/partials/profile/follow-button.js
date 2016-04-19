@@ -11,8 +11,12 @@
                 $scope.request({
                     'action': 'follow',
                     'user'  : requestedUsername
-                }, function () {
-                    $scope.status='following';
+                }, function (res) {
+                    if (res.data.status) {
+                        $scope.status='following';
+                    } else {
+                        $scope.status='not-following';
+                    }
                 }, function () {
                     $scope.status='not-following';
                 });
@@ -24,8 +28,12 @@
                 $scope.request({
                     'action': 'unfollow',
                     'user'  : requestedUsername
-                }, function () {
-                    $scope.status='not-following';
+                }, function (res) {
+                    if (res.data.status) {
+                        $scope.status='not-following';
+                    } else {
+                        $scope.status='following';
+                    }
                 }, function () {
                     $scope.status='following';
                 });

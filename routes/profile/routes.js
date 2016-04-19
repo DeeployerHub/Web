@@ -26,6 +26,8 @@ module.exports = function() {
         return controller.profile(req, res, page);
     });
 
+    router.post('/relation', getMiddleware('account.signInCheck'), controller.relation);
+
     router.post(
         '/avatar-upload',
         getMiddleware('account.signInCheck'),

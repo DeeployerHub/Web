@@ -85,6 +85,50 @@ module.exports = {
             });
         });
     },
+    relation: function(req, res) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+        var userRelationRepos = getRepos('usersRelations');
+
+        // preparing input data
+        var action         = req.body.action;
+        var responseUserId = req.body.user;
+
+        if (action === 'follow') {
+            userRepos.getUserInfoByUsername(responseUserId, function (responseUser) {
+                if (!responseUser) {
+                    res.status(400);
+                    res.json({
+                        status: false
+                    });
+                }
+
+                userRelationRepos.follow(req.user._id, responseUser._id, function (followRes) {
+                    res.json({
+                        status: followRes
+                    });
+                });
+            });
+        }
+
+        if (action === 'unfollow') {
+            userRepos.getUserInfoByUsername(responseUserId, function (responseUser) {
+                if (!responseUser) {
+                    res.status(400);
+                    res.json({
+                        status: false
+                    });
+                }
+
+                userRelationRepos.unfollow(req.user._id, responseUser._id, function (followRes) {
+                    res.json({
+                        status: followRes
+                    });
+                });
+            });
+        }
+    },
     profileAvatarUpload: function(req, res) {
         'use strict';
 

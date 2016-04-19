@@ -5,8 +5,7 @@ module.exports = {
     collectionName: 'notifications',
     schema: {
         ownerId: {
-            type: Schema.Types.ObjectId,
-            trim: true
+            type: Schema.Types.ObjectId
         },
         isRead: {
             type: Boolean,
