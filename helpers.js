@@ -103,5 +103,7 @@ errorPageRender = function (res, code, message) {
 };
 
 ucfirst = function (string) {
+    'use strict';
+
     return string[0].toUpperCase() + string.slice(1);
 };
