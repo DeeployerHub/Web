@@ -2,55 +2,80 @@ module.exports = {
     profile: function(req, res, page, username) {
         'use strict';
 
+        var controller = getController('profile/main.js');
         var userRepos = getRepos('users');
         var userRelationRepos = getRepos('usersRelations');
 
         if (username) {
             if (req.isAuthenticated()) {
-                userRepos.getUserInfo(req.user.email, function (signedInUser) {
-                    userRepos.getUserInfoByUsername(username, function (userInfo) {
-                        if (userInfo) {
-                            var followed = '';
-                            userRelationRepos.isFollowed(signedInUser._id, userInfo._id, function (followed) {
-                                res.render('profile/pages/profile', {
-                                    user         : signedInUser,
-                                    requestedUser: userInfo,
-                                    signedInUser : signedInUser,
-                                    page         : page,
-                                    followed     : (!followed ? 'not-' : '') + 'following'
-                                });
-                            });
-                        } else {
-                            errorPageRender(res, 404, 'Sorry, this page isn\'t available');
-                        }
-                    });
-                });
+                controller.profileSigninShow(req, res, page, username);
             } else {
-                userRepos.getUserInfoByUsername(username, function (userInfo) {
-                    if (userInfo) {
+                controller.profileSignOutShow(req, res, page, username);
+            }
+        } else {
+            controller.profileSelfShow(req, res, page, username);
+        }
+    },
+    profileSigninShow: function(req, res, page, username) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+        var userRelationRepos = getRepos('usersRelations');
+
+        userRepos.getUserInfo(req.user.email, function (signedInUser) {
+            userRepos.getUserInfoByUsername(username, function (userInfo) {
+                if (userInfo) {
+                    var followed = '';
+                    userRelationRepos.isFollowed(signedInUser._id, userInfo._id, function (followed) {
                         res.render('profile/pages/profile', {
                             user         : signedInUser,
                             requestedUser: userInfo,
-                            signedInUser : null,
+                            signedInUser : signedInUser,
                             page         : page,
-                            followed     : 'empty'
+                            followed     : (!followed ? 'not-' : '') + 'following'
                         });
-                    } else {
-                        errorPageRender(res, 404, 'Sorry, this page isn\'t available');
-                    }
-                });
-            }
-        } else {
-            userRepos.getUserInfo(req.user.email, function (signedInUser) {
+                    });
+                } else {
+                    errorPageRender(res, 404, 'Sorry, this page isn\'t available');
+                }
+            });
+        });
+    },
+    profileSignOutShow: function(req, res, page, username) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+        var userRelationRepos = getRepos('usersRelations');
+
+        userRepos.getUserInfoByUsername(username, function (userInfo) {
+            if (userInfo) {
                 res.render('profile/pages/profile', {
                     user         : signedInUser,
-                    requestedUser: signedInUser,
-                    signedInUser : signedInUser,
+                    requestedUser: userInfo,
+                    signedInUser : null,
                     page         : page,
                     followed     : 'empty'
                 });
+            } else {
+                errorPageRender(res, 404, 'Sorry, this page isn\'t available');
+            }
+        });
+    },
+    profileSelfShow: function(req, res, page, username) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+        var userRelationRepos = getRepos('usersRelations');
+
+        userRepos.getUserInfo(req.user.email, function (signedInUser) {
+            res.render('profile/pages/profile', {
+                user         : signedInUser,
+                requestedUser: signedInUser,
+                signedInUser : signedInUser,
+                page         : page,
+                followed     : 'empty'
             });
-        }
+        });
     },
     profileAboutUpdate: function(req, res) {
         'use strict';
