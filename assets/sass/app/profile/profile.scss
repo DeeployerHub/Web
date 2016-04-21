@@ -101,3 +101,18 @@ $brand-body-color: #015;
         }
     }
 }
+.profile-followers {
+    .profile-list-avatar {
+        float: left;
+    }
+
+    .profile-list-misc {
+        float: left;
+
+        padding-left: 10px;
+        padding-top: 23px;
+        a {
+            font-weight: bold;
+        }
+    }
+}

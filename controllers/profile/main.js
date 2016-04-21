@@ -3,8 +3,6 @@ module.exports = {
         'use strict';
 
         var controller = getController('profile/main.js');
-        var userRepos = getRepos('users');
-        var userRelationRepos = getRepos('usersRelations');
 
         if (username) {
             if (req.isAuthenticated()) {
@@ -25,7 +23,6 @@ module.exports = {
         userRepos.getUserInfo(req.user.email, function (signedInUser) {
             userRepos.getUserInfoByUsername(username, function (userInfo) {
                 if (userInfo) {
-                    var followed = '';
                     userRelationRepos.isFollowed(signedInUser._id, userInfo._id, function (followed) {
                         res.render('profile/pages/profile', {
                             user         : signedInUser,
@@ -45,7 +42,6 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
-        var userRelationRepos = getRepos('usersRelations');
 
         userRepos.getUserInfoByUsername(username, function (userInfo) {
             if (userInfo) {
@@ -65,7 +61,6 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
-        var userRelationRepos = getRepos('usersRelations');
 
         userRepos.getUserInfo(req.user.email, function (signedInUser) {
             res.render('profile/pages/profile', {
