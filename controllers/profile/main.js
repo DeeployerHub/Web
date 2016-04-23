@@ -72,6 +72,22 @@ module.exports = {
             });
         });
     },
+    getFollowers: function(req, res, username) {
+        'use strict';
+
+        var userRepos = getRepos('users');
+        var userRelationRepos = getRepos('usersRelations');
+
+
+        userRepos.getUserInfoByUsername(username, function (targetedUserInfo) {
+            userRelationRepos.getUserFollowers(targetedUserInfo._id, function (followers) {
+                res.json({
+                    status: true,
+                    followers: followers
+                });
+            });
+        });
+    },
     profileAboutUpdate: function(req, res) {
         'use strict';
 

@@ -7,17 +7,6 @@
             function ($scope, $http) {
                 $scope.waiting = true;
                 $scope.followers = [];
-
-                // sample schema
-                // $scope.followers = [
-                //     {
-                //         _id: 'asdfasdfasdf',
-                //         avatar: 'https://deeployerdev.s3.amazonaws.com/9c793eb6-d8fa-4fb0-8b7e-c77c0fa98c37.jpg',
-                //         username: 'mahan',
-                //         firstname: 'dummy',
-                //         lastname: 'user1'
-                //     }
-                // ];
                 $scope.init = function () {
                     $scope.waiting = true;
                     $scope.request($scope.requestedUsername, function (res) {

@@ -5,10 +5,12 @@ module.exports = {
     collectionName: 'usersRelations',
     schema: {
         requestUserId: {
-            type: Schema.Types.ObjectId
+            type: Schema.ObjectId,
+            ref: 'users'
         },
         responseUserId: {
-            type: Schema.Types.ObjectId
+            type: Schema.ObjectId,
+            ref: 'users'
         },
         followedAt: {
             type: Date,

@@ -62,6 +62,11 @@ module.exports = function() {
         var page = 'followers';
         return controller.profile(req, res, page, username);
     });
+    
+    router.get('/:username/followers/get-json', function(req, res) {
+        var username = req.params.username;
+        return controller.getFollowers(req, res, username);
+    });
 
     return router;
 };

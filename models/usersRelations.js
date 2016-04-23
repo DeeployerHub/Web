@@ -75,5 +75,29 @@ module.exports = {
                 result(true);
             }
         });
+    },
+    getFollowersList: function (responseUserId, result) {
+        'use strict';
+
+        var mongoose             = require('mongoose');
+        var usersRelationsSchema = getModelSchema('usersRelations');
+
+        var model = getModel('usersRelations');
+
+        usersRelationsSchema
+            .find({
+                responseUserId: mongoose.Types.ObjectId(responseUserId)
+            })
+            .sort({
+                followedAt: -1
+            })
+            .populate('requestUserId')
+            .exec(function (err, queryResult) {
+                if (err) {
+                    return console.error(err);
+                }
+
+                result(queryResult);
+            });
     }
 };
