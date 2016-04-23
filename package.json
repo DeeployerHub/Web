@@ -10,12 +10,14 @@
         "start": "npm test && npm run dev-run",
         "test": "jshint . && exit 0"
     },
-    "pre-commit": [
-        "test"
-    ],
-    "pre-push": [
-        "test"
-    ],
+    "pre-commit": {
+        "run": "test",
+        "silent": true
+    },
+    "pre-push": {
+        "run": "test",
+        "silent": true
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/WAAC/d-web.git"
