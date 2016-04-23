@@ -7,7 +7,7 @@
         "setup": "bower install --allow-root && npm install && gulp",
         "dev-run-supervisor": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
         "dev-run": "npm test && node boot.js",
-        "start": "npm test && npm run dev-run",
+        "start": "dev-run-supervisor",
         "test": "jshint . && exit 0"
     },
     "pre-commit": {
