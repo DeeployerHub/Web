@@ -8,7 +8,7 @@
         "dev-run-supervisor": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
         "dev-run": "npm test && node boot.js",
         "start": "npm test && npm run dev-run",
-        "test": "jshint . && exit 0"
+        "test": "jshint . && exit 1"
     },
     "pre-push": [
         "test"
