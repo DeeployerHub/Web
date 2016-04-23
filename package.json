@@ -8,8 +8,11 @@
         "dev-run-supervisor": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
         "dev-run": "npm test && node boot.js",
         "start": "npm test && npm run dev-run",
-        "test": "jshint . && exit 1"
+        "test": "jshint . && exit 0"
     },
+    "pre-commit": [
+        "test"
+    ],
     "pre-push": [
         "test"
     ],
@@ -66,6 +69,7 @@
         "swig": "^1.4.2"
     },
     "devDependencies": {
+        "pre-commit": "^1.1.2",
         "pre-push": "^0.1.1"
     }
 }
