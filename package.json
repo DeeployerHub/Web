@@ -1,65 +1,71 @@
 {
-  "name": "deeployer-web",
-  "version": "1.0.0",
-  "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
-  "main": "boot.js",
-  "scripts": {
-    "setup": "bower install --allow-root && npm install && gulp",
-    "dev-run-supervisor": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
-    "dev-run": "npm test && node boot.js",
-    "start": "npm run dev-run",
-    "test": "jshint ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WAAC/d-web.git"
-  },
-  "contributors": [
-    {
-      "name": "Mahan Hazrati",
-      "email": "eng.mahan.hazrati@gmail.com"
+    "name": "deeployer-web",
+    "version": "1.0.0",
+    "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
+    "main": "boot.js",
+    "scripts": {
+        "setup": "bower install --allow-root && npm install && gulp",
+        "dev-run-supervisor": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
+        "dev-run": "npm test && node boot.js",
+        "start": "npm test && npm run dev-run",
+        "test": "jshint ."
     },
-    {
-      "name": "Pooya panahandeh",
-      "email": "Pooya.panahandehpro@gmail.com"
+    "pre-push": [
+        "test"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/WAAC/d-web.git"
+    },
+    "contributors": [
+        {
+            "name": "Mahan Hazrati",
+            "email": "eng.mahan.hazrati@gmail.com"
+        },
+        {
+            "name": "Pooya panahandeh",
+            "email": "Pooya.panahandehpro@gmail.com"
+        }
+    ],
+    "keywords": [
+        "deeployer",
+        "platform",
+        "startup",
+        "vc",
+        "crowdfunding"
+    ],
+    "author": "Waac inc",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/WAAC/d-web/issues"
+    },
+    "homepage": "https://github.com/WAAC/d-web#readme",
+    "dependencies": {
+        "aws-sdk": "^2.2.43",
+        "body-parser": "~1.13.2",
+        "bower": "^1.7.7",
+        "busboy": "^0.2.12",
+        "connect-redis": "^3.0.2",
+        "cookie-parser": "~1.3.5",
+        "debug": "~2.2.0",
+        "del": "^2.2.0",
+        "express": "^4.13.4",
+        "express-session": "^1.13.0",
+        "file-stream-rotator": "0.0.6",
+        "gulp": "^3.9.1",
+        "gulp-sass": "^2.2.0",
+        "gulp-sourcemaps": "^1.6.0",
+        "mongoose": "^4.4.6",
+        "morgan": "~1.6.1",
+        "node-uuid": "^1.4.7",
+        "passport": ">= 0.0.0",
+        "passport-google-oauth": "^1.0.0",
+        "passport-google-oauth2": ">= 0.0.0",
+        "redis": "^2.4.2",
+        "serve-favicon": "~2.3.0",
+        "swig": "^1.4.2"
+    },
+    "devDependencies": {
+        "pre-push": "^0.1.1"
     }
-  ],
-  "keywords": [
-    "deeployer",
-    "platform",
-    "startup",
-    "vc",
-    "crowdfunding"
-  ],
-  "author": "Waac inc",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/WAAC/d-web/issues"
-  },
-  "homepage": "https://github.com/WAAC/d-web#readme",
-  "dependencies": {
-    "aws-sdk": "^2.2.43",
-    "body-parser": "~1.13.2",
-    "bower": "^1.7.7",
-    "busboy": "^0.2.12",
-    "connect-redis": "^3.0.2",
-    "cookie-parser": "~1.3.5",
-    "debug": "~2.2.0",
-    "del": "^2.2.0",
-    "express": "^4.13.4",
-    "express-session": "^1.13.0",
-    "file-stream-rotator": "0.0.6",
-    "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
-    "gulp-sourcemaps": "^1.6.0",
-    "mongoose": "^4.4.6",
-    "morgan": "~1.6.1",
-    "node-uuid": "^1.4.7",
-    "passport": ">= 0.0.0",
-    "passport-google-oauth": "^1.0.0",
-    "passport-google-oauth2": ">= 0.0.0",
-    "redis": "^2.4.2",
-    "serve-favicon": "~2.3.0",
-    "swig": "^1.4.2"
-  }
 }

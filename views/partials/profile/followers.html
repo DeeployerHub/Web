@@ -1,36 +1,37 @@
 <script src='/assets/js/app/partials/profile/followers.js'></script>
 <div ng-controller="PartialsProfileFollowersController" ng-init="
         requestedUsername = '[[ requestedUser.username ]]';
+        init();
     ">
     <ul class="list-group profile-followers">
         <li class="list-group-item">
             <h4><i class="glyphicon glyphicon-user"></i>&nbsp;[[ requestedUser.username | title]]'s Followers</h4>
-                <ul class="list-group" ng-show="followers.length > 0">
-                    <li class="list-group-item" ng-repeat="follower in followers">
-                        <div class="profile-list-avatar">
-                            <img
-                                ng-src="{{ follower.avatar }}"
-                                class="img-thumbnail avatar"
-                                alt="{{ follower.username }}"
-                                title="{{ follower.username }}"
-                                width="75px"
-                                height="75px"
-                            >
-                        </div>
-                        <div class="profile-list-misc">
-                            <a href="/profile/{{ follower.username }}">
-                                {{ follower.firstname | ucwords }} {{ follower.lastname | ucwords }}
-                            </a>
-                        </div>
-                        <div class="clearfix"></div>
-                    </li>
-                </ul>
-                <ul class="list-group borderless" ng-hide="followers.length > 0">
-                    <li class="list-group-item">
-                        <br>
-                        <p class="text-center text-muted">You have no follower at the time</p>
-                    </li>
-                </ul>
+            <ul class="list-group" ng-show="followers.length > 0">
+                <li class="list-group-item" ng-repeat="follower in followers">
+                    <div class="profile-list-avatar">
+                        <img
+                            ng-src="{{ follower.avatar }}"
+                            class="img-thumbnail avatar"
+                            alt="{{ follower.username }}"
+                            title="{{ follower.username }}"
+                            width="75px"
+                            height="75px"
+                        >
+                    </div>
+                    <div class="profile-list-misc">
+                        <a href="/profile/{{ follower.username }}">
+                            {{ follower.firstname | ucwords }} {{ follower.lastname | ucwords }}
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                </li>
+            </ul>
+            <ul class="list-group borderless" ng-hide="followers.length > 0">
+                <li class="list-group-item">
+                    <br>
+                    <p class="text-center text-muted">You have no follower at the time</p>
+                </li>
+            </ul>
         </li>
     </ul>
 </div>
