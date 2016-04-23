@@ -11,12 +11,10 @@
         "test": "jshint . && exit 0"
     },
     "pre-commit": {
-        "run": "test",
-        "silent": true
+        "run": "test"
     },
     "pre-push": {
-        "run": "test",
-        "silent": true
+        "run": "test"
     },
     "repository": {
         "type": "git",
