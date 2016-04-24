@@ -31,5 +31,9 @@
     {% if !noFooter %}
     {% include '../partials/footer.html' %}
     {% endif %}
+
+    {% if request.isAuthenticated() %}
+        {% include '../partials/modals/new-post.html' %}
+    {% endif %}
 </body>
 </html>

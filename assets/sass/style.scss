@@ -981,3 +981,21 @@ h1, h2, h3, h4, h5, h6 {
         border:none;
     }
 }
+
+#header-fix-signed-in-new-post-modal {
+    .text-area {
+        textarea {
+            resize: none;
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+    }
+    .action-area {
+        margin-top: 10px;
+        .btn-post {
+
+        }
+    }
+}

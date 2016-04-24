@@ -23,38 +23,6 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- <li>
-                        <div class="dropdown dropdown-notification">
-                            <button
-                                class="btn btn-lg btn-notification"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="glyphicon glyphicon glyphicon-user"></i>
-                                <span class="label label-danger">1</span>
-                            </button>
-                            <ul
-                                class="dropdown-menu"
-                                aria-labelledby="dLabel">
-                                <li>
-                                    <img
-                                        class="img-rounded dropdown-avatar"
-                                        width="32px"
-                                        height="32px"
-                                        src="[[ user.avatar ]]"
-                                    > 
-                                    <div class="notify-desc">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                        <a href="#">Mahan</a> requested to follow you
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        &nbsp;
-                    </li> -->
                     <li>
                         <div class="dropdown dropdown-notification" ng-controller="HeaderSignInMenuNotificationsController">
                             <button
@@ -117,14 +85,7 @@
                         &nbsp;
                     </li>
                     <li>
-                        <button
-                            class="btn btn-lg btn-idea"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="glyphicon glyphicon-share"></i>
-                            Spread
-                        </button>
+                        {% include './header-fix-new-post.html' %}
                     </li>
                     <li>
                         &nbsp;

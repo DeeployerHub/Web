@@ -5,21 +5,21 @@
         .controller('PartialsProfileFollowersController', [
             '$scope', '$http',
             function ($scope, $http) {
-                $scope.waiting = true;
+                $scope.waiting   = true;
                 $scope.followers = [];
-                $scope.init = function () {
+                $scope.init      = function () {
                     $scope.waiting = true;
                     $scope.request($scope.requestedUsername, function (res) {
                         $scope.followers = res.data.followers;
-                        $scope.waiting = false;
+                        $scope.waiting   = false;
                     }, function () {
                         $scope.waiting = false;
                     })
                 };
-                $scope.request = function (username, ok, fail) {
+                $scope.request   = function (username, ok, fail) {
                     $http({
-                        method: 'GET',
-                        url: '/profile/' + username + '/followers/get-json',
+                        method : 'GET',
+                        url    : '/profile/' + username + '/followers/get-json',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         }
