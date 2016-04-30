@@ -1,0 +1,37 @@
+<div class="text-area">
+    <textarea
+        ng-model="content"
+        ng-disabled="waiting"
+        rows="4"
+        class="form-control"
+    ></textarea>
+</div>
+<div class="action-area">
+    <button
+        ng-disabled="
+                waiting ||
+                (maxContentLength - content.length) < 0 ||
+                (maxContentLength - content.length) === maxContentLength
+            "
+        ng-click="sendPost()"
+        type="button"
+        class="btn btn-info btn-post pull-right"
+    >
+        <img
+            ng-show="waiting"
+            src="/assets/images/common/waiting.gif"
+            ng-show="waiting.country"
+        >
+        Post
+    </button>
+
+    <div class="pull-right">
+        &nbsp;
+    </div>
+    <div
+        class="pull-right {{ (maxContentLength - content.length) >= 0 ? 'text-success' : 'text-danger' }}"
+    >
+        <strong>{{ maxContentLength - content.length }}</strong>
+    </div>
+</div>
+<div class="clearfix"></div>
