@@ -58,7 +58,7 @@ getModelSchema = function (model) {
     'use strict';
 
     if (!globalObject.modelSchemas[model]) {
-        throw new Exception('model "' + model + '" has not staged yet');
+        throw new Error('model "' + model + '" has not staged yet');
     }
 
     return globalObject.modelSchemas[model];

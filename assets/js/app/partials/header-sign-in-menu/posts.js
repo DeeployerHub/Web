@@ -5,6 +5,7 @@
         .controller("HeaderSignInMenuPostsController", [
             '$scope', '$http',
             function ($scope, $http) {
+                $scope.waiting = false;
                 $scope.content = '';
                 $scope.maxContentLength = 250;
                 $scope.newPostModal = $('#header-fix-signed-in-new-post-modal');
@@ -17,15 +18,17 @@
 
                 $scope.sendPost = function () {
                     if (
-                        (maxContentLength - content.length) >= 0 &&
-                        (maxContentLength - content.length) < maxContentLength
+                        ($scope.maxContentLength - $scope.content.length) >= 0 &&
+                        ($scope.maxContentLength - $scope.content.length) < $scope.maxContentLength
                     ) {
+                        $scope.waiting = true;
                         $scope.request({
                             content: $scope.content
                         }, function () {
-                            
+                            $scope.newPostModal.modal('hide');
+                            $scope.waiting = false;
                         }, function () {
-
+                            $scope.waiting = false;
                         });
                     }
                 };
@@ -40,7 +43,11 @@
                         data: $.param(data)
                     })
                     .then(function(result){
-                        ok(result);
+                        if (result.status) {
+                            ok(result);
+                        } else {
+                            fail();
+                        }
                     }, function(result){
                         fail();
                     });

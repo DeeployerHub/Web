@@ -181,6 +181,34 @@ module.exports = {
             });
         }
     },
+    sendPost: function (req, res) {
+        'use strict';
+
+        var usersPostsRepos = getRepos('usersPosts');
+
+        var content = req.body.content;
+
+        if (content.length > 250) {
+            res.json({
+                status: false
+            });
+
+            return;
+        }
+
+        usersPostsRepos.addNewPost(req.user._id, content, function (postRes) {
+            if (postRes) {
+                res.json({
+                    status: true,
+                    post  : postRes
+                });
+            } else {
+                res.json({
+                    status: false
+                });
+            }
+        });
+    },
     profileAvatarUpload: function(req, res) {
         'use strict';
 

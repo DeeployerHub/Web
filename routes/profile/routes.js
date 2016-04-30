@@ -15,6 +15,8 @@ module.exports = function() {
         return controller.profile(req, res, page);
     });
 
+    router.post('/post', getMiddleware('account.signInCheck'), controller.sendPost);
+
     router.get('/about', getMiddleware('account.signInCheck'), function(req, res) {
         var page = 'about';
         return controller.profile(req, res, page);
