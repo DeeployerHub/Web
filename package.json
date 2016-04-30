@@ -4,10 +4,10 @@
     "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
     "main": "boot.js",
     "scripts": {
-        "preinstall" : "sudo make install && sudo bower install --allow-root",
-        "install" : "sudo gulp",
-        "boot-dev": "sudo npm test && sudo supervisor -i public,upload,assets,node_modules,bower_components boot.js",
-        "start": "sudo npm test && sudo node boot.js",
+        "preinstall" : "make install && bower install --allow-root",
+        "install" : "gulp",
+        "boot-dev": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
+        "start": "npm test && node boot.js",
         "test": "jshint . && exit 0"
     },
     "pre-commit": {
