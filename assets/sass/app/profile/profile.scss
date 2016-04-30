@@ -116,3 +116,37 @@ $brand-body-color: #015;
         }
     }
 }
+
+.profile-posts {
+    .write-post-row {
+        background-color: #f8f8f8;
+        .text-area {
+            textarea {
+                resize: none;
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+        .action-area {
+            margin-top: 10px;
+            .btn-post {
+
+            }
+        }
+    }
+    .post-row {
+
+    }
+    .waiting-row {
+        border-bottom: none;
+        border-right: none;
+        border-left: none;
+        height: 50px;
+        .cssload-container {
+            top: 40px;
+            left: 3%;
+        }
+    }
+}

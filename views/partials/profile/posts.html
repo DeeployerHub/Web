@@ -1,28 +1,14 @@
-<ul class="list-group">
-    <li class="list-group-item well">
-        <form class="form-horizontal" role="form">
-            <div class="form-group" style="padding:14px;">
-                <textarea class="form-control" placeholder="first step of executing..."></textarea>
+<script src='/assets/js/app/partials/profile/posts.js'></script>
+<div ng-controller="PartialsProfilePostsController" ng-init="getPosts()" class="profile-posts">
+    <ul class="list-group">
+        <li class="list-group-item write-post-row">
+            {% include './new-post.html' %}
+        </li>
+        <li class="list-group-item waiting-row">
+            <div class="cssload-container">
+                <div class="cssload-whirlpool"></div>
             </div>
-            <button class="btn btn-success pull-right" type="button">Post</button>
-            <ul class="list-inline">
-                <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li>
-            </ul>
-        </form>
-    </li>
-    <li class="list-group-item">
-        <form class="form-horizontal" role="form">
-            <div class="form-group" style="padding:14px;">
-                <textarea class="form-control" placeholder="first step of executing..."></textarea>
-            </div>
-            <button class="btn btn-success pull-right" type="button">Post</button>
-            <ul class="list-inline">
-                <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
-                <li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li>
-            </ul>
-        </form>
-    </li>
-</ul>
+            <div class="clearfix"></div>
+        </li>
+    </ul>
+</div>
