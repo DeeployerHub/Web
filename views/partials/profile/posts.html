@@ -1,10 +1,57 @@
 <script src='/assets/js/app/partials/profile/posts.js'></script>
-<div ng-controller="PartialsProfilePostsController" ng-init="getPosts()" class="profile-posts">
-    <ul class="list-group">
+<div
+    ng-controller="PartialsProfilePostsController"
+    ng-init="getPosts()"
+    class="profile-posts ng-hide"
+    ng-show="moduleLoaded"
+>
+    <ul class="list-group post-wrapper post-spread-section">
         <li class="list-group-item write-post-row">
             {% include './new-post.html' %}
         </li>
-        <li class="list-group-item waiting-row">
+    </ul>
+    <ul class="list-group post-wrapper">
+        <li class="list-group-item waiting-row" ng-show="postTopWaiting">
+            <div class="cssload-container">
+                <div class="cssload-whirlpool"></div>
+            </div>
+            <div class="clearfix"></div>
+        </li>
+        <li class="list-group-item hide post-area-top"></li>
+
+        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
+        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
+        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
+        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
+
+        <li class="list-group-item hide post-area-bottom"></li>
+        <li class="list-group-item waiting-row hide-row text-center" ng-show="lastPostFetched">
+            <p
+                ng-show="queue.length === 0"
+            >
+                You haven't share any post yet. &nbsp;
+                <button ng-click="newPostPopup()" class="btn btn-lg btn-idea">
+                    <i class="glyphicon glyphicon-share"></i>
+                    Spread
+                </button>
+            </p>
+            <span
+                ng-show="queue.length !== 0"
+                class="btn btn-info btn-sm"
+                disabled
+            >
+                That's all of it
+            </span>
+        </li>
+        <li class="list-group-item waiting-row hide-row text-center" ng-show="bottomTryAgain && !lastPostFetched">
+            <button
+                class="btn btn-sm btn-info"
+                ng-click="tryAgain()"
+            >
+                Loading failed. click here to try again
+            </button>
+        </li>
+        <li class="list-group-item waiting-row hide-row" ng-show="postBottomWaiting">
             <div class="cssload-container">
                 <div class="cssload-whirlpool"></div>
             </div>
@@ -12,3 +59,13 @@
         </li>
     </ul>
 </div>
+
+<script type="text/ng-template" id="postNormal.ng.html">
+    <li class="list-group-item post-row">
+        <div class="poster-info"></div>
+        <div class="poster-content">
+            {{ post.content }}
+        </div>
+        <div class="poster-action"></div>
+    </li>
+</script>

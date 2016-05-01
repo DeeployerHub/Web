@@ -75,9 +75,9 @@
             $scope.request = function (ok, fail) {
                 $http({
                     method: 'GET',
-                    url: '/notifications/get-json?start=' + $scope.start.toString(),
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
+                    url: '/notifications/get-json',
+                    params: {
+                        start: $scope.start || undefined
                     }
                 })
                 .then(function(result){
