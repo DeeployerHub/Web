@@ -2,7 +2,7 @@
 
 module.exports = function() {
     var router = express.Router();
-    var controller = getController('profile/main.js');
+    var controller = getController('profile');
 
     // route for the signed in user
     router.get('/', getMiddleware('account.signInCheck'), function(req, res) {
@@ -14,8 +14,6 @@ module.exports = function() {
         var page = 'posts';
         return controller.profile(req, res, page);
     });
-
-    router.post('/post', getMiddleware('account.signInCheck'), controller.sendPost);
 
     router.get('/about', getMiddleware('account.signInCheck'), function(req, res) {
         var page = 'about';

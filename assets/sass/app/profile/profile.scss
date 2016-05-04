@@ -151,7 +151,20 @@ $brand-body-color: #015;
         }
     }
     .post-row {
+        .profile-post-avatar {
+            float: left;
+        }
+        .profile-post-misc {
+            float: left;
 
+            padding-left: 10px;
+            a {
+                font-weight: bold;
+            }
+            .text-muted {
+                font-size:12px;
+            }
+        }
     }
     .hide-row {
         border-bottom: none;

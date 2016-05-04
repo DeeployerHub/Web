@@ -2,7 +2,7 @@
 
 module.exports = function() {
     var router = express.Router();
-    var controller = getController('account/main.js');
+    var controller = getController('account');
 
     // route to specified controllers
     router.get(

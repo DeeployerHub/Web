@@ -70,35 +70,15 @@ getModel = function (model) {
     return require('./models/' + model + '.js');
 };
 
-addEventListener = function (name, method) {
-    'use strict';
-
-    if (globalObject.events[name] && typeof globalObject.events[name] === 'object') {
-        globalObject.events[name].push = method;
-    } else {
-        globalObject.events[name] = [ method ];
-    }
-};
-
-dispatchEvent = function (name, arg) {
-    'use strict';
-
-    if (globalObject.events[name]) {
-        globalObject.events[name].forEach(function (event) {
-            event(arg);
-        });
-    }
-};
-
 errorPageRender = function (res, code, message) {
     'use strict';
 
-    var err = new Error(message);
+    var err    = new Error(message);
     err.status = code;
     res.status(err.status);
     res.render('error', {
         message: message,
-        error: err
+        error  : err
     });
 };
 

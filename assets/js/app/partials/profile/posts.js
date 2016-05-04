@@ -5,8 +5,8 @@
     $('body').attr('ng-controller', 'PartialsProfilePostsController');
     angular.module('deeployer')
         .controller('PartialsProfilePostsController', [
-            '$scope', '$controller', '$http', '$compile', '$templateRequest',
-            function ($scope, $controller, $http, $compile, $templateRequest) {
+            '$scope', '$controller', '$http', '$compile', '$templateRequest', '$rootScope',
+            function ($scope, $controller, $http, $compile, $templateRequest, $rootScope) {
                 $scope.moduleLoaded = true;
 
                 // inherit the classes on the header's
@@ -14,30 +14,43 @@
                     $scope: $scope
                 });
 
-                $scope.bottomTryAgain    = false;
+                $scope.requestInProgress = false;
+                $scope.bottomSeeMore     = false;
                 $scope.postTopWaiting    = false;
                 $scope.postBottomWaiting = false;
-                $scope.lastPostFetched   = true;
+                $scope.lastPostFetched   = false;
                 $scope.queue             = [];
+                $scope.start             = 0;
 
                 // posts page's zone
                 $scope.getPosts = function () {
                     $scope.postBottomWaiting = true;
-                    $scope.request($scope.renderPosts,
-                        function () {
-                            $scope.bottomTryAgain    = true;
-                            $scope.postBottomWaiting = false;
-                        });
+                    $scope.getProfilePostsRequest(function (resPosts) {
+                        var data = resPosts.data;
+
+                        $scope.renderPosts(data.posts);
+
+                        $scope.postBottomWaiting = false;
+                        if (data.posts.length < data.length) {
+                            $scope.lastPostFetched = true;
+                        } else {
+                            $scope.bottomSeeMore = true;
+                        }
+                    }, function () {
+                        $scope.bottomSeeMore     = true;
+                        $scope.postBottomWaiting = false;
+                    });
                 };
 
-                $scope.tryAgain = function () {
-                    $scope.bottomTryAgain = false;
+                $scope.seeMore = function () {
+                    $scope.bottomSeeMore = false;
                     $scope.getPosts();
                 };
 
                 $scope.renderPosts = function (posts) {
                     for (var i in posts) {
                         if (posts[i] && !$scope.isIdExistedInQueue(posts[i]._id)) {
+                            $scope.start++;
                             $scope.compileTemplate('postNormal.ng.html', {
                                 post: posts[i]
                             }, function (html) {
@@ -56,33 +69,39 @@
                     }
                 };
 
-                $scope.request = function (ok, fail) {
+                $scope.getProfilePostsRequest = function (ok, fail) {
                     var getQuery = {
                         start: $scope.start || undefined
                     };
 
-                    $http({
-                        method: 'GET',
-                        url   : '/profile/get-post-json',
-                        params: getQuery
-                    })
-                        .then(function (result) {
-                            // don't allow to request being send anymore incase the last request being empty
-                            if (
-                                result.data.posts.length === 0 && !$scope.newestPost
-                            ) {
-                                $scope.lastPostFetched = true;
-                            }
-                            ok(result);
-                        }, function (result) {
-                            fail();
-                        });
+                    if (!$scope.requestInProgress) {
+                        $scope.requestInProgress = true;
+                        $http({
+                            method: 'GET',
+                            url   : '/posts/get-posts-json',
+                            params: getQuery
+                        })
+                            .then(function (result) {
+                                // don't allow to request being send anymore incase the last request being empty
+                                if (
+                                    result.data.posts.length === 0 && !$scope.newestPost
+                                ) {
+                                    $scope.lastPostFetched = true;
+                                }
+                                ok(result);
+                                $scope.requestInProgress = false;
+                            }, function (result) {
+                                fail();
+                                $scope.requestInProgress = false;
+                            });
+                    }
                 };
 
                 $scope.compileTemplate = function (templateUrl, data, callback) {
                     $templateRequest(templateUrl).then(function (html) {
+                        var scope         = $rootScope.$new();
                         var template      = angular.element(html);
-                        var interimScope  = angular.extend($scope, data);
+                        var interimScope  = angular.extend(scope, data);
                         var compileResult = $compile(template)(interimScope);
 
                         callback(compileResult[0]);
@@ -105,15 +124,17 @@
                 restrict  : 'EA',
                 controller: 'PartialsProfilePostsController',
                 link      : function ($scope, $element, $attrs) {
-                    angular.element($window).bind('scroll', function () {
-                        if (this.pageYOffset >= 100) {
-                            // load the rest of posts when scrollbar reached the end
-                            if (!$scope.postBottomWaiting && !$scope.bottomTryAgain && !$scope.lastPostFetched) {
-                                $scope.tryAgain();
-                                $scope.$apply();
-                            }
-                        }
-                    });
+                    // angular.element($window).bind('scroll', function () {
+                    //     if (this.pageYOffset >= 100) {
+                    //         // load the rest of posts when scrollbar reached the end
+                    //         if (!$scope.postBottomWaiting && !$scope.bottomSeeMore && !$scope.lastPostFetched) {
+                    //             setTimeout(function () {
+                    //                 $scope.seeMore();
+                    //                 $scope.$apply();
+                    //             }, 500);
+                    //         }
+                    //     }
+                    // });
                 }
             };
         });

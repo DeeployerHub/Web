@@ -19,11 +19,6 @@
         </li>
         <li class="list-group-item hide post-area-top"></li>
 
-        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
-        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
-        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
-        <!--<li class="list-group-item post-row">asdfsdfsdf</li>-->
-
         <li class="list-group-item hide post-area-bottom"></li>
         <li class="list-group-item waiting-row hide-row text-center" ng-show="lastPostFetched">
             <p
@@ -43,12 +38,12 @@
                 That's all of it
             </span>
         </li>
-        <li class="list-group-item waiting-row hide-row text-center" ng-show="bottomTryAgain && !lastPostFetched">
+        <li class="list-group-item waiting-row hide-row text-center" ng-show="bottomSeeMore && !lastPostFetched">
             <button
                 class="btn btn-sm btn-info"
-                ng-click="tryAgain()"
+                ng-click="seeMore()"
             >
-                Loading failed. click here to try again
+                See more ...
             </button>
         </li>
         <li class="list-group-item waiting-row hide-row" ng-show="postBottomWaiting">
@@ -62,9 +57,32 @@
 
 <script type="text/ng-template" id="postNormal.ng.html">
     <li class="list-group-item post-row">
-        <div class="poster-info"></div>
-        <div class="poster-content">
-            {{ post.content }}
+        <div class="poster-info">
+            <div class="profile-post-avatar">
+                <img
+                    ng-src="{{ post.ownerUserId.avatar }}"
+                    class="img-thumbnail avatar"
+                    alt="{{ post.ownerUserId.username }}"
+                    title="{{ post.ownerUserId.username }}"
+                    width="75px"
+                    height="75px"
+                    src="{{ post.ownerUserId.avatar }}">
+            </div>
+            <div class="profile-post-misc">
+                <a href="/profile/{{ post.ownerUserId.username }}">
+                    {{ post.ownerUserId.username }}
+                </a>
+                <span class="text-muted">
+                    @{{ post.ownerUserId.username }}
+                </span>
+                <span class="text-muted">
+                    <i class="glyphicon glyphicon-time"></i>&nbsp;
+                    {{ post.postedAt }}
+                </span>
+                <div class="clearfix"></div>
+                {{ post.content }}
+            </div>
+            <div class="clearfix"></div>
         </div>
         <div class="poster-action"></div>
     </li>

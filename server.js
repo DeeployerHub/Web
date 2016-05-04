@@ -1,5 +1,6 @@
-express = require('express');
-app = express();
+require('./bootstrap');
+express  = require('express');
+app      = express();
 passport = require('passport');
 
 require('./config/env.js')(app, express);

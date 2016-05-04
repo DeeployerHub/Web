@@ -2,7 +2,7 @@ module.exports = function() {
     'use strict';
 
     var router = express.Router();
-    var controller = getController('root/main.js');
+    var controller = getController('root');
 
     // route to specified controllers
     router.get('/', getMiddleware('account.consoleCheck'), controller.landingPage);
