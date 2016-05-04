@@ -1,16 +1,28 @@
 <script src='/assets/js/app/partials/profile/posts.js'></script>
 <div
     ng-controller="PartialsProfilePostsController"
-    ng-init="getPosts()"
+    ng-init="
+        username = '[[ requestedUser.username ]]';
+        getPosts();
+        "
     class="profile-posts ng-hide"
     ng-show="moduleLoaded"
 >
-    <ul class="list-group post-wrapper post-spread-section">
-        <li class="list-group-item write-post-row">
-            {% include './new-post.html' %}
-        </li>
-    </ul>
-    <ul class="list-group post-wrapper">
+
+    {% if signedInUser.username === requestedUser.username %}
+        <ul class="list-group post-wrapper post-spread-section">
+            <li class="list-group-item write-post-row">
+                {% include './new-post.html' %}
+            </li>
+        </ul>
+    {% endif %}
+    <ul
+        class="
+        list-group
+        post-wrapper
+        {% if signedInUser.username !== requestedUser.username %}requested-user-posts{% endif %}
+        "
+    >
         <li class="list-group-item waiting-row" ng-show="postTopWaiting">
             <div class="cssload-container">
                 <div class="cssload-whirlpool"></div>
@@ -20,15 +32,25 @@
         <li class="list-group-item hide post-area-top"></li>
 
         <li class="list-group-item hide post-area-bottom"></li>
-        <li class="list-group-item waiting-row hide-row text-center" ng-show="lastPostFetched">
+        <li
+            ng-class="
+                queue.length === 0
+                ? 'list-group-item waiting-row hide-row text-center no-post'
+                : 'list-group-item waiting-row hide-row text-center'
+            "
+            ng-show="lastPostFetched">
             <p
                 ng-show="queue.length === 0"
             >
-                You haven't share any post yet. &nbsp;
-                <button ng-click="newPostPopup()" class="btn btn-lg btn-idea">
-                    <i class="glyphicon glyphicon-share"></i>
-                    Spread
-                </button>
+                {% if signedInUser.username !== requestedUser.username %}
+                    [[ userProfile.firstname | title ]] hasn't shared any post yet
+                {% else %}
+                    You haven't share any post yet. &nbsp;
+                    <button ng-click="newPostPopup()" class="btn btn-lg btn-idea">
+                        <i class="glyphicon glyphicon-share"></i>
+                        Spread
+                    </button>
+                {% endif %}
             </p>
             <span
                 ng-show="queue.length !== 0"
@@ -58,18 +80,16 @@
 <script type="text/ng-template" id="postNormal.ng.html">
     <li class="list-group-item post-row">
         <div class="poster-info">
-            <div class="profile-post-avatar">
-                <img
-                    ng-src="{{ post.ownerUserId.avatar }}"
-                    class="img-thumbnail avatar"
-                    alt="{{ post.ownerUserId.username }}"
-                    title="{{ post.ownerUserId.username }}"
-                    width="75px"
-                    height="75px"
-                    src="{{ post.ownerUserId.avatar }}">
-            </div>
             <div class="profile-post-misc">
                 <a href="/profile/{{ post.ownerUserId.username }}">
+                    <img
+                        ng-src="{{ post.ownerUserId.avatar }}"
+                        class="img-thumbnail avatar"
+                        alt="{{ post.ownerUserId.username }}"
+                        title="{{ post.ownerUserId.username }}"
+                        width="75px"
+                        height="75px"
+                        src="{{ post.ownerUserId.avatar }}">
                     {{ post.ownerUserId.username }}
                 </a>
                 <span class="text-muted">
@@ -80,10 +100,13 @@
                     {{ post.postedAt }}
                 </span>
                 <div class="clearfix"></div>
-                {{ post.content }}
+                <div class="profile-post-content">
+                    {{ post.content }}
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="poster-action"></div>
+        <div class="clearfix"></div>
     </li>
 </script>

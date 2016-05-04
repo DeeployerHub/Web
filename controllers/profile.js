@@ -46,7 +46,7 @@ module.exports = {
         userRepos.getUserInfoByUsername(username, function (userInfo) {
             if (userInfo) {
                 res.render('profile/pages/profile', {
-                    user         : signedInUser,
+                    user         : null,
                     requestedUser: userInfo,
                     signedInUser : null,
                     page         : page,

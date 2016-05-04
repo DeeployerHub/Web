@@ -78,7 +78,7 @@
                         $scope.requestInProgress = true;
                         $http({
                             method: 'GET',
-                            url   : '/posts/get-posts-json',
+                            url   : '/posts/' + $scope.username + '/get-posts-json',
                             params: getQuery
                         })
                             .then(function (result) {

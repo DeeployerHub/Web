@@ -125,12 +125,9 @@ $brand-body-color: #015;
 }
 
 .profile-posts {
+    font-size: 14px;
     .post-spread-section {
         margin-bottom: -3px;
-    }
-    .post-wrapper {
-        //max-height: 100vh;
-        //overflow-y: scroll;
     }
     .write-post-row {
         background-color: #f8f8f8;
@@ -151,18 +148,33 @@ $brand-body-color: #015;
         }
     }
     .post-row {
-        .profile-post-avatar {
-            float: left;
+        min-height: 95px;
+        &.post-highlight {
+            background-color: #f3f9fe;
+        }
+        &:hover {
+            background-color: #f5f8fa;
         }
         .profile-post-misc {
             float: left;
+            padding-left: 80px;
+            clear: both;
 
-            padding-left: 10px;
+            .avatar {
+                width: 75px;
+                height: 75px;
+                position: absolute;
+                left: 10px;
+            }
             a {
                 font-weight: bold;
             }
             .text-muted {
                 font-size:12px;
+            }
+            .profile-post-content {
+                font-size: 18px;
+                font-weight: 500;
             }
         }
     }
@@ -176,6 +188,14 @@ $brand-body-color: #015;
         .cssload-container {
             top: 40px;
             left: 3%;
+        }
+    }
+    .requested-user-posts {
+        .no-post {
+            border-top: none;
+        }
+        .post-row {
+            border: 1px solid #ddd;
         }
     }
 }
