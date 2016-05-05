@@ -39,31 +39,31 @@ module.exports = function() {
         controller.profileCoverUpload
     );
     // route for targeted username 
-    router.get('/:username', function(req, res) {
+    router.get('/:username', getMiddleware('account.signInCheck'), function(req, res) {
         var username = req.params.username;
         var page = 'posts';
         return controller.profile(req, res, page, username);
     });
 
-    router.get('/:username/posts', function(req, res) {
+    router.get('/:username/posts', getMiddleware('account.signInCheck'), function(req, res) {
         var username = req.params.username;
         var page = 'posts';
         return controller.profile(req, res, page, username);
     });
 
-    router.get('/:username/about', function(req, res) {
+    router.get('/:username/about', getMiddleware('account.signInCheck'), function(req, res) {
         var username = req.params.username;
         var page = 'about';
         return controller.profile(req, res, page, username);
     });
 
-    router.get('/:username/followers', function(req, res) {
+    router.get('/:username/followers', getMiddleware('account.signInCheck'), function(req, res) {
         var username = req.params.username;
         var page = 'followers';
         return controller.profile(req, res, page, username);
     });
     
-    router.get('/:username/followers/get-json', function(req, res) {
+    router.get('/:username/followers/get-json', getMiddleware('account.signInCheck'), function(req, res) {
         var username = req.params.username;
         return controller.getFollowers(req, res, username);
     });

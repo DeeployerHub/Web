@@ -4,7 +4,7 @@ module.exports = function() {
     var router = express.Router();
     var controller = getController('posts');
 
-    router.get('/:username/get-posts-json', function(req, res) {
+    router.get('/:username/get-posts-json', getMiddleware('account.signInCheck'), function(req, res) {
         var username = req.params.username;
 
         return controller.getProfilePostsJson(req, res, username);

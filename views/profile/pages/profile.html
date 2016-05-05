@@ -27,11 +27,14 @@
     <div class="timeline-cover" ng-controller="ProfileCoverController">
         <img
             class="img-responsive"
-            ng-mouseover="editCoverIconStatus = true"
-            ng-mouseleave="editCoverIconStatus = false"
             ng-src="{{ cover }}"
-            ng-click="coverClick()"
-            cover-image-onload-waiting>
+            {% if signedInUser.username === requestedUser.username %}
+                ng-mouseover="editCoverIconStatus = true"
+                ng-mouseleave="editCoverIconStatus = false"
+                ng-click="coverClick()"
+                cover-image-onload-waiting
+            {% endif %}
+        >
         <i
             ng-mouseover="editCoverIconStatus = true" 
             ng-show="!waitingCover && editCoverIconStatus"
@@ -76,16 +79,19 @@
         <div class="col-md-3">
             <div class="text-center avatar-wrapper" ng-controller="ProfileAvatarController">
                 <img
-                    ng-mouseover="editIconStatus = true" 
-                    ng-mouseleave="editIconStatus = false"
                     ng-src="{{ avatar }}"
-                    ng-click="avatarClick()"
                     class="img-thumbnail avatar profile-avatar"
                     alt="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]"
                     title="[[ userProfile.firstname + ' ' + userProfile.lastname || 'avatar' ]]"
                     width="200px"
                     height="200px"
-                    image-onload-waiting>
+                    {% if signedInUser.username === requestedUser.username %}
+                        ng-mouseover="editIconStatus = true"
+                        ng-mouseleave="editIconStatus = false"
+                        ng-click="avatarClick()"
+                        image-onload-waiting
+                    {% endif %}
+                >
                 <i
                     ng-mouseover="editIconStatus = true" 
                     ng-show="!waiting && editIconStatus"

@@ -2,12 +2,12 @@ module.exports = {
     addNewPost: function (ownerUserId, content, result) {
         'use strict';
 
-        var mongoose         = require('mongoose');
+        var mongoose = require('mongoose');
         var usersPostsSchema = getModelSchema('usersPosts');
 
         var newUserPost = new usersPostsSchema({
             ownerUserId: mongoose.Types.ObjectId(ownerUserId),
-            content    : content
+            content: content
         });
 
         newUserPost.save(function (err, res) {
@@ -22,7 +22,7 @@ module.exports = {
     getPostsByOwnerId: function (userId, start, length, result) {
         'use strict';
 
-        var mongoose            = require('mongoose');
+        var mongoose = require('mongoose');
         var notificationsSchema = getModelSchema('usersPosts');
 
         notificationsSchema
@@ -30,7 +30,7 @@ module.exports = {
                 ownerUserId: mongoose.Types.ObjectId(userId)
             })
 
-            .populate('ownerUserId', '_id avatar username')
+            .populate('ownerUserId', '_id avatar username profile')
             .sort({
                 postedAt: -1
             })
@@ -41,7 +41,17 @@ module.exports = {
                     return console.error(err);
                 }
 
+                res.forEach(function (obj) {
+                    var profileStack = obj.ownerUserId.profile.pop();
+                    var profileObj = {
+                        firstname: profileStack.firstname,
+                        lastname: profileStack.lastname
+                    };
+
+                    obj.ownerUserId.profile = profileObj;
+                });
+
                 result(res);
             });
-    },
+    }
 };
