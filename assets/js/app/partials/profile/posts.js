@@ -53,8 +53,10 @@
                 };
 
                 $scope.seeMore = function () {
-                    $scope.bottomSeeMore = false;
-                    $scope.getPosts();
+                    if ($scope.bottomSeeMore && !$scope.lastPostFetched) {
+                        $scope.bottomSeeMore = false;
+                        $scope.getPosts();
+                    }
                 };
 
                 $scope.renderPosts = function (posts) {
@@ -86,6 +88,10 @@
                     }
                 };
 
+                $scope.getRequestedUsername = function () {
+                    return $('[data-username]').data('username');
+                };
+
                 $scope.getProfilePostsRequest = function (ok, fail) {
                     var getQuery = {
                         start: $scope.start || undefined
@@ -95,7 +101,7 @@
                         $scope.requestInProgress = true;
                         $http({
                             method: 'GET',
-                            url   : '/posts/' + $scope.username + '/get-posts-json',
+                            url   : '/posts/' + $scope.getRequestedUsername() + '/get-posts-json',
                             params: getQuery
                         })
                             .then(function (result) {
@@ -141,18 +147,15 @@
             return {
                 restrict  : 'EA',
                 controller: 'PartialsProfilePostsController',
-                link      : function ($scope, $element, $attrs) {
-                    // angular.element($window).bind('scroll', function () {
-                    //     if (this.pageYOffset >= 100) {
-                    //         // load the rest of posts when scrollbar reached the end
-                    //         if (!$scope.postBottomWaiting && !$scope.bottomSeeMore && !$scope.lastPostFetched) {
-                    //             setTimeout(function () {
-                    //                 $scope.seeMore();
-                    //                 $scope.$apply();
-                    //             }, 500);
-                    //         }
-                    //     }
-                    // });
+                link      : function ($scope) {
+                    angular.element($window).bind('scroll', function () {
+                        if (this.pageYOffset >= 100) {
+                            // load the rest of posts when scrollbar reached the end
+                            if (!$scope.postBottomWaiting && !$scope.bottomSeeMore && !$scope.lastPostFetched) {
+                                $('.btn-see-more').click();
+                            }
+                        }
+                    });
                 }
             };
         });

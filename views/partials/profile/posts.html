@@ -2,10 +2,10 @@
 <div
     ng-controller="PartialsProfilePostsController"
     ng-init="
-        username = '[[ requestedUser.username ]]';
         init();
         getPosts();
         "
+    data-username="[[ requestedUser.username ]]"
     class="profile-posts ng-hide"
     ng-show="moduleLoaded"
 >
@@ -63,7 +63,7 @@
         </li>
         <li class="list-group-item waiting-row hide-row text-center" ng-show="bottomSeeMore && !lastPostFetched">
             <button
-                class="btn btn-sm btn-info"
+                class="btn btn-sm btn-info btn-see-more"
                 ng-click="seeMore()"
             >
                 See more ...
