@@ -22,6 +22,16 @@
                 $scope.queue             = [];
                 $scope.start             = 0;
 
+                $scope.init = function () {
+                    setInterval(function () {
+                        $('li[data-post-id]').each(function (id, obj) {
+                            setTimeout(function () {
+                                $scope.renderPostsDate($(obj)[0]);
+                            }, 100);
+                        });
+                    }, 10 * 1000);
+                };
+
                 // posts page's zone
                 $scope.getPosts = function () {
                     $scope.postBottomWaiting = true;
@@ -54,11 +64,18 @@
                             $scope.compileTemplate('postNormal.ng.html', {
                                 post: posts[i]
                             }, function (html) {
+                                $scope.renderPostsDate(html);
                                 $('.post-area-bottom').before(html);
                             });
                         }
                     }
                 };
+
+                $scope.renderPostsDate = function (html) {
+                    var post = $(html).find('[data-moment-date]');
+                    var momentResult = moment(new Date(post.data('moment-date'))).fromNow();
+                    post.html(momentResult);
+                }
 
                 $scope.isIdExistedInQueue = function (id) {
                     if ($scope.queue.indexOf(id.toString()) === 0) {
@@ -103,8 +120,9 @@
                         var template      = angular.element(html);
                         var interimScope  = angular.extend(scope, data);
                         var compileResult = $compile(template)(interimScope);
-
-                        callback(compileResult[0]);
+                        setTimeout(function () {
+                            callback(compileResult[0]);
+                        }, 100);
                     });
                 };
             }

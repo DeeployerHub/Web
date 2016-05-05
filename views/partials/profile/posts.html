@@ -3,6 +3,7 @@
     ng-controller="PartialsProfilePostsController"
     ng-init="
         username = '[[ requestedUser.username ]]';
+        init();
         getPosts();
         "
     class="profile-posts ng-hide"
@@ -78,7 +79,7 @@
 </div>
 
 <script type="text/ng-template" id="postNormal.ng.html">
-    <li class="list-group-item post-row">
+    <li class="list-group-item post-row" data-post-id="{{ post._id }}">
         <div class="poster-info">
             <div class="profile-post-misc">
                 <a href="/profile/{{ post.ownerUserId.username }}">
@@ -95,10 +96,9 @@
                 <span class="text-muted">
                     @{{ post.ownerUserId.username }}
                 </span>
-                <span class="text-muted">
-                    <i class="glyphicon glyphicon-time"></i>&nbsp;
-                    {{ post.postedAt }}
-                </span>
+                &nbsp;
+                <i class="glyphicon glyphicon-time text-muted"></i>
+                <span class="text-muted" data-moment-date="{{ post.postedAt }}"></span>
                 <div class="clearfix"></div>
                 <div class="profile-post-content">
                     {{ post.content }}
