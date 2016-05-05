@@ -18,7 +18,7 @@ module.exports = {
             if (postRes) {
                 res.json({
                     status: true,
-                    post  : postRes
+                    post: postRes
                 });
             } else {
                 res.json({
@@ -27,7 +27,7 @@ module.exports = {
             }
         });
     },
-    getProfilePostsJson: function (req, res) {
+    getProfilePostsJson: function (req, res, username) {
         'use strict';
 
         var userRepos = getRepos('users');
@@ -35,27 +35,33 @@ module.exports = {
         var start = req.query.start || 0;
         var length = req.query.length || 3;
 
-        userRepos.getUserInfo(req.user.email, function (userInfo) {
-            usersPostsRepos.getProfilePosts(
-                req.user._id,
-                start,
-                length,
-                function (posts) {
-                    if (posts) {
-                        res.status(200).json({
-                            posts: posts,
-                            start: start,
-                            length: length
-                        });
-                    } else {
-                        res.status(200).json({
-                            posts: [],
-                            start: start,
-                            length: length
-                        });
+        userRepos.getUserInfoByUsername(username, function (userInfo) {
+            if (userInfo) {
+                usersPostsRepos.getProfilePosts(
+                    userInfo._id,
+                    start,
+                    length,
+                    function (posts) {
+                        if (posts) {
+                            res.status(200).json({
+                                posts: posts,
+                                start: start,
+                                length: length
+                            });
+                        } else {
+                            res.status(200).json({
+                                posts: [],
+                                start: start,
+                                length: length
+                            });
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                res.status(404).json({
+                    status: false
+                });
+            }
         });
     }
 };

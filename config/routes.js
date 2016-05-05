@@ -7,12 +7,12 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/', require('../routes/root.js')());
-app.use('/profile', require('../routes/profile.js')());
-app.use('/account', require('../routes/account.js')());
-app.use('/console', require('../routes/console.js')());
-app.use('/notifications', require('../routes/notifications.js')());
-app.use('/posts', require('../routes/posts.js')());
+app.use('/', require('../routes/root')());
+app.use('/profile', require('../routes/profile')());
+app.use('/account', require('../routes/account')());
+app.use('/console', require('../routes/console')());
+app.use('/notifications', require('../routes/notifications')());
+app.use('/posts', require('../routes/posts')());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
