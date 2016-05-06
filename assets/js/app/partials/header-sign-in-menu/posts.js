@@ -3,8 +3,12 @@
 
     angular.module("deeployer")
         .controller("HeaderSignInMenuPostsController", [
-            '$scope', '$http',
-            function ($scope, $http) {
+            '$scope', '$http', 'socket',
+            function ($scope, $http, socket) {
+
+                socket.on('connect', function () {
+                    console.log('connected');
+                });
                 $scope.waiting          = false;
                 $scope.content          = '';
                 $scope.maxContentLength = 250;

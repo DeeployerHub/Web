@@ -21,7 +21,7 @@ var assets = {
     ]
 };
 
-gulp.task('default', ['assets', 'bower-assets']);
+gulp.task('default', ['assets', 'bower-assets', 'node-assets']);
 
 gulp.task('assets-cleanup', function () {
     'use strict';
@@ -37,6 +37,16 @@ gulp.task('bower-assets', function () {
 
     gulp.src(dir.assets.bower + '/**', {base: dir.assets.bower})
         .pipe(gulp.dest(dir.assets.dest + '/bower'));
+});
+gulp.task('node-assets', function () {
+    'use strict';
+
+    [
+        'socket.io-client'
+    ].forEach(function (item) {
+        gulp.src(dir.assets.node + '/' + item + '/**', {base: dir.assets.node + '/' + item})
+            .pipe(gulp.dest(dir.assets.dest + '/node/' + item + '/'));
+    });
 });
 
 gulp.task('assets', ['assets-cleanup'], function () {
@@ -57,6 +67,5 @@ gulp.task('assets', ['assets-cleanup'], function () {
 gulp.task('assets:watch', function () {
     'use strict';
 
-    gulp.watch(dir.assets.source + '/**', ['assets', 'bower-assets']);
-    gulp.watch(dir.assets.bower + '/**', ['assets', 'bower-assets']);
+    gulp.watch(dir.assets.source + '/**', ['assets', 'bower-assets', 'node-assets']);
 });

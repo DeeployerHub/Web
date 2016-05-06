@@ -4,9 +4,9 @@
 {% block head %}
 {% parent %}
 <link rel="stylesheet" href="/assets/css/app/profile/profile.css">
-<script>
-    angular.module("deeployer", []);
-</script>
+
+{% include '../../partials/angular-module.html' %}
+
 <script src='/assets/js/app/profile/cover.js'></script>
 <script src='/assets/js/app/profile/avatar.js'></script>
 <script>

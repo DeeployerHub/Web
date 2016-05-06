@@ -33,7 +33,7 @@ module.exports = {
         var userRepos = getRepos('users');
         var usersPostsRepos = getRepos('usersPosts');
         var start = req.query.start || 0;
-        var length = req.query.length || 3;
+        var length = req.query.length || 10;
 
         userRepos.getUserInfoByUsername(username, function (userInfo) {
             if (userInfo) {

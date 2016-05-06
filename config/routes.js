@@ -3,6 +3,7 @@ app.use(function(req, res, next) {
 
     app.locals.request = req;
     app.locals.env = expressEnv;
+    app.locals.socketPath = getEnvConfig('app').socketPath;
 
     next();
 });
@@ -22,8 +23,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
-// error handlers
 
 // development error handler
 // will print stacktrace

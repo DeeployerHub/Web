@@ -2,9 +2,9 @@
 
 {% block head %}
 {% parent %}
-<script>
-    angular.module("deeployer", []);
-</script>
+
+{% include '../../../partials/angular-module.html' %}
+
 <script src='/assets/js/app/account/activation/profile.js'></script>
 {% endblock %}
 

@@ -1,0 +1,13 @@
+<script>
+    angular
+        .module("deeployer", [
+            'btford.socket-io'
+        ])
+        .factory('socket', ['socketFactory', function (socketFactory) {
+            window.socketIo = window.socketIo || socketFactory({
+                    ioSocket: io.connect('[[ socketPath ]]')
+                });
+
+            return window.socketIo;
+        }]);
+</script>
