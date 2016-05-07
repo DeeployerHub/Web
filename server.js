@@ -6,7 +6,7 @@ passport = require('passport');
 express  = require('express');
 app = express();
 server = require('http').Server(app);
-socketIo = require('socket.io')(server,  {'transports': ['websocket']});
+socketIo = require('socket.io')(server,  {'transports': ['websocket']}).of('/deeployer');
 
 require('./config/env.js')(app, express);
 require('./config/routes.js');

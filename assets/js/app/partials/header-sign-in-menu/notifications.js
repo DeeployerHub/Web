@@ -5,7 +5,6 @@
     .controller("HeaderSignInMenuNotificationsController", [
         '$scope', '$http', 'socket',
         function ($scope, $http, socket) {
-            console.log('socket');
             socket.on('connect', function () {
                 console.log('connected');
             });
