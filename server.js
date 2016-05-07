@@ -1,12 +1,17 @@
 require('./bootstrap');
-passport = require('passport');
 
 passport = require('passport');
+var redis = require('socket.io-redis');
 
 express  = require('express');
 app = express();
 server = require('http').Server(app);
-socketIo = require('socket.io')(server,  {'transports': ['websocket']}).of('/deeployer');
+socketIo = require('socket.io')(server,  {'transports': ['websocket']});
+socketIo.adapter(redis({
+    host: getEnvConfig('redis').host,
+    port: getEnvConfig('redis').port
+}));
+socketIo.of('/deeployer');
 
 require('./config/env.js')(app, express);
 require('./config/routes.js');
