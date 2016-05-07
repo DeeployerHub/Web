@@ -5,7 +5,7 @@
         ])
         .factory('socket', ['socketFactory', function (socketFactory) {
             window.socketIo = window.socketIo || socketFactory({
-                    ioSocket: io.connect('[[ socketPath ]]')
+                    ioSocket: io('[[ socketPath ]]', {'transports': ['websocket']}).connect()
                 });
 
             return window.socketIo;
