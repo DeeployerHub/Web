@@ -2,9 +2,10 @@ module.exports = {
     app: {
         expressPort: 7000,
         expressEnv: 'dev',
+        socketPath: 'ws://deeployer.dev.com/deeployer',
         request: {
             protocol: 'http://',
-            domains:{
+            domains: {
                 main: 'deeployer.dev.com'
             }
         }
