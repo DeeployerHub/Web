@@ -21,8 +21,11 @@ module.exports = function () {
         function (accessToken, refreshToken, arg1, profile, done) {
             var userRepos = getRepos('users');
 
-            userRepos.isUserRegistered(profile, profile.emails[0].value, function (res) {
-                done(null, res);
+            userRepos.isUserRegistered(profile, profile.emails[0].value, function (signedInUser) {
+                done(null, {
+                    '_id': signedInUser._id,
+                    'email': signedInUser.email
+                });
             });
         })
     );
