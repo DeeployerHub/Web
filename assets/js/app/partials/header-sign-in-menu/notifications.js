@@ -3,16 +3,8 @@
 
     angular.module("deeployer")
     .controller("HeaderSignInMenuNotificationsController", [
-        '$scope', '$http', 'socket',
-        function ($scope, $http, socket) {
-            socket.on('connect', function () {
-                console.log('connected');
-            });
-            //
-            // $socket.on('tweet', function (data) {
-            //     console.log("socket message:", data);
-            // });
-
+        '$scope', '$http', '$socket',
+        function ($scope, $http, $socket) {
             $scope.moduleLoaded = true;
             $scope.lastNotifyDownloaded = false;
             $scope.initialized = false;

@@ -6,15 +6,12 @@ var redis = require('socket.io-redis');
 express  = require('express');
 app = express();
 server = require('http').Server(app);
-socketIo = require('socket.io')(server,  {'transports': ['websocket']});
-socketIo.adapter(redis({
+io = require('socket.io')(server,  {'transports': ['websocket']});
+io.adapter(redis({
     host: getEnvConfig('redis').host,
     port: getEnvConfig('redis').port
 }));
-socketIo.of('/deeployer');
-
-require('./config/env.js')(app, express);
-require('./config/routes.js');
+io.path('deeployer');
 
 server.listen(expressPort, function () {
     'use strict';
@@ -22,22 +19,24 @@ server.listen(expressPort, function () {
     console.log('[LISTEN] PID: "' + process.pid + '" PORT: "' + expressPort + '"');
 });
 
-socketIo.on('connection', function(socket) {
+io.on('connection', function(socket) {
     'use strict';
 
-    console.log('connect', socket.id);
+    console.log('connect', socket.id, 'pid', process.pid);
     socket.on('disconnect', function() {
-        console.log('disconnect', socket.id);
+        console.log('disconnect', socket.id, 'pid', process.pid);
     });
 });
 
-socketIo.use(function(socket, next){
+io.use(function(socket, next){
     'use strict';
 
     if (socket.request.headers.cookie) {
-        return next();
+        return next(null, true);
     }
 
-    next(new Error('Authentication error'));
+    next(new Error('Authentication error'), false);
 });
 
+require('./config/env.js')(app, express, io);
+require('./config/routes.js');

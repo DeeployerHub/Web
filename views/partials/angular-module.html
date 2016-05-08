@@ -3,12 +3,23 @@
         .module("deeployer", [
             'btford.socket-io'
         ])
-        .factory('socket', ['socketFactory', function (socketFactory) {
+        .factory('$socket', ['socketFactory', function (socketFactory) {
             window.socketIo = window.socketIo || socketFactory({
                     ioSocket: io.connect('[[ socketPath ]]', {
                         transports: ['websocket']
                     })
                 });
+
+            window.socketIo.on('hi', function (data) {
+                console.log('hi message', data);
+                window.socketIo.emit('hi-back', 'test');
+            });
+            window.socketIo.on('connect', function () {
+                console.log('connected');
+            });
+            window.socketIo.on('disconnect', function () {
+                console.log('disconnected');
+            });
 
             return window.socketIo;
         }]);

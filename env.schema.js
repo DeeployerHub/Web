@@ -1,8 +1,12 @@
 module.exports = {
+    cookie: {
+        key: 'dskey',
+        secret: 'redis-secret'
+    },
     app: {
         expressPort: 7000,
         expressEnv: 'dev',
-        socketPath: 'ws://deeployer.dev.com/deeployer',
+        socketPath: 'ws://deeployer.dev.com',
         request: {
             protocol: 'http://',
             domains: {

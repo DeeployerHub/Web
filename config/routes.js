@@ -39,7 +39,7 @@ if (app.get('env') === 'development') {
 }
 
 // production error handler
-// no stacktraces leaked to user
+// no stacktrace leaked to user
 app.use(function(err, req, res, next) {
     'use strict';
 

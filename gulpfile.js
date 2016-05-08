@@ -42,7 +42,7 @@ gulp.task('node-assets', function () {
     'use strict';
 
     [
-        'socket.io-client'
+        'io.io-client'
     ].forEach(function (item) {
         gulp.src(dir.assets.node + '/' + item + '/**', {base: dir.assets.node + '/' + item})
             .pipe(gulp.dest(dir.assets.dest + '/node/' + item + '/'));

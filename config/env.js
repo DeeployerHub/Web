@@ -1,4 +1,4 @@
-module.exports = function (app, express) {
+module.exports = function (app, express, socket) {
     'use strict';
 
     var path = require('path');
@@ -46,8 +46,8 @@ module.exports = function (app, express) {
               httpOnly: true,
               maxAge: getEnvConfig('redis').ttl
         },
-        key: 'dskey',
-        secret: 'redis-secret',
+        key: getEnvConfig('cookie').key,
+        secret: getEnvConfig('cookie').secret,
         // create new redis store.
         store: new redisStore({
             host: getEnvConfig('redis').host,
