@@ -7,7 +7,7 @@ if (cluster.isMaster) {
         cluster.fork();
     }
 
-    console.log('[CLUSTER] Worker' + (numCPUs > 1 ? 's': '') + ' count: "' + numCPUs.toString() + '"');
+    console.log('[CLUSTER] Worker' + (numCPUs > 1 ? 's' : '') + ' count: "' + numCPUs.toString() + '"');
 
     cluster.on('exit', function (worker) {
         'use strict';

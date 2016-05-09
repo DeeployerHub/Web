@@ -11,6 +11,9 @@ module.exports = {
             type: Schema.ObjectId,
             ref: 'users'
         },
+        pid: {
+            type: Number
+        },
         connectedAt: {
             type: Date,
             default: Date.now

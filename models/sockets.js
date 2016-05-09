@@ -32,7 +32,8 @@ Sockets.prototype.addNewSocket = function (userId, socketId) {
 
         var newSocket = new base.socketsSchema({
             userId: mongoose.Types.ObjectId(userId),
-            socketId: socketId
+            socketId: socketId,
+            pid: process.pid
         });
 
         newSocket.save(function (err, res) {

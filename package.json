@@ -6,8 +6,8 @@
   "scripts": {
     "preinstall": "make install && bower install --allow-root",
     "install": "gulp",
-    "boot-dev": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
-    "boot-dev-single": "npm test && supervisor -i public,upload,assets,node_modules,bower_components server.js",
+    "boot-dev": "npm test && supervisor -k -i public,upload,assets,node_modules,bower_components boot.js",
+    "boot-dev-single": "npm test && supervisor -k -i public,upload,assets,node_modules,bower_components server.js",
     "start": "npm test && node boot.js",
     "test": "jshint . && exit 0"
   },
