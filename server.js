@@ -19,24 +19,5 @@ server.listen(expressPort, function () {
     console.log('[LISTEN] PID: "' + process.pid + '" PORT: "' + expressPort + '"');
 });
 
-io.on('connection', function(socket) {
-    'use strict';
-
-    console.log('connect', socket.id, 'pid', process.pid);
-    socket.on('disconnect', function() {
-        console.log('disconnect', socket.id, 'pid', process.pid);
-    });
-});
-
-io.use(function(socket, next){
-    'use strict';
-
-    if (socket.request.headers.cookie) {
-        return next(null, true);
-    }
-
-    next(new Error('Authentication error'), false);
-});
-
 require('./config/env.js')(app, express, io);
 require('./config/routes.js');
