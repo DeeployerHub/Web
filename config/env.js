@@ -101,6 +101,7 @@ module.exports = function (app, express, io) {
                     if (sessionData.passport.user) {
                         socket.session = sessionData.passport;
                         next(null, socket);
+                        
                         return;
                     }
                 }
@@ -112,7 +113,5 @@ module.exports = function (app, express, io) {
         }
     });
 
-    io.on('connection', function (socket) {
-        console.log(socket.session);
-    });
+    require('../sockets')(io).drive();
 };

@@ -51,7 +51,7 @@ getMiddleware = function (middleware) {
 getRepos = function (repository) {
     'use strict';
 
-    return require('./repositories/' + repository + '.js');
+    return require('./repositories/' + repository);
 };
 
 getModelSchema = function (model) {

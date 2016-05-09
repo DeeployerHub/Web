@@ -11,7 +11,6 @@ io.adapter(redis({
     host: getEnvConfig('redis').host,
     port: getEnvConfig('redis').port
 }));
-io.path('deeployer');
 
 server.listen(expressPort, function () {
     'use strict';
