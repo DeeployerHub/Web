@@ -4,7 +4,7 @@ var Promise = require('promise');
 var model = getModel('usersPosts')();
 
 /**
- * UserPosts Model
+ * UserPosts Repository
  *
  * @returns {UserPosts}
  * @constructor

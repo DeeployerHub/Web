@@ -5,7 +5,8 @@ var mongoose = require('mongoose');
 var socketsSchema = getModelSchema('sockets');
 
 /**
- *  model for sockets
+ *  Sockets Model
+ *  
  * @returns {Sockets}
  * @constructor
  */

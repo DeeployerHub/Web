@@ -1,196 +1,339 @@
-module.exports = {
-    findUserWithUsername: function(username, result) {
-        'use strict';
+module.exports = Users;
 
-        var usersSchema = getModelSchema('users');
+var Promise     = require('promise');
+var mongoose    = require('mongoose');
+var usersSchema = getModelSchema('users');
 
-        usersSchema.find({ username: username }, function(err, res){
+/**
+ * Users Model
+ *
+ * @returns {Users}
+ * @constructor
+ */
+function Users () {
+    'use strict';
+
+    if (!(this instanceof Users)) {
+        return new Users();
+    }
+}
+
+/**
+ * fetch the user's info by username
+ *
+ * @param username
+ *
+ * @returns {Promise}
+ */
+Users.prototype.findUserWithUsername = function (username) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        usersSchema.find({username: username}, function (err, res) {
             if (err) {
-                return console.error(err);
+                reject(err);
+
+                return;
             }
 
-            result(res[0]);
+            resolve(res[0]);
         });
-    },
-    findUserWithEmail: function(userEmail, result) {
-        'use strict';
+    });
+};
 
-        var usersSchema = getModelSchema('users');
+/**
+ * fetch the user's info by email
+ *
+ * @param userEmail
+ *
+ * @returns {Promise}
+ */
+Users.prototype.findUserWithEmail = function (userEmail) {
+    'use strict';
 
-        usersSchema.find({ email: userEmail }, function(err, res){
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        usersSchema.find({email: userEmail}, function (err, res) {
             if (err) {
-                return console.error(err);
+                reject(err);
+
+                return;
             }
 
-            result(res[0]);
+            resolve(res[0]);
         });
-    },
-    findUserWithId: function(userId, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
-        var usersSchema = getModelSchema('users');
+/**
+ * fetch the user's info by id
+ *
+ * @param userId
+ *
+ * @returns {Promise}
+ */
+Users.prototype.findUserWithId = function (userId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersSchema.find({
             _id: mongoose.Types.ObjectId(userId)
-        }, function(err, res){
+        }, function (err, res) {
             if (err) {
-                return console.error(err);
+                reject(err);
+
+                return;
             }
 
-            result(res[0]);
+            resolve(res[0]);
         });
-    },
-    registerNewUser: function(email, result) {
-        'use strict';
+    });
+};
 
-        var usersSchema = getModelSchema('users');
-        var newUser = new usersSchema({ 
+/**
+ * register the user into db
+ *
+ * @param email
+ *
+ * @returns {Promise}
+ */
+Users.prototype.registerNewUser = function (email) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        var newUser = new usersSchema({
             email: email
         });
 
-        newUser.save(function(err, res){
+        newUser.save(function (err, res) {
             if (err) {
-                return console.error(err);
+                reject(err);
+
+                return;
             }
 
-            result(res);
+            resolve(res);
         });
-    },
-    updateUserAvatarById: function(userId, avatarPath, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
+/**
+ * update the user avatar by id
+ *
+ * @param userId
+ * @param avatarPath
+ *
+ * @returns {Promise}
+ */
+Users.prototype.updateUserAvatarById = function (userId, avatarPath) {
+    'use strict';
 
-        var usersSchema = getModelSchema('users');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersSchema.findByIdAndUpdate(
             mongoose.Types.ObjectId(userId),
-            { 
+            {
                 $set: {
                     avatar: avatarPath
                 }
             },
             function (err, resObj) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result();
+                resolve();
             }
         );
-    },
-    updateUserCoverById: function(userId, coverPath, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
+/**
+ * update the user cover by id
+ *
+ * @param userId
+ * @param coverPath
+ *
+ * @returns {Promise}
+ */
+Users.prototype.updateUserCoverById = function (userId, coverPath) {
+    'use strict';
 
-        var usersSchema = getModelSchema('users');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersSchema.findByIdAndUpdate(
             mongoose.Types.ObjectId(userId),
-            { 
+            {
                 $set: {
                     coverPicture: coverPath
                 }
             },
             function (err, resObj) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result();
+                resolve();
             }
         );
-    },
-    updateUsernameById: function(userId, username, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
+/**
+ * update username by id
+ *
+ * @param userId
+ * @param username
+ *
+ * @returns {Promise}
+ */
+Users.prototype.updateUsernameById = function (userId, username) {
+    'use strict';
 
-        var usersSchema = getModelSchema('users');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersSchema.findByIdAndUpdate(
             mongoose.Types.ObjectId(userId),
-            { 
+            {
                 $set: {
                     username: username.toLowerCase()
                 }
             },
             function (err, resObj) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result();
+                resolve();
             }
         );
-    },
-    updateProfileById: function(userId, profile, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
+/**
+ * update profile by id
+ *
+ * @param userId
+ * @param username
+ *
+ * @returns {Promise}
+ */
+Users.prototype.updateProfileById = function (userId, username) {
+    'use strict';
 
-        var usersSchema = getModelSchema('users');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersSchema.findByIdAndUpdate(
             mongoose.Types.ObjectId(userId),
-            { 
+            {
                 $push: {
                     profile: {
-                        gender: profile.gender,
-                        firstname: profile.firstname.toLowerCase(),
-                        lastname: profile.lastname.toLowerCase(),
-                        country: profile.country,
-                        phone: profile.phone,
+                        gender     : profile.gender,
+                        firstname  : profile.firstname.toLowerCase(),
+                        lastname   : profile.lastname.toLowerCase(),
+                        country    : profile.country,
+                        phone      : profile.phone,
                         geoLocation: profile.geoLocation
                     }
                 }
             },
             function (err, resObj) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result();
+                resolve();
             }
         );
-    },
-    updateActivationById: function(userId, value, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
+/**
+ * update activation by id
+ *
+ * @param userId
+ * @param value
+ *
+ * @returns {Promise}
+ */
+Users.prototype.updateActivationById = function (userId, value) {
+    'use strict';
 
-        var usersSchema = getModelSchema('users');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersSchema.findByIdAndUpdate(
             mongoose.Types.ObjectId(userId),
-            { 
+            {
                 $set: {
                     activated: value
                 }
             },
             function (err, resObj) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result();
+                resolve();
             }
         );
-    },
-    increasePoints: function(userId, increasePointsValue, attributes, result) {
-        'use strict';
+    });
+};
 
-        var mongoose = require('mongoose');
+/**
+ * increase the user points
+ *
+ * @param userId
+ * @param increasePointsValue
+ * @param attributes
+ *
+ * @returns {Promise}
+ */
+Users.prototype.increasePoints = function (userId, increasePointsValue, attributes) {
+    'use strict';
 
-        var usersSchema = getModelSchema('users');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
 
         usersSchema.find({
             _id: mongoose.Types.ObjectId(userId)
         }, function(err, res){
             if (err) {
-                return console.error(err);
+                reject(err);
+
+                return;
             }
 
             var pointBeforeAction = res[0].points || 0;
@@ -207,7 +350,7 @@ module.exports = {
 
             usersSchema.findByIdAndUpdate(
                 mongoose.Types.ObjectId(userId),
-                { 
+                {
                     $set: {
                         points: pointAfterAction
                     },
@@ -217,12 +360,14 @@ module.exports = {
                 },
                 function (err) {
                     if (err) {
-                        return console.error(err);
+                        reject(err);
+
+                        return;
                     }
 
-                    result(pointAfterAction);
+                    resolve(pointAfterAction);
                 }
             );
         });
-    }
+    });
 };

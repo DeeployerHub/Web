@@ -5,6 +5,7 @@ var model = getModel('notifications')();
 
 /**
  *  Notifications Repository
+ *  
  * @returns {Notifications}
  * @constructor
  */

@@ -1,138 +1,176 @@
+var model = getModel('users')();
+
 module.exports = {
     isUsernameExists: function (username, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        model.findUserWithUsername(username, function (findRes) {
+        model.findUserWithUsername(username).then(function (findRes) {
             if (findRes) {
                 callback(findRes);
             } else {
                 callback(null);
             }
+        }, function (err) {
+            console.error(err);
+
+            callback(null);
         });
     },
     getUserInfo: function (email, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        model.findUserWithEmail(email, function (findRes) {
+        model.findUserWithEmail(email).then(function (findRes) {
             if (findRes) {
                 callback(findRes);
             } else {
                 callback(null);
             }
+        }, function (err) {
+            console.error(err);
+
+            callback(null);
         });
     },
     getUserInfoByUsername: function (username, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        model.findUserWithUsername(username, function (findRes) {
+        model.findUserWithUsername(username).then(function (findRes) {
             if (findRes) {
                 callback(findRes);
             } else {
                 callback(null);
             }
+        }, function (err) {
+            console.error(err);
+
+            callback(null);
         });
     },
     getUserInfoById: function (userId, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        model.findUserWithId(userId, function (findRes) {
+        model.findUserWithId(userId).then(function (findRes) {
             if (findRes) {
                 callback(findRes);
             } else {
                 callback(null);
             }
+        }, function (err) {
+            console.error(err);
+
+            callback(null);            
         });
     },
     isUserRegistered: function (profile, email, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        model.findUserWithEmail(email, function (findRes) {
+        model.findUserWithEmail(email).then(function (findRes) {
             if (findRes) {
                 callback(findRes);
             } else {
-                model.registerNewUser(email, function (registerRes) {
+                model.registerNewUser(email).then(function (registerRes) {
                     callback(registerRes, profile);
+                }, function (err) {
+                    console.log(err);
+                    
+                    callback(null);
                 });
             }
+        }, function (err) {
+            console.error(err);
+            
+            model.registerNewUser(email).then(function (registerRes) {
+                callback(registerRes, profile);
+            }, function (err) {
+                console.log(err);
+
+                callback(null);
+            });
         });
     },
     isUserActivated: function (email, callback) {
         'use strict';
 
-        var model = getModel('users');
+        model.findUserWithEmail(email).then(function (findRes) {
+            if (findRes) {
+                callback(findRes);
+            } else {
+                callback(null);
+            }
+        }, function (err) {
+            console.error(err);
 
-        return model.findUserWithEmail(email, function (findRes) {
-            return callback(findRes);
+            callback(null);
         });
     },
     updateAvatar: function (userId, avatarPath, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        return model.updateUserAvatarById(userId, avatarPath, function (result) {
-            return callback(result);
+        model.updateUserAvatarById(userId, avatarPath).then(function (result) {
+            callback(result);
+        }, function (err) {
+            conosle.log(err);
+            
+            callback(null);
         });
     },
     updateCover: function (userId, coverPath, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        return model.updateUserCoverById(userId, coverPath, function (result) {
-            return callback(result);
+        model.updateUserCoverById(userId, coverPath).then(function (result) {
+            callback(result);
+        }, function (err) {
+            console.error(err);
+            
+            callback(null);
         });
     },
     updateUsername: function (userId, username, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        return model.updateUsernameById(userId, username, function (result) {
-            return callback(result);
+        model.updateUsernameById(userId, username).then(function (result) {
+            callback(result);
+        }, function (err) {
+            console.error(err);
+            
+            callback(null);
         });
     },
     updateProfile: function (userId, profile, callback) {
         'use strict';
 
-        var model = getModel('users');
-
-        return model.updateProfileById(userId, profile, function (result) {
-            return callback(result);
+        model.updateProfileById(userId, profile).then(function (result) {
+            callback(result);
+        }, function (err) {
+            console.error(err);
+            
+            callback(null);
         });
     },
     updateActivation: function (userId, value, callback) {
         'use strict';
 
-        var model = getModel('users');
+        model.updateActivationById(userId, value).then(function (result) {
+            callback(result);
+        }, function (err) {
+            console.error(err);
 
-        return model.updateActivationById(userId, value, function (result) {
-            return callback(result);
+            callback(null);
         });
     },
     earnPoint: function (userId, value, attributes, callback) {
         'use strict';
 
-        var model = getModel('users');
+        model.increasePoints(userId, value, attributes).then(function (result) {
+            callback(result);
+        }, function (err) {
+            console.error(err);
 
-        return model.increasePoints(userId, value, attributes, function (result) {
-            return callback(result);
+            callback(null);
         });
     },
     updateProfileEntities: function (userId, oldProfileEntities, profileEntities, callback) {
         'use strict';
-
-        var model = getModel('users');
 
         oldProfileEntities = oldProfileEntities.pop();
 
@@ -142,8 +180,12 @@ module.exports = {
             }
         }
 
-        return model.updateProfileById(userId, oldProfileEntities, function (result) {
-            return callback(result);
+        model.updateProfileById(userId, oldProfileEntities).then(function (result) {
+            callback(result);
+        }, function (err) {
+            console.error(err);
+
+            callback(null);
         });
     },
 };
