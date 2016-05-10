@@ -16,19 +16,25 @@ function Connection (base) {
     localSockets[process.pid] = [];
     var socketRepo = getRepos('sockets')();
 
-    var cleanUpSockets = function () {
+    var cleanUpSockets = function (signal, callback) {
         for (var i in localSockets[process.pid]) {
             if (localSockets[process.pid][i]) {
                 socketRepo.disconnect(localSockets[process.pid][i]);
             }
         }
+
+        console.info('[GC]', process.pid , signal);
+
+        callback();
     };
 
     [ 'SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT', 'exit' ].forEach( function(signal) {
         process.on(signal, function () {
-            cleanUpSockets();
-
-            process.exit(1);
+            cleanUpSockets(signal, function () {
+                if (signal !== 'exit') {
+                    process.exit(1);
+                }
+            });
         });
     });
 
