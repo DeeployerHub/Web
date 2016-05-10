@@ -1,3 +1,5 @@
+var socketRepo = getRepos('sockets')();
+
 module.exports = Connection;
 /**
  * handle the socket.io connection
@@ -14,7 +16,6 @@ function Connection (base) {
 
     var localSockets = {};
     localSockets[process.pid] = [];
-    var socketRepo = getRepos('sockets')();
 
     var cleanUpSockets = function (signal, callback) {
         for (var i in localSockets[process.pid]) {

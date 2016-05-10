@@ -1,3 +1,5 @@
+var userRepos = getRepos('users')();
+
 module.exports = function () {
     'use strict';
 
@@ -19,13 +21,13 @@ module.exports = function () {
             passReqToCallback: true
         },
         function (accessToken, refreshToken, arg1, profile, done) {
-            var userRepos = getRepos('users');
-
-            userRepos.isUserRegistered(profile, profile.emails[0].value, function (signedInUser) {
+            userRepos.isUserRegistered(profile, profile.emails[0].value).then(function (signedInUser) {
                 done(null, {
                     '_id': signedInUser._id,
                     'email': signedInUser.email
                 });
+            }, function (err) {
+                done(err, null);
             });
         })
     );

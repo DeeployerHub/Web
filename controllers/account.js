@@ -1,3 +1,7 @@
+var userRepos         = getRepos('users')();
+var notificationRepos = getRepos('notifications')();
+var amazon            = getRepos('amazon')();
+
 module.exports = {
     signIn: function (req, res) {
         'use strict';
@@ -19,9 +23,7 @@ module.exports = {
         account: function (req, res) {
             'use strict';
 
-            var userRepos = getRepos('users');
-
-            userRepos.getUserInfo(req.user.email, function (userInfo) {
+            userRepos.getUserInfo(req.user.email).then(function (userInfo) {
                 if (userInfo.avatar && userInfo.username) {
                     res.redirect(301, '/account/activation/profile');
                 } else {
@@ -29,6 +31,10 @@ module.exports = {
                         user: userInfo
                     });
                 }
+            }, function (err) {
+                console.error(err);
+
+                errorPageRender(res, 400, 'Sorry, something went wrong. please try again');
             });
         },
         accountAvatarUpload: function (req, res) {
@@ -39,8 +45,6 @@ module.exports = {
                 uuid = require('node-uuid'),
                 fs = require('fs');
 
-            var userRepos = getRepos('users');
-            var amazon = getRepos('amazon');
             var busboyPackage = require('busboy');
             var busboy = new busboyPackage({ headers: req.headers });
             var fileToken = '';
@@ -52,28 +56,34 @@ module.exports = {
                 file.pipe(fs.createWriteStream(savedFile));
             });
             busboy.on('finish', function() {
-                amazon.s3Upload(savedFile, fileToken, req.query.file_type, function(err, data) {
+                amazon.s3Upload(savedFile, fileToken, req.query.file_type).then(function(err) {
                     fs.unlink(savedFile);
-                    if (err) {
-                        res.json({
-                            status: false,
-                            reason: err
-                        }); 
-                    } else {
+                    if (!err) {
                         var s3file = 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + fileToken;
-
                         // update the user's avatar into database
-
-                        userRepos.updateAvatar(req.user._id, s3file, function () {
+                        userRepos.updateAvatar(req.user._id, s3file).then(function () {
                             res.json({
                                 status: true,
                                 data: {
                                     file: s3file
                                 }
                             });
+                        }, function (err) {
+                            console.error(err);
+
+                            res.status(400).json({
+                                status: false
+                            });
+                        });
+                    } else {
+                        console.error(err);
+
+                        res.status(400).json({
+                            status: false,
+                            reason: err
                         });
                     }
-                });
+                }, null);
             });
 
             req.pipe(busboy);
@@ -81,37 +91,27 @@ module.exports = {
         accountCollectPoint: function (req, res) {
             'use strict';
 
-            var userRepos = getRepos('users');
-            var notificationRepos = getRepos('notifications')();
-
             var username = req.body.username;
             if (username) {
                 // validate the username
-                userRepos.isUsernameExists(username, function (err) {
-                    var returnData = {
-                        status: true
-                    };
-
-                    if (err) {
-                        returnData.status = false;
-                        returnData.reason = 'username-already-exists';
-                    }
-
-                    if (returnData.status) {
-                        userRepos.updateUsername(req.user._id, username, function () {
+                userRepos.isUsernameExists(username).then(function (status) {
+                    if (!status) {
+                        userRepos.updateUsername(req.user._id, username).then(function () {
                             // increase the users's point for 50
                             userRepos.earnPoint(req.user._id, 50, {
                                 point: 50,
                                 type: 'activation',
                                 reason: 'account-section-completed',
                                 description: ''
-                            }, function (pointsAfterAction) {
+                            }).then(function (pointsAfterAction) {
                                 // send a notification
                                 notificationRepos.sendNotification(req.user._id, 'normal', {
                                     text: 'Congrats, you earned +50 Points for setup your account.'
                                 }).then(function () {
-                                    returnData.pointsAfterAction = pointsAfterAction;
-                                    res.json(returnData);
+                                    res.json({
+                                        status: true,
+                                        pointsAfterAction: pointsAfterAction
+                                    });
                                 }, function (err) {
                                     console.error(err);
 
@@ -119,11 +119,32 @@ module.exports = {
                                         status: false
                                     });
                                 });
+                            }, function (err) {
+                                console.error(err);
+
+                                res.status(400).json({
+                                    status: false
+                                });
+                            });
+                        }, function (err) {
+                            console.error(err);
+
+                            res.status(400).json({
+                                status: false
                             });
                         });
                     } else {
-                        res.json(returnData);
+                        res.json({
+                            status: false,
+                            reason: 'username-already-exists'
+                        });
                     }
+                }, function (err) {
+                    console.error(err);
+
+                    res.status(400).json({
+                        status: false
+                    });
                 });
             } else {
                 res.json({
@@ -134,9 +155,7 @@ module.exports = {
         profile: function (req, res) {
             'use strict';
 
-            var userRepos = getRepos('users');
-
-            userRepos.getUserInfo(req.user.email, function (userInfo) {
+            userRepos.getUserInfo(req.user.email).then(function (userInfo) {
                 if (!(userInfo.avatar && userInfo.username)) {
                     res.redirect('/account/activation/account');
                 } else {
@@ -150,13 +169,14 @@ module.exports = {
                         });
                     }
                 }
+            }, function (err) {
+                console.error(err);
+
+                errorPageRender(res, 400, 'Sorry, something went wrong. please try again');
             });
         },
         profileCollectPoint: function (req, res) {
             'use strict';
-
-            var userRepos = getRepos('users');
-            var notificationRepos = getRepos('notifications')();
 
             var profile = {
                 firstname: req.body.firstname,
@@ -174,14 +194,14 @@ module.exports = {
                 profile.country &&
                 profile.gender
                 ) {
-                userRepos.updateProfile(req.user._id, profile, function () {
+                userRepos.updateProfile(req.user._id, profile).then(function () {
                     // increase the users's point for 50
                     userRepos.earnPoint(req.user._id, 50, {
                         point: 50,
                         type: 'activation',
                         reason: 'profile-section-completed',
                         description: ''
-                    }, function () {
+                    }).then(function () {
                         // send a notification
                         notificationRepos.sendNotification(req.user._id, 'normal', {
                             text: 'Congrats, you earned +50 Points for Complete your profile.'
@@ -196,6 +216,18 @@ module.exports = {
                                 status: false
                             });
                         });
+                    }, function (err) {
+                        console.error(err);
+
+                        res.status(400).json({
+                            status: false
+                        });
+                    });
+                }, function (err) {
+                    console.error(err);
+
+                    res.status(400).json({
+                        status: false
                     });
                 });
             } else {
@@ -207,9 +239,7 @@ module.exports = {
         sharing: function (req, res) {
             'use strict';
 
-            var userRepos = getRepos('users');
-
-            userRepos.getUserInfo(req.user.email, function (userInfo) {
+            userRepos.getUserInfo(req.user.email).then(function (userInfo) {
                 if (!(userInfo.avatar && userInfo.username)) {
                     res.redirect('/account/activation/account');
                 } else {
@@ -222,14 +252,16 @@ module.exports = {
                         });
                     }
                 }
+            }, function (err) {
+                console.error(err);
+
+                errorPageRender(res, 400, 'Sorry, something went wrong. please try again');
             });
         },
         agree: function (req, res) {
             'use strict';
 
-            var userRepos = getRepos('users');
-
-            userRepos.getUserInfo(req.user.email, function (userInfo) {
+            userRepos.getUserInfo(req.user.email).then(function (userInfo) {
                 if (!(userInfo.avatar && userInfo.username)) {
                     res.json({
                         status: false
@@ -241,13 +273,25 @@ module.exports = {
                             status: false
                         });
                     } else {
-                        userRepos.updateActivation(req.user._id, true, function () {
+                        userRepos.updateActivation(req.user._id, true).then(function () {
                             res.json({
                                 status: true
+                            });
+                        }, function (err) {
+                            console.error(err);
+
+                            res.status(400).json({
+                                status: false
                             });
                         });
                     }
                 }
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
+                });
             });
         }
     }

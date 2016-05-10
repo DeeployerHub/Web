@@ -1,13 +1,16 @@
+var userRepos = getRepos('users')();
 module.exports = {
     console: function(req, res) {
         'use strict';
-
-        var userRepos = getRepos('users');
-
-        userRepos.getUserInfo(req.user.email, function (userInfo) {
+        
+        userRepos.getUserInfo(req.user.email).then(function (userInfo) {
             res.render('console/pages/console', {
                 user: userInfo
             });
+        }, function (err) {
+            console.error(err);
+
+            errorPageRender(res, 400, 'Sorry, something went wrong. please try again');
         });
     }
 };

@@ -1,15 +1,16 @@
+var userRepos = getRepos('users')();
+var notificationRepos = getRepos('notifications')();
+
 module.exports = {
     getJson: function (req, res) {
         'use strict';
 
-        var userRepos = getRepos('users');
-        var notificationRepos = getRepos('notifications')();
         var start = req.query.start || 0;
         var length = req.query.length || 5;
 
-        userRepos.getUserInfo(req.user.email, function (userInfo) {
+        userRepos.getUserInfo(req.user.email).then(function (userInfo) {
             notificationRepos.getNotifications(
-                req.user._id,
+                userInfo._id,
                 start,
                 length,
                 [
@@ -38,6 +39,12 @@ module.exports = {
                 res.status(400).json({
                     status: false
                 });
+            });
+        }, function (err) {
+            console.error(err);
+
+            res.status(400).json({
+                status: false
             });
         });
     }

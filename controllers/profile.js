@@ -1,4 +1,7 @@
+var userRepos         = getRepos('users')();
 var userRelationRepos = getRepos('usersRelations')();
+var notificationRepos = getRepos('notifications')();
+var amazon            = getRepos('amazon')();
 
 module.exports = {
     profile: function(req, res, page, username) {
@@ -13,16 +16,15 @@ module.exports = {
                 controller.profileSignOutShow(req, res, page, username);
             }
         } else {
-            controller.profileSelfShow(req, res, page, username);
+            controller.profileSelfShow(req, res, page);
         }
     },
     profileSigninShow: function(req, res, page, username) {
         'use strict';
 
-        var userRepos = getRepos('users');
 
-        userRepos.getUserInfo(req.user.email, function (signedInUser) {
-            userRepos.getUserInfoByUsername(username, function (userInfo) {
+        userRepos.getUserInfo(req.user.email).then(function (signedInUser) {
+            userRepos.getUserInfoByUsername(username).then(function (userInfo) {
                 if (userInfo) {
                     userRelationRepos.isFollowed(signedInUser._id, userInfo._id).then(function (followed) {
                         res.render('profile/pages/profile', {
@@ -34,21 +36,27 @@ module.exports = {
                         });
                     }, function (err) {
                         console.error(err);
-                        
+
                         errorPageRender(res, 404, 'Sorry, this page isn\'t available');
                     });
                 } else {
                     errorPageRender(res, 404, 'Sorry, this page isn\'t available');
                 }
+            }, function (err) {
+                console.error(err);
+
+                errorPageRender(res, 404, 'Sorry, this page isn\'t available');
             });
+        }, function (err) {
+            console.error(err);
+
+            errorPageRender(res, 404, 'Sorry, this page isn\'t available');
         });
     },
     profileSignOutShow: function(req, res, page, username) {
         'use strict';
 
-        var userRepos = getRepos('users');
-
-        userRepos.getUserInfoByUsername(username, function (userInfo) {
+        userRepos.getUserInfoByUsername(username).then(function (userInfo) {
             if (userInfo) {
                 res.render('profile/pages/profile', {
                     user         : null,
@@ -60,14 +68,16 @@ module.exports = {
             } else {
                 errorPageRender(res, 404, 'Sorry, this page isn\'t available');
             }
+        }, function (err) {
+            console.error(err);
+
+            errorPageRender(res, 404, 'Sorry, this page isn\'t available');
         });
     },
-    profileSelfShow: function(req, res, page, username) {
+    profileSelfShow: function(req, res, page) {
         'use strict';
 
-        var userRepos = getRepos('users');
-
-        userRepos.getUserInfo(req.user.email, function (signedInUser) {
+        userRepos.getUserInfo(req.user.email).then(function (signedInUser) {
             res.render('profile/pages/profile', {
                 user         : signedInUser,
                 requestedUser: signedInUser,
@@ -75,14 +85,16 @@ module.exports = {
                 page         : page,
                 followed     : 'empty'
             });
+        }, function (err) {
+            console.error(err);
+
+            errorPageRender(res, 404, 'Sorry, this page isn\'t available');
         });
     },
     getFollowers: function(req, res, username) {
         'use strict';
 
-        var userRepos = getRepos('users');
-
-        userRepos.getUserInfoByUsername(username, function (targetedUserInfo) {
+        userRepos.getUserInfoByUsername(username).then(function (targetedUserInfo) {
             userRelationRepos.getUserFollowers(targetedUserInfo._id).then(function (followers) {
                 res.json({
                     status: true,
@@ -95,12 +107,16 @@ module.exports = {
                     status: false
                 });
             });
+        }, function (err) {
+            console.error(err);
+
+            res.status(400).json({
+                status: false
+            });
         });
     },
     profileAboutUpdate: function(req, res) {
         'use strict';
-
-        var userRepos = getRepos('users');
 
         // preparing input data
         var profileData = req.body;
@@ -122,33 +138,37 @@ module.exports = {
             data.gender = profileData.gender;
         }
 
-        userRepos.getUserInfo(req.user.email, function (userInfo) {
-            userRepos.updateProfileEntities(req.user._id, userInfo.profile, data, function () {
+        userRepos.getUserInfo(req.user.email).then(function (userInfo) {
+            userRepos.updateProfileEntities(req.user._id, userInfo.profile, data).then(function () {
                 res.json({
                     status: true
                 });
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
+                });
+            });
+        }, function (err) {
+            console.error(err);
+
+            res.status(400).json({
+                status: false
             });
         });
     },
     relation: function(req, res) {
         'use strict';
 
-        var userRepos = getRepos('users');
-        var notificationRepos = getRepos('notifications')();
 
         // preparing input data
         var action         = req.body.action;
         var responseUsername = req.body.user;
 
         if (action === 'follow') {
-            userRepos.getUserInfoByUsername(responseUsername, function (responseUser) {
-                if (!responseUser) {
-                    res.status(400).json({
-                        status: false
-                    });
-                }
-
-                userRepos.getUserInfoById(req.user._id, function (requestUser) {
+            userRepos.getUserInfoByUsername(responseUsername).then(function (responseUser) {
+                userRepos.getUserInfoById(req.user._id).then(function (requestUser) {
                     userRelationRepos.follow(requestUser._id, responseUser._id).then(function (followRes) {
                         // notify user
                         notificationRepos.sendNotification(responseUser._id, 'follow', {
@@ -179,18 +199,24 @@ module.exports = {
                             status: false
                         });
                     });
+                }, function (err) {
+                    console.error(err);
+
+                    res.status(400).json({
+                        status: false
+                    });
+                });
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
                 });
             });
         }
 
         if (action === 'unfollow') {
-            userRepos.getUserInfoByUsername(responseUsername, function (responseUser) {
-                if (!responseUser) {
-                    res.status(400).json({
-                        status: false
-                    });
-                }
-
+            userRepos.getUserInfoByUsername(responseUsername).then(function (responseUser) {
                 userRelationRepos.unfollow(req.user._id, responseUser._id).then(function (followRes) {
                     res.json({
                         status: followRes
@@ -201,6 +227,12 @@ module.exports = {
                     res.status(400).json({
                         status: false
                     });
+                });
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
                 });
             });
         }
@@ -213,8 +245,6 @@ module.exports = {
             uuid = require('node-uuid'),
             fs = require('fs');
 
-        var userRepos = getRepos('users');
-        var amazon = getRepos('amazon');
         var busboyPackage = require('busboy');
         var busboy = new busboyPackage({ headers: req.headers });
         var fileToken = '';
@@ -226,27 +256,39 @@ module.exports = {
             file.pipe(fs.createWriteStream(savedFile));
         });
         busboy.on('finish', function() {
-            amazon.s3Upload(savedFile, fileToken, req.query.file_type, function(err, data) {
+            amazon.s3Upload(savedFile, fileToken, req.query.file_type).then(function(err) {
                 fs.unlink(savedFile);
-                if (err) {
-                    res.json({
-                        status: false,
-                        reason: err
-                    }); 
-                } else {
+                if (!err) {
                     var s3file = 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + fileToken;
-
                     // update the user's avatar into database
-
-                    userRepos.updateAvatar(req.user._id, s3file, function () {
+                    userRepos.updateAvatar(req.user._id, s3file).then(function () {
                         res.json({
                             status: true,
                             data: {
                                 file: s3file
                             }
                         });
+                    }, function (err) {
+                        console.error(err);
+
+                        res.status(400).json({
+                            status: false
+                        });
+                    });
+                } else {
+                    console.error(err);
+
+                    res.status(400).json({
+                        status: false,
+                        reason: err
                     });
                 }
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
+                });
             });
         });
 
@@ -260,8 +302,6 @@ module.exports = {
             uuid = require('node-uuid'),
             fs = require('fs');
 
-        var userRepos = getRepos('users');
-        var amazon = getRepos('amazon');
         var busboyPackage = require('busboy');
         var busboy = new busboyPackage({ headers: req.headers });
         var fileToken = '';
@@ -273,27 +313,39 @@ module.exports = {
             file.pipe(fs.createWriteStream(savedFile));
         });
         busboy.on('finish', function() {
-            amazon.s3Upload(savedFile, fileToken, req.query.file_type, function(err, data) {
+            amazon.s3Upload(savedFile, fileToken, req.query.file_type).then(function(err) {
                 fs.unlink(savedFile);
-                if (err) {
-                    res.json({
-                        status: false,
-                        reason: err
-                    }); 
-                } else {
+                if (!err) {
                     var s3file = 'https://' + getEnvConfig('tokens').aws.s3.bucket + '.s3.amazonaws.com/' + fileToken;
-
                     // update the user's avatar into database
-
-                    userRepos.updateCover(req.user._id, s3file, function () {
+                    userRepos.updateCover(req.user._id, s3file).then(function () {
                         res.json({
                             status: true,
                             data: {
                                 file: s3file
                             }
                         });
+                    }, function (err) {
+                        console.error(err);
+
+                        res.status(400).json({
+                            status: false
+                        });
+                    });
+                } else {
+                    console.error(err);
+
+                    res.status(400).json({
+                        status: false,
+                        reason: err
                     });
                 }
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
+                });
             });
         });
 

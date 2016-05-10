@@ -237,11 +237,11 @@ Users.prototype.updateUsernameById = function (userId, username) {
  * update profile by id
  *
  * @param userId
- * @param username
+ * @param profile
  *
  * @returns {Promise}
  */
-Users.prototype.updateProfileById = function (userId, username) {
+Users.prototype.updateProfileById = function (userId, profile) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
@@ -262,7 +262,7 @@ Users.prototype.updateProfileById = function (userId, username) {
                     }
                 }
             },
-            function (err, resObj) {
+            function (err) {
                 if (err) {
                     reject(err);
 
@@ -297,7 +297,7 @@ Users.prototype.updateActivationById = function (userId, value) {
                     activated: value
                 }
             },
-            function (err, resObj) {
+            function (err) {
                 if (err) {
                     reject(err);
 

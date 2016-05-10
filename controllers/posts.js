@@ -1,3 +1,4 @@
+var userRepos = getRepos('users')();
 var usersPostsRepos = getRepos('usersPosts')();
 
 module.exports = {
@@ -31,11 +32,10 @@ module.exports = {
     getProfilePostsJson: function (req, res, username) {
         'use strict';
 
-        var userRepos = getRepos('users');
         var start     = req.query.start || 0;
         var length    = req.query.length || 10;
 
-        userRepos.getUserInfoByUsername(username, function (userInfo) {
+        userRepos.getUserInfoByUsername(username).then(function (userInfo) {
             if (userInfo) {
                 usersPostsRepos.getProfilePosts(
                     userInfo._id,
@@ -67,6 +67,12 @@ module.exports = {
                     status: false
                 });
             }
+        }, function (err) {
+            console.error(err);
+
+            res.status(400).json({
+                status: false
+            });
         });
     }
 };
