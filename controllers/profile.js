@@ -1,3 +1,5 @@
+var userRelationRepos = getRepos('usersRelations')();
+
 module.exports = {
     profile: function(req, res, page, username) {
         'use strict';
@@ -18,12 +20,11 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
-        var userRelationRepos = getRepos('usersRelations');
 
         userRepos.getUserInfo(req.user.email, function (signedInUser) {
             userRepos.getUserInfoByUsername(username, function (userInfo) {
                 if (userInfo) {
-                    userRelationRepos.isFollowed(signedInUser._id, userInfo._id, function (followed) {
+                    userRelationRepos.isFollowed(signedInUser._id, userInfo._id).then(function (followed) {
                         res.render('profile/pages/profile', {
                             user         : signedInUser,
                             requestedUser: userInfo,
@@ -31,6 +32,8 @@ module.exports = {
                             page         : page,
                             followed     : (!followed ? 'not-' : '') + 'following'
                         });
+                    }, function (err) {
+                        errorPageRender(res, 400, 'Sorry, something went wrong. please try again');
                     });
                 } else {
                     errorPageRender(res, 404, 'Sorry, this page isn\'t available');
@@ -76,14 +79,18 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
-        var userRelationRepos = getRepos('usersRelations');
-
 
         userRepos.getUserInfoByUsername(username, function (targetedUserInfo) {
-            userRelationRepos.getUserFollowers(targetedUserInfo._id, function (followers) {
+            userRelationRepos.getUserFollowers(targetedUserInfo._id).then(function (followers) {
                 res.json({
                     status: true,
                     followers: followers
+                });
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
                 });
             });
         });
@@ -125,7 +132,6 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
-        var userRelationRepos = getRepos('usersRelations');
         var notificationRepos = getRepos('notifications')();
 
         // preparing input data
@@ -135,14 +141,13 @@ module.exports = {
         if (action === 'follow') {
             userRepos.getUserInfoByUsername(responseUsername, function (responseUser) {
                 if (!responseUser) {
-                    res.status(400);
-                    res.json({
+                    res.status(400).json({
                         status: false
                     });
                 }
 
                 userRepos.getUserInfoById(req.user._id, function (requestUser) {
-                    userRelationRepos.follow(requestUser._id, responseUser._id, function (followRes) {
+                    userRelationRepos.follow(requestUser._id, responseUser._id).then(function (followRes) {
                         // notify user
                         notificationRepos.sendNotification(responseUser._id, 'follow', {
                             text   : ucfirst(requestUser.username) + ' just followed you.',
@@ -165,6 +170,12 @@ module.exports = {
                                 status: false
                             });
                         });
+                    }, function (err) {
+                        console.error(err);
+
+                        res.status(400).json({
+                            status: false
+                        });
                     });
                 });
             });
@@ -173,15 +184,20 @@ module.exports = {
         if (action === 'unfollow') {
             userRepos.getUserInfoByUsername(responseUsername, function (responseUser) {
                 if (!responseUser) {
-                    res.status(400);
-                    res.json({
+                    res.status(400).json({
                         status: false
                     });
                 }
 
-                userRelationRepos.unfollow(req.user._id, responseUser._id, function (followRes) {
+                userRelationRepos.unfollow(req.user._id, responseUser._id).then(function (followRes) {
                     res.json({
                         status: followRes
+                    });
+                }, function (err) {
+                    console.error(err);
+
+                    res.status(400).json({
+                        status: false
                     });
                 });
             });

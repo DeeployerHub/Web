@@ -1,37 +1,94 @@
-module.exports = {
-    isFollowed: function (requestUserId, responseUserId, callback) {
-        'use strict';
+module.exports = UserRelations;
 
-        var model = getModel('usersRelations');
+var Promise = require('promise');
+var model   = getModel('usersRelations');
 
-        model.isFollowed(requestUserId, responseUserId, function (findRes) {
-            callback(findRes);
-        });
-    },
-    follow: function (requestUserId, responseUserId, callback) {
-        'use strict';
+/**
+ * UserRelations Repository
+ *
+ * @returns {UserRelations}
+ * @constructor
+ */
+function UserRelations () {
+    'use strict';
 
-        var model = getModel('usersRelations');
+    if (!(this instanceof UserRelations)) {
+        return new UserRelations();
+    }
+}
 
-        model.follow(requestUserId, responseUserId, function (findRes) {
-            callback(findRes);
-        });
-    },
-    unfollow: function (requestUserId, responseUserId, callback) {
-        'use strict';
+/**
+ * check if requested user has been followed
+ *
+ * @param requestUserId
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.isFollowed = function (requestUserId, responseUserId) {
+    'use strict';
 
-        var model = getModel('usersRelations');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
-        model.unfollow(requestUserId, responseUserId, function (findRes) {
-            callback(findRes);
-        });
-    },
-    getUserFollowers: function (userId, callback) {
-        'use strict';
+        model.isFollowed(requestUserId, responseUserId).then(resolve, reject);
+    });
+};
 
-        var model = getModel('usersRelations');
+/**
+ * follow the the response user
+ *
+ * @param requestUserId
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.follow = function (requestUserId, responseUserId) {
+    'use strict';
 
-        model.getFollowersList(userId, function (findRes) {
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.follow(requestUserId, responseUserId).then(resolve, reject);
+    });
+};
+
+/**
+ * unfollow the response user
+ *
+ * @param requestUserId
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.unfollow = function (requestUserId, responseUserId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.unfollow(requestUserId, responseUserId).then(resolve, reject);
+    });
+};
+
+/**
+ * get followers list of response user
+ *
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.getUserFollowers = function (responseUserId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.getFollowersList(responseUserId).then(function (findRes) {
             var responseData = [];
 
             findRes.forEach(function (item) {
@@ -47,7 +104,7 @@ module.exports = {
                 });
             });
 
-            callback(responseData);
-        });
-    }
+            resolve(responseData);
+        }, reject);
+    });
 };

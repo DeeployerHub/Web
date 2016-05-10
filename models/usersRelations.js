@@ -1,9 +1,37 @@
-module.exports = {
-    isFollowed: function (requestUserId, responseUserId, result) {
-        'use strict';
+module.exports = UserRelations;
 
-        var mongoose             = require('mongoose');
-        var usersRelationsSchema = getModelSchema('usersRelations');
+var Promise              = require('promise');
+var mongoose             = require('mongoose');
+var usersRelationsSchema = getModelSchema('usersRelations');
+
+/**
+ * UserRelations Model
+ *
+ * @returns {UserRelations}
+ * @constructor
+ */
+function UserRelations () {
+    'use strict';
+
+    if (!(this instanceof UserRelations)) {
+        return new UserRelations();
+    }
+}
+
+/**
+ * check if requested user has been followed
+ *
+ * @param requestUserId
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.isFollowed = function (requestUserId, responseUserId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         usersRelationsSchema
             .find({
@@ -12,24 +40,36 @@ module.exports = {
             })
             .exec(function (err, res) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result(res.length > 0);
+                resolve(res.length > 0);
             });
-    },
-    follow: function (requestUserId, responseUserId, result) {
-        'use strict';
+    });
+};
 
-        var mongoose             = require('mongoose');
-        var usersRelationsSchema = getModelSchema('usersRelations');
+/**
+ * follow the the response user
+ *
+ * @param requestUserId
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.follow = function (requestUserId, responseUserId) {
+    'use strict';
 
-        var model = getModel('usersRelations');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        var model = new this();
         // check if user already followed or not
-        model.isFollowed(requestUserId, responseUserId, function (followed) {
+        model.isFollowed(requestUserId, responseUserId).then(function (followed) {
             if (!followed) {
                 // insert the userRelation to DB
-
                 var newUserRelation = new usersRelationsSchema({
                     requestUserId : mongoose.Types.ObjectId(requestUserId),
                     responseUserId: mongoose.Types.ObjectId(responseUserId)
@@ -37,25 +77,38 @@ module.exports = {
 
                 newUserRelation.save(function(err, res){
                     if (err) {
-                        return console.error(err);
+                        reject(err);
+
+                        return;
                     }
 
-                    result(typeof res === 'object');
+                    resolve(typeof res === 'object');
                 });
             } else {
-                result(true);
+                resolve(true);
             }
-        });
-    },
-    unfollow: function (requestUserId, responseUserId, result) {
-        'use strict';
+        }, reject);
+    });
+};
 
-        var mongoose             = require('mongoose');
-        var usersRelationsSchema = getModelSchema('usersRelations');
+/**
+ * unfollow the response user
+ *
+ * @param requestUserId
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.unfollow = function (requestUserId, responseUserId) {
+    'use strict';
 
-        var model = getModel('usersRelations');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        var model = new this();
         // check if user already followed or not
-        model.isFollowed(requestUserId, responseUserId, function (followed) {
+        model.isFollowed(requestUserId, responseUserId).then(function (followed) {
             if (followed) {
                 // delete the userRelation
                 usersRelationsSchema
@@ -65,24 +118,36 @@ module.exports = {
                     })
                     .remove(function(err, res){
                         if (err) {
-                            return console.error(err);
+                            reject(err);
+
+                            return;
                         }
 
-                        result(res.result.ok > 0);
+                        resolve(res.result.ok > 0);
                     })
                     .exec();
             } else {
-                result(true);
+                resolve(true);
             }
-        });
-    },
-    getFollowersList: function (responseUserId, result) {
-        'use strict';
+        }, reject);
+    });
+};
 
-        var mongoose             = require('mongoose');
-        var usersRelationsSchema = getModelSchema('usersRelations');
+/**
+ * get followers list of response user
+ *
+ * @param responseUserId
+ *
+ * @returns {Promise}
+ */
+UserRelations.prototype.getFollowersList = function (responseUserId) {
+    'use strict';
+    
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
-        var model = getModel('usersRelations');
+        var model = new this();
 
         usersRelationsSchema
             .find({
@@ -94,10 +159,12 @@ module.exports = {
             .populate('requestUserId')
             .exec(function (err, queryResult) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
-                result(queryResult);
+                resolve(queryResult);
             });
-    }
+    });
 };
