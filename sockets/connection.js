@@ -30,9 +30,7 @@ function Connection (base) {
     [ 'SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT', 'exit' ].forEach( function(signal) {
         process.on(signal, function () {
             cleanUpSockets(signal, function () {
-                if (signal !== 'exit') {
-                    process.exit(1);
-                }
+                process.exit(1);
             });
         });
     });
