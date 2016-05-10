@@ -33,7 +33,9 @@ module.exports = {
                             followed     : (!followed ? 'not-' : '') + 'following'
                         });
                     }, function (err) {
-                        errorPageRender(res, 400, 'Sorry, something went wrong. please try again');
+                        console.error(err);
+                        
+                        errorPageRender(res, 404, 'Sorry, this page isn\'t available');
                     });
                 } else {
                     errorPageRender(res, 404, 'Sorry, this page isn\'t available');

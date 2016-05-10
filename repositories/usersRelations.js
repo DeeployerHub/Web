@@ -1,7 +1,7 @@
 module.exports = UserRelations;
 
 var Promise = require('promise');
-var model   = getModel('usersRelations');
+var model   = getModel('usersRelations')();
 
 /**
  * UserRelations Repository

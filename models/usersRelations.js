@@ -65,7 +65,7 @@ UserRelations.prototype.follow = function (requestUserId, responseUserId) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        var model = new this();
+        var model = getModel('usersRelations')();
         // check if user already followed or not
         model.isFollowed(requestUserId, responseUserId).then(function (followed) {
             if (!followed) {
@@ -106,7 +106,7 @@ UserRelations.prototype.unfollow = function (requestUserId, responseUserId) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        var model = new this();
+        var model = getModel('usersRelations')();
         // check if user already followed or not
         model.isFollowed(requestUserId, responseUserId).then(function (followed) {
             if (followed) {
@@ -146,8 +146,6 @@ UserRelations.prototype.getFollowersList = function (responseUserId) {
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
-
-        var model = new this();
 
         usersRelationsSchema
             .find({
