@@ -22,7 +22,6 @@ function Connection (base) {
                 socketRepo.disconnect(localSockets[process.pid][i]);
             }
         }
-
         console.info('[GC]', process.pid , signal);
 
         callback();
