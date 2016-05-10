@@ -82,7 +82,7 @@ module.exports = {
             'use strict';
 
             var userRepos = getRepos('users');
-            var notificationRepos = getRepos('notifications');
+            var notificationRepos = getRepos('notifications')();
 
             var username = req.body.username;
             if (username) {
@@ -109,9 +109,15 @@ module.exports = {
                                 // send a notification
                                 notificationRepos.sendNotification(req.user._id, 'normal', {
                                     text: 'Congrats, you earned +50 Points for setup your account.'
-                                }, function () {
+                                }).then(function () {
                                     returnData.pointsAfterAction = pointsAfterAction;
                                     res.json(returnData);
+                                }, function (err) {
+                                    console.error(err);
+
+                                    res.status(400).json({
+                                        status: false
+                                    });
                                 });
                             });
                         });
@@ -150,7 +156,7 @@ module.exports = {
             'use strict';
 
             var userRepos = getRepos('users');
-            var notificationRepos = getRepos('notifications');
+            var notificationRepos = getRepos('notifications')();
 
             var profile = {
                 firstname: req.body.firstname,
@@ -179,9 +185,15 @@ module.exports = {
                         // send a notification
                         notificationRepos.sendNotification(req.user._id, 'normal', {
                             text: 'Congrats, you earned +50 Points for Complete your profile.'
-                        }, function () {
+                        }).then(function () {
                             res.json({
                                 status: true
+                            });
+                        }, function (err) {
+                            console.error(err);
+
+                            res.status(400).json({
+                                status: false
                             });
                         });
                     });

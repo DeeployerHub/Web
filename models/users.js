@@ -54,7 +54,7 @@ module.exports = {
                 return console.error(err);
             }
 
-            result(res[0]);
+            result(res);
         });
     },
     updateUserAvatarById: function(userId, avatarPath, result) {

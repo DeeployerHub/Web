@@ -1,28 +1,57 @@
-module.exports = {
-    getNotifications: function (userId, start, length, attributes, callback) {
-        'use strict';
+module.exports = Notifications;
 
-        var model = getModel('notifications');
+var Promise = require('promise');
+var model = getModel('notifications')();
 
-        model.getNotificationsByOwnerId(userId, start, length, attributes, function (findRes) {
-            if (findRes) {
-                callback(findRes);
-            } else {
-                callback(null);
-            }
-        });
-    },
-    sendNotification: function (ownerId, type, attributes, callback) {
-        'use strict';
+/**
+ *  Notifications Repository
+ * @returns {Notifications}
+ * @constructor
+ */
+function Notifications() {
+    'use strict';
 
-        var model = getModel('notifications');
-
-        model.newNotificationByOwnerId(ownerId, type, attributes, function (findRes) {
-            if (findRes) {
-                callback(findRes);
-            } else {
-                callback(null);
-            }
-        });
+    if (!(this instanceof Notifications)) {
+        return new Notifications();
     }
+}
+
+/**
+ * get the user's notifications from model
+ *
+ * @param userId
+ * @param start
+ * @param length
+ * @param attributes
+ *
+ * @returns {Promise}
+ */
+Notifications.prototype.getNotifications = function (userId, start, length, attributes) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.getNotificationsByOwnerId(userId, start, length, attributes).then(resolve, reject);
+    });
+};
+
+/**
+ * send notification to specific user
+ *
+ * @param ownerId
+ * @param type
+ * @param attributes
+ * @returns {Promise}
+ */
+Notifications.prototype.sendNotification = function (ownerId, type, attributes) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.newNotificationByOwnerId(ownerId, type, attributes).then(resolve, reject);
+    });
 };

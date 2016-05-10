@@ -3,7 +3,7 @@ module.exports = {
         'use strict';
 
         var userRepos = getRepos('users');
-        var notificationRepos = getRepos('notifications');
+        var notificationRepos = getRepos('notifications')();
         var start = req.query.start || 0;
         var length = req.query.length || 5;
 
@@ -17,23 +17,28 @@ module.exports = {
                     'type',
                     'attributes',
                     'registerAt'
-                ],
-                function (items) {
-                    if (items) {
-                        res.status(200).json({
-                            items: items,
-                            start: start,
-                            length: length
-                        });
-                    } else {
-                        res.status(200).json({
-                            items: [],
-                            start: start,
-                            length: length
-                        });
-                    }
+                ]
+            ).then(function (items) {
+                if (items) {
+                    res.status(200).json({
+                        items: items,
+                        start: start,
+                        length: length
+                    });
+                } else {
+                    res.status(200).json({
+                        items: [],
+                        start: start,
+                        length: length
+                    });
                 }
-            );
+            }, function (err) {
+                console.error(err);
+
+                res.status(400).json({
+                    status: false
+                });
+            });
         });
     }
 };

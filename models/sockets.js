@@ -21,6 +21,11 @@ function Sockets() {
 
 /**
  * add new socket into db
+ *
+ * @param userId
+ * @param socketId
+ *
+ * @returns {Promise}
  */
 Sockets.prototype.addNewSocket = function (userId, socketId) {
     'use strict';
@@ -50,10 +55,13 @@ Sockets.prototype.addNewSocket = function (userId, socketId) {
 
 /**
  * delete socket from db
+ *
+ * @param socketId
+ *
+ * @returns {Promise}
  */
 Sockets.prototype.deleteSocket = function (socketId) {
     'use strict';
-
 
     var base = this;
     return new Promise(function (resolve, reject) {

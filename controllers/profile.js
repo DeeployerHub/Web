@@ -126,7 +126,7 @@ module.exports = {
 
         var userRepos = getRepos('users');
         var userRelationRepos = getRepos('usersRelations');
-        var notificationRepos = getRepos('notifications');
+        var notificationRepos = getRepos('notifications')();
 
         // preparing input data
         var action         = req.body.action;
@@ -154,9 +154,15 @@ module.exports = {
                                     email   : requestUser.email
                                 }
                             }
-                        }, function () {
+                        }).then(function () {
                             res.json({
                                 status: followRes
+                            });
+                        }, function (err) {
+                            console.error(err);
+
+                            res.status(400).json({
+                                status: false
                             });
                         });
                     });
