@@ -29,6 +29,9 @@ Sockets.prototype.connect = function (userId, socketId) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
         model.addNewSocket(userId, socketId).then(resolve, reject);
     });
 };
@@ -44,6 +47,9 @@ Sockets.prototype.disconnect = function (socketId) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
         model.deleteSocket(socketId).then(resolve, reject);
     });
 };

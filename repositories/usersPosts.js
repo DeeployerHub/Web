@@ -1,26 +1,57 @@
-module.exports = {
-    addNewPost: function (ownerUserId, content, callback) {
-        'use strict';
+module.exports = UserPosts;
 
-        var model = getModel('usersPosts');
+var Promise = require('promise');
+var model = getModel('usersPosts')();
 
-        model.addNewPost(ownerUserId, content, function (findRes) {
-            callback(findRes);
-        });
-    },
+/**
+ * UserPosts Model
+ *
+ * @returns {UserPosts}
+ * @constructor
+ */
+function UserPosts () {
+    'use strict';
 
-    getProfilePosts: function (userId, start, length, callback) {
-        'use strict';
+    if (!(this instanceof UserPosts)) {
+        return new UserPosts();
+    }
+}
 
-        var model      = getModel('usersPosts');
-        var repository = getRepos('usersPosts');
+/**
+ * add new post
+ *
+ * @param ownerUserId
+ * @param content
+ *
+ * @returns {Promise}
+ */
+UserPosts.prototype.addNewPost = function (ownerUserId, content) {
+    'use strict';
 
-        model.getPostsByOwnerId(userId, start, length, function (findRes) {
-            if (findRes) {
-                callback(findRes);
-            } else {
-                callback(null);
-            }
-        });
-    },
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.addNewPost(ownerUserId, content).then(resolve, reject);
+    });
+};
+
+/**
+ * get the profile's posts from model
+ *
+ * @param userId
+ * @param start
+ * @param length
+ *
+ * @returns {Promise}
+ */
+UserPosts.prototype.getProfilePosts = function (userId, start, length) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.getPostsByOwnerId(userId, start, length).then(resolve, reject);
+    });
 };

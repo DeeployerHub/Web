@@ -1,31 +1,72 @@
-module.exports = {
-    addNewPost: function (ownerUserId, content, result) {
-        'use strict';
+module.exports = UserPosts;
 
-        var mongoose = require('mongoose');
-        var usersPostsSchema = getModelSchema('usersPosts');
+var Promise          = require('promise');
+var mongoose         = require('mongoose');
+var usersPostsSchema = getModelSchema('usersPosts');
+
+/**
+ * UserPosts Model
+ *
+ * @returns {UserPosts}
+ * @constructor
+ */
+function UserPosts () {
+    'use strict';
+
+    if (!(this instanceof UserPosts)) {
+        return new UserPosts();
+    }
+}
+
+/**
+ * add new post into database
+ *
+ * @param ownerUserId
+ * @param content
+ *
+ * @returns {Promise}
+ */
+UserPosts.prototype.addNewPost = function (ownerUserId, content) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         var newUserPost = new usersPostsSchema({
             ownerUserId: mongoose.Types.ObjectId(ownerUserId),
-            content: content
+            content    : content
         });
 
         newUserPost.save(function (err, res) {
             if (err) {
-                return console.error(err);
+                reject(err);
+
+                return;
             }
 
-            result(res);
+            resolve(res);
         });
-    },
+    });
+};
 
-    getPostsByOwnerId: function (userId, start, length, result) {
-        'use strict';
+/**
+ * get the posts of the user's by ownerId
+ *
+ * @param userId
+ * @param start
+ * @param length
+ *
+ * @returns {Promise}
+ */
+UserPosts.prototype.getPostsByOwnerId = function (userId, start, length) {
+    'use strict';
 
-        var mongoose = require('mongoose');
-        var notificationsSchema = getModelSchema('usersPosts');
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
-        notificationsSchema
+        usersPostsSchema
             .find({
                 ownerUserId: mongoose.Types.ObjectId(userId)
             })
@@ -38,20 +79,22 @@ module.exports = {
             .limit(parseInt(length))
             .exec(function (err, res) {
                 if (err) {
-                    return console.error(err);
+                    reject(err);
+
+                    return;
                 }
 
                 res.forEach(function (obj) {
                     var profileStack = obj.ownerUserId.profile.pop();
-                    var profileObj = {
+                    var profileObj   = {
                         firstname: profileStack.firstname,
-                        lastname: profileStack.lastname
+                        lastname : profileStack.lastname
                     };
 
                     obj.ownerUserId.profile = profileObj;
                 });
 
-                result(res);
+                resolve(res);
             });
-    }
+    });
 };
