@@ -34,12 +34,8 @@
 
 
                 $scope.renderNewPost = function (data) {
-                    console.log(data);
-
                     $scope.postTopWaiting = true;
-
                     $scope.renderPostsTop(data.post);
-                
                     $scope.postTopWaiting = false;
                 };
 
@@ -48,9 +44,7 @@
                     $scope.postBottomWaiting = true;
                     $scope.getProfilePostsRequest(function (resPosts) {
                         var data = resPosts.data;
-
                         $scope.renderPosts(data.posts);
-
                         $scope.postBottomWaiting = false;
                         if (data.posts.length < data.length) {
                             $scope.lastPostFetched = true;
