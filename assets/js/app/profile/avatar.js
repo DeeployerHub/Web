@@ -1,10 +1,17 @@
-(function(angular) {
+(function (angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("ProfileAvatarController", [
-        '$scope', '$http', 
+    var controller = 'ProfileAvatarController';
+
+    var app = angular.module('deeployer');
+    app.controller(controller, [
+        '$scope', '$http',
         function ($scope, $http) {
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
+
             $scope.waiting = false;
             $scope.avatar = window.angularControllerValues.avatar;
 
@@ -16,9 +23,9 @@
 
             $scope.avatarClick = function () {
                 $scope.picValidationText = '';
-                var file     = document.createElement('input');
-                file.type    = 'file';
-                file.accept  = 'image/*';
+                var file = document.createElement('input');
+                file.type = 'file';
+                file.accept = 'image/*';
                 $(file).change($scope.avatarUploadChange);
 
                 file.click();
@@ -32,17 +39,17 @@
                     var fd = new FormData();
                     fd.append("file", file);
                     $http.post('/profile/avatar-upload', fd, {
-                        transformRequest: angular.identity,
-                        headers: {'Content-Type': undefined}
-                    })
-                    .success(function(result){
-                        $scope.avatar = result.data.file;
-                        window.angularControllerValues.avatar = $scope.avatar;
-                    })
-                    .error(function(result){
-                        $scope.picValidationText = 'Process Failed! Please Try again.';
-                        $scope.waiting = false;
-                    });
+                            transformRequest: angular.identity,
+                            headers: {'Content-Type': undefined}
+                        })
+                        .success(function (result) {
+                            $scope.avatar = result.data.file;
+                            window.angularControllerValues.avatar = $scope.avatar;
+                        })
+                        .error(function () {
+                            $scope.picValidationText = 'Process Failed! Please Try again.';
+                            $scope.waiting = false;
+                        });
                 } else {
                     $scope.picValidationText = 'Process Failed! Please Try again.';
                     $scope.waiting = false;
@@ -50,19 +57,19 @@
             };
 
         }
-    ])
-    .directive('imageOnloadWaiting', function() {
+    ]);
+    app.directive('imageOnloadWaiting', function () {
         return {
             restrict: 'EA',
-            controller: 'ProfileAvatarController',
-            link: function($scope, $element, $attrs) {
-                $element.bind('load', function() {
-                    $scope.$apply(function() {
+            controller: controller,
+            link: function ($scope, $element) {
+                $element.bind('load', function () {
+                    $scope.$apply(function () {
                         $scope.stopWaiting('');
                     });
                 });
-                $element.bind('error', function() {
-                    $scope.$apply(function() {
+                $element.bind('error', function () {
+                    $scope.$apply(function () {
                         $scope.stopWaiting('Process Failed! Please Try again.');
                     });
                 });

@@ -1,10 +1,17 @@
 (function(angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("SharingController", [
+    var controller = 'SharingController';
+
+    var app = angular.module('deeployer');
+    app.controller(controller, [
         '$scope', '$http', 
         function ($scope, $http) {
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
+
             // facebook
             $scope.message = '';
             $scope.facebookSharing = function () {
@@ -26,10 +33,10 @@
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 })
-                .success(function(result){
+                .success(function(){
                     window.location.href = '/';
                 })
-                .error(function(result){
+                .error(function(){
                     $scope.message = 'Process Failed! Please Try again.';
                 });
             };

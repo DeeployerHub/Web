@@ -1,10 +1,17 @@
 (function(angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("ProfileController", [
+    var controller = 'ProfileController';
+    
+    var app = angular.module('deeployer');
+    app.controller(controller, [
         '$scope', '$http', 
         function ($scope, $http) {
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
+
             $scope.profile = {
                 firstname: '',
                 lastname: '',
@@ -48,7 +55,7 @@
                                 $scope.collectPointError = 'Process Failed! Please Try again.';
                         }
                     }
-                }, function(result){
+                }, function(){
                     $scope.collectPointError = 'Process Failed! Please Try again.'
                 });
             };

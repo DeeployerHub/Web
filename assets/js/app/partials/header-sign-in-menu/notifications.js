@@ -1,10 +1,21 @@
 (function(angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("HeaderSignInMenuNotificationsController", [
-        '$scope', '$http', '$socket',
-        function ($scope, $http, $socket) {
+    var controller = 'HeaderSignInMenuNotificationsController';
+
+    var app = angular.module("deeployer");
+    app.controller(controller, [
+        '$scope', '$http', '$socketConnection',
+        function ($scope, $http, $socketConnection) {
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
+
+            $socketConnection.socket.on('notify', function (data) {
+                $.notify(data.text, 'success');
+            });
+
             $scope.moduleLoaded = true;
             $scope.lastNotifyDownloaded = false;
             $scope.initialized = false;
@@ -88,17 +99,16 @@
                         $scope.lastNotifyDownloaded = true;
                     }
                     ok(result);
-                }, function(result){
+                }, function(){
                     fail();
                 });
             };
         }
-    ])
-    .directive("scroll", function ($window) {
+    ]);
+    app.directive("scroll", function () {
         return {
             restrict: 'EA',
-            controller: 'HeaderSignInMenuNotificationsController',
-            link: function($scope, $element, $attrs) {
+            link: function($scope, $element) {
                 $element.bind('scroll', function() {
                     $scope.$apply(function() {
                         if (

@@ -1,4 +1,5 @@
 var socketRepo = getRepos('sockets')();
+var Deligations = require('./delegations');
 
 module.exports = Connection;
 /**
@@ -28,7 +29,7 @@ function Connection (base) {
         callback();
     };
 
-    [ 'SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT', 'exit' ].forEach( function(signal) {
+    ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT', 'exit'].forEach(function (signal) {
         process.on(signal, function () {
             cleanUpSockets(signal, function () {
                 process.exit(1);
@@ -40,6 +41,8 @@ function Connection (base) {
         socketRepo.connect(socket.session.user._id, socket.id).then(function () {
             localSockets[process.pid].push(socket.id);
 
+            new Deligations(base.io, socket);
+
             socket.on('disconnect', function () {
                 socketRepo.disconnect(socket.id).then(function () {
                     localSockets[process.pid].remove(localSockets[process.pid].indexOf(socket.id));
@@ -49,6 +52,7 @@ function Connection (base) {
             });
         }, function (err) {
             console.error(err);
+            socket.disconnect();
         });
     });
 }

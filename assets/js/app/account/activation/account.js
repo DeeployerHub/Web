@@ -1,10 +1,17 @@
 (function(angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("AccountController", [
+    var controller = 'AccountController';
+
+    var app = angular.module('deeployer');
+    app.controller(controller, [
         '$scope', '$http', 
         function ($scope, $http) {
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
+
             $scope.waiting = false;
             $scope.avatarDefault = '/assets/images/users/default.png';
             $scope.avatar = window.angularControllerValues.avatar || $scope.avatarDefault;
@@ -27,7 +34,7 @@
 
                 if (file) {
                     var fd = new FormData();
-                    fd.append("file", file);
+                    fd.append('file', file);
                     $http.post('/account/activation/account/avatar-upload', fd, {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
@@ -36,7 +43,7 @@
                         $scope.avatar = result.data.file;
                         window.angularControllerValues.avatar = $scope.avatar;
                     })
-                    .error(function(result){
+                    .error(function(){
                         $scope.avatar = $scope.avatarDefault;
                         $scope.picValidationText = 'Process Failed! Please Try again.';
                         $scope.waiting = false;
@@ -84,18 +91,18 @@
                                     $scope.collectPointError = 'Process Failed! Please Try again.';
                             }
                         }
-                    }, function(result){
+                    }, function(){
                         $scope.collectPointError = 'Process Failed! Please Try again.'
                     });
                 }
             };
         }
-    ])
-    .directive('imageOnloadWaiting', function() {
+    ]);
+    app.directive('imageOnloadWaiting', function() {
         return {
             restrict: 'EA',
-            controller: 'AccountController',
-            link: function($scope, $element, $attrs) {
+            controller: controller,
+            link: function($scope, $element) {
                 $element.bind('load', function() {
                     $scope.$apply(function() {
                         $scope.stopWaiting('');

@@ -1,37 +1,33 @@
 <script>
+    window.controllers = {};
     var app = angular.module("deeployer", ['btford.socket-io']);
-    app.factory('$socket', ['socketFactory', function (socketFactory) {
+    app.service('$socketConnection', ['socketFactory', function (socketFactory) {
         window.socketIo = window.socketIo || socketFactory({
                 ioSocket: io.connect('[[ socketPath ]]', {
                     transports: ['websocket']
                 })
             });
 
-        window.socketIo.on('hi', function (data) {
-            console.log('hi message', data);
-            window.socketIo.emit('hi-back', 'test');
-        });
-        window.socketIo.on('connect', function () {
-            console.log('connected');
-        });
-        window.socketIo.on('disconnect', function () {
-            console.log('disconnected');
-        });
+//        window.socketIo.on('connect', function () {
+//            console.log('connected');
+//        });
+//
+//        window.socketIo.on('disconnect', function () {
+//            console.log('disconnected');
+//        });
 
-        return window.socketIo;
+        this.socket = window.socketIo;
+
     }]);
 
-    app.directive('ngEnter', function () {
-        return function (scope, element, attrs) {
-            element.bind("keydown keypress", function (event) {
-                if (event.which === 13) {
-                    scope.$apply(function () {
-                        scope.$eval(attrs.ngEnter);
-                    });
-
-                    event.preventDefault();
-                }
-            });
-        };
+    app.filter('ucwords', function () {
+        return function (input) {
+            if (input) { //when input is defined the apply filter
+                input = input.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+                    return letter.toUpperCase();
+                });
+            }
+            return input;
+        }
     });
 </script>

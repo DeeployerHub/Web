@@ -1,10 +1,17 @@
 (function(angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("ProfileCoverController", [
+    var controller = 'ProfileCoverController';
+
+    var app = angular.module('deeployer');
+    app.controller(controller, [
         '$scope', '$http', 
         function ($scope, $http) {
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
+            
             $scope.waiting = false;
             $scope.cover = window.angularControllerValues.cover || '';
 
@@ -39,7 +46,7 @@
                         $scope.cover = result.data.file;
                         window.angularControllerValues.cover = $scope.cover;
                     })
-                    .error(function(result){
+                    .error(function(){
                         $scope.picValidationText = 'Process Failed! Please Try again.';
                         $scope.waiting = false;
                     });
@@ -50,12 +57,12 @@
             };
 
         }
-    ])
-    .directive('coverImageOnloadWaiting', function() {
+    ]);
+    app.directive('coverImageOnloadWaiting', function() {
         return {
             restrict: 'EA',
-            controller: 'ProfileCoverController',
-            link: function($scope, $element, $attrs) {
+            controller: controller,
+            link: function($scope, $element) {
                 $element.bind('load', function() {
                     $scope.$apply(function() {
                         $scope.stopWaiting('');

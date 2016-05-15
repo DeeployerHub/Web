@@ -1,11 +1,16 @@
 (function(angular) {
     'use strict';
 
-    angular.module("deeployer")
-    .controller("SignOutController", [
+    var controller = 'SignOutController';
+
+    angular.module('deeployer')
+    .controller(controller, [
         '$scope', 
         function ($scope) {
-            $scope.waiting = false;
+            if (typeof window.controllers[controller] === 'object') {
+                return;
+            }
+            window.controllers[controller] = this;
         }
     ]);
 })(window.angular);
