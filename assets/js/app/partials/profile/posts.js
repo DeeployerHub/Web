@@ -32,6 +32,17 @@
                     }, 10 * 1000);
                 };
 
+
+                $scope.renderNewPost = function (data) {
+                    console.log(data);
+
+                    $scope.postTopWaiting = true;
+
+                    $scope.renderPostsTop(data.post);
+                
+                    $scope.postTopWaiting = false;
+                };
+
                 // posts page's zone
                 $scope.getPosts = function () {
                     $scope.postBottomWaiting = true;
@@ -68,6 +79,20 @@
                             }, function (html) {
                                 $scope.renderPostsDate(html);
                                 $('.post-area-bottom').before(html);
+                            });
+                        }
+                    }
+                };
+
+                $scope.renderPostsTop = function (posts) {
+                    for (var i in posts) {
+                        if (posts[i] && !$scope.isIdExistedInQueue(posts[i]._id)) {
+                            $scope.start++;
+                            $scope.compileTemplate('postNormal.ng.html', {
+                                post: posts[i]
+                            }, function (html) {
+                                $scope.renderPostsDate(html);
+                                $('.post-area-top').after(html);
                             });
                         }
                     }

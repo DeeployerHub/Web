@@ -45,7 +45,32 @@ UserPosts.prototype.addNewPost = function (ownerUserId, content) {
                 return;
             }
 
-            resolve(res);
+            // fetch the correct info for the added post
+            usersPostsSchema
+                .find({
+                    _id: mongoose.Types.ObjectId(res._id)
+                })
+
+                .populate('ownerUserId', '_id avatar username profile')
+                .exec(function (errPost, resPost) {
+                    if (errPost) {
+                        reject(errPost);
+
+                        return;
+                    }
+
+                    resPost.forEach(function (obj) {
+                        var profileStack = obj.ownerUserId.profile.pop();
+                        var profileObj   = {
+                            firstname: profileStack.firstname,
+                            lastname : profileStack.lastname
+                        };
+
+                        obj.ownerUserId.profile = profileObj;
+                    });
+
+                    resolve(resPost);
+                });
         });
     });
 };

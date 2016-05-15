@@ -24,7 +24,10 @@
                         $scope.waiting = true;
                         $scope.composeRequest({
                             content: $scope.content
-                        }, function () {
+                        }, function (composeResponse) {
+                            if ('function' === typeof $scope.renderNewPost) {
+                                $scope.renderNewPost(composeResponse.data);
+                            }
                             $scope.newPostModal.modal('hide');
                             $scope.content = '';
                             $scope.waiting = false;
