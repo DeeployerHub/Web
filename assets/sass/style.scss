@@ -163,6 +163,17 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+.notifyjs-corner {
+    .notifyjs-deeployer-base {
+        p {
+            margin-bottom: 5px;
+            .text-muted {
+                font-size:12px;
+            }
+        }
+    }
+}
+
 #fh5co-header {
     // position: relative;
     position: absolute;

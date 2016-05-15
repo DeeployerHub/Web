@@ -25,6 +25,7 @@
                         $scope.composeRequest({
                             content: $scope.content
                         }, function (composeResponse) {
+                            $.notify('<span class="text-muted">"' + composeResponse.data.post[0].content + '"</span> Posted!!!', 'success');
                             if ('function' === typeof $scope.renderNewPost) {
                                 $scope.renderNewPost(composeResponse.data);
                             }

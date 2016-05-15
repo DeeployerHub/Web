@@ -112,6 +112,4 @@ module.exports = function (app, express, io) {
             next(new Error('Authentication error'), false);
         }
     });
-
-    require('../sockets')(io);
 };

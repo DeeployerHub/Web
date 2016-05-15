@@ -7,18 +7,18 @@
 
         owl.on('initialized.owl.carousel change.owl.carousel', function (elem) {
             var current = elem.item.index;
-            $(elem.target).find(".owl-item").eq(current).find(".to-animate").removeClass('fadeInUp animated');
-            $(elem.target).find(".owl-item").eq(current).find(".to-animate-2").removeClass('fadeInUp animated');
+            $(elem.target).find('.owl-item').eq(current).find('.to-animate').removeClass('fadeInUp animated');
+            $(elem.target).find('.owl-item').eq(current).find('.to-animate-2').removeClass('fadeInUp animated');
 
         });
         owl.on('initialized.owl.carousel changed.owl.carousel', function (elem) {
             setTimeout(function () {
                 var current = elem.item.index;
-                $(elem.target).find(".owl-item").eq(current).find(".to-animate").addClass('fadeInUp animated');
+                $(elem.target).find('.owl-item').eq(current).find('.to-animate').addClass('fadeInUp animated');
             }, 700);
             setTimeout(function () {
                 var current = elem.item.index;
-                $(elem.target).find(".owl-item").eq(current).find(".to-animate-2").addClass('fadeInUp animated');
+                $(elem.target).find('.owl-item').eq(current).find('.to-animate-2').addClass('fadeInUp animated');
             }, 900);
         });
         owl.owlCarousel({
@@ -34,8 +34,8 @@
             autoplayTimeout: 8000,
             autoplayHoverPause: true,
             navText: [
-                "<i class='icon-arrow-left2 owl-direction'></i>",
-                "<i class='icon-arrow-right2 owl-direction'></i>"
+                '<i class="icon-arrow-left2 owl-direction"></i>',
+                '<i class="icon-arrow-right2 owl-direction"></i>'
             ]
         });
     };
@@ -125,10 +125,62 @@
         }
     };
 
+    var notifyJs = function () {
+        $.notify.addStyle('deeployer', {
+            html: '<div>\n<p data-notify-html></p>\n</div>',
+            classes: {
+                base: {
+                    'font-weight': '400',
+                    'padding': '8px 15px 0px 14px',
+                    'text-shadow': '0 1px 0 rgba(255, 255, 255, 0.5)',
+                    'background-color': '#fcf8e3',
+                    'border': '1px solid #e7e7e7',
+                    'border-radius': '4px',
+                    'background-repeat': 'no-repeat',
+                    'background-position': '3px 7px',
+                    'width': '300px',
+                    'min-height': '30px'
+                },
+                normal: {
+                    'color': '#777',
+                    'background-color': '#f8f8f8',
+                    'border': '1px solid #e7e7e7',
+                },
+                success: {
+                    'color': '#468847',
+                    'background-color': '#DFF0D8',
+                },
+                error: {
+                    'color': '#B94A48',
+                    'background-color': '#F2DEDE',
+                },
+                info: {
+                    'color': '#3A87AD',
+                    'background-color': '#D9EDF7',
+                },
+                warn: {
+                    'color': '#C09853',
+                    'background-color': '#FCF8E3',
+                }
+            }
+        });
+
+        $.notify.defaults({
+            clickToHide: true,
+            autoHide: true,
+            autoHideDelay: 7000,
+            arrowShow: false,
+            position: 'bottom left',
+            style: 'deeployer',
+            className: 'normal'
+        });
+    };
+
     $(document).ready(function () {
         owlCrouselFeatureSlide();
         clickMenu();
         navigationSection();
         publicWayPoint();
+        notifyJs();
     });
 }());

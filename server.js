@@ -20,3 +20,4 @@ server.listen(expressPort, function () {
 
 require('./config/env.js')(app, express, io);
 require('./config/routes.js');
+require('./sockets')(io);
