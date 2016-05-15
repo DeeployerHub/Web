@@ -113,5 +113,5 @@ module.exports = function (app, express, io) {
         }
     });
 
-    require('../sockets')(io).drive();
+    require('../sockets')(io);
 };

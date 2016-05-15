@@ -13,19 +13,8 @@ function Sockets(io) {
         return new Sockets(io);
     }
 
-    this.io = io;
-}
-
-/**
- * drive the routes into the system
- */
-Sockets.prototype.drive = function () {
-    'use strict';
-
-    var base = {
-        io: this.io
-    };
-
     // call the socket libs
-    require('./connection')(base);
-};
+    require('./connection')({
+        io: io
+    });
+}
