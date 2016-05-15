@@ -15,8 +15,7 @@ function Notifications(io, socket) {
         return new Notifications(io, socket);
     }
 
-    socket.emit('notify', {
-        text: 'new notification'
-    });
-    console.log('send test');
+    // socket.emit('notify', {
+    //     text: 'new notification'
+    // });
 }
