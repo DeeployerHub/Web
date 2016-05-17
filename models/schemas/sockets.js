@@ -7,6 +7,9 @@ module.exports = {
         socketId: {
             type: String
         },
+        region: {
+            type: String
+        },
         userId: {
             type: Schema.ObjectId,
             ref: 'users'

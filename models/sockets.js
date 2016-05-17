@@ -26,7 +26,7 @@ function Sockets() {
  *
  * @returns {Promise}
  */
-Sockets.prototype.addNewSocket = function (userId, socketId) {
+Sockets.prototype.addNewSocket = function (userId, socketId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
@@ -36,7 +36,8 @@ Sockets.prototype.addNewSocket = function (userId, socketId) {
         var newSocket = new socketsSchema({
             userId: mongoose.Types.ObjectId(userId),
             socketId: socketId,
-            pid: process.pid
+            pid: process.pid,
+            region: region
         });
 
         newSocket.save(function (err, res) {

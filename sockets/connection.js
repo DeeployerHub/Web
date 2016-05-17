@@ -38,7 +38,8 @@ function Connection (base) {
     });
 
     base.io.on('connection', function (socket) {
-        socketRepo.connect(socket.session.user._id, socket.id).then(function () {
+        var region = socket.handshake.query.region || null;
+        socketRepo.connect(socket.session.user._id, socket.id, region).then(function () {
             localSockets[process.pid].push(socket.id);
 
             new Deligations(base.io, socket);

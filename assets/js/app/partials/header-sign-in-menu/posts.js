@@ -7,10 +7,10 @@
     app.controller(controller, [
         '$scope', '$http',
         function ($scope, $http) {
-            $scope.waiting = false;
-            $scope.content = '';
+            $scope.waiting          = false;
+            $scope.content          = '';
             $scope.maxContentLength = 250;
-            $scope.newPostModal = $('#header-fix-signed-in-new-post-modal');
+            $scope.newPostModal     = $('#header-fix-signed-in-new-post-modal');
 
             $scope.newPostPopup = function () {
                 $scope.newPostModal.modal({

@@ -25,14 +25,14 @@ function Sockets() {
  *
  * @returns {Promise}
  */
-Sockets.prototype.connect = function (userId, socketId) {
+Sockets.prototype.connect = function (userId, socketId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.addNewSocket(userId, socketId).then(resolve, reject);
+        model.addNewSocket(userId, socketId, region).then(resolve, reject);
     });
 };
 

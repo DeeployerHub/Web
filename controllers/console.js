@@ -5,6 +5,7 @@ module.exports = {
         
         userRepos.getUserInfo(req.user.email).then(function (userInfo) {
             res.render('console/pages/console', {
+                socketRegion: 'test',
                 user: userInfo
             });
         }, function (err) {
