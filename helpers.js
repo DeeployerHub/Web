@@ -70,6 +70,12 @@ getModel = function (model) {
     return require('./models/' + model + '.js');
 };
 
+getSocketActions = function (io) {
+    'use strict';
+
+    return require('./sockets/actions')(io);
+};
+
 errorPageRender = function (res, code, message) {
     'use strict';
 

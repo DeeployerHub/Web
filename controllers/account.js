@@ -105,7 +105,7 @@ module.exports = {
                                 description: ''
                             }).then(function (pointsAfterAction) {
                                 // send a notification
-                                notificationRepos.sendNotification(req.user._id, 'normal', {
+                                notificationRepos.sendNotification(req.user._id, req.user._id, 'normal', {
                                     text: 'Congrats, you earned +50 Points for setup your account.'
                                 }).then(function () {
                                     res.json({
@@ -203,7 +203,7 @@ module.exports = {
                         description: ''
                     }).then(function () {
                         // send a notification
-                        notificationRepos.sendNotification(req.user._id, 'normal', {
+                        notificationRepos.sendNotification(req.user._id, req.user._id, 'normal', {
                             text: 'Congrats, you earned +50 Points for Complete your profile.'
                         }).then(function () {
                             res.json({

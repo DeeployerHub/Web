@@ -20,7 +20,7 @@ module.exports = function () {
             callbackURL: getDomain() + '/account/sign-in/google/callback',
             passReqToCallback: true
         },
-        function (accessToken, refreshToken, arg1, profile, done) {
+        function (accessToken, refreshToken, arg, profile, done) {
             userRepos.isUserRegistered(profile, profile.emails[0].value).then(function (signedInUser) {
                 done(null, {
                     '_id': signedInUser._id,

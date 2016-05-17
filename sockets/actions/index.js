@@ -1,4 +1,4 @@
-var actions = module.exports = Actions;
+var base = module.exports = Actions;
 
 /**
  * sockets module actions
@@ -6,15 +6,16 @@ var actions = module.exports = Actions;
  * @returns {Actions}
  * @constructor
  */
-function Actions() {
+function Actions(io) {
     'use strict';
 
     if (!(this instanceof Actions)) {
         return new Actions();
     }
 
-    // call the socket libs
-    require('./notifications')({
-        io: io
-    });
+    this.io = io;
 }
+
+Actions.prototype.init = function (action) {
+    return require('./' + action)(base.io);
+};

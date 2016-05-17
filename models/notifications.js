@@ -70,7 +70,7 @@ Notifications.prototype.getNotificationsByOwnerId = function (userId, start, len
  *
  * @returns {Promise}
  */
-Notifications.prototype.newNotificationByOwnerId = function (ownerId, type, attributes) {
+Notifications.prototype.newNotificationByOwnerId = function (ownerId, requestUserId, type, attributes) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
@@ -81,7 +81,8 @@ Notifications.prototype.newNotificationByOwnerId = function (ownerId, type, attr
             ownerId: mongoose.Types.ObjectId(ownerId),
             isRead: false,
             type: type,
-            attributes: attributes
+            attributes: attributes,
+            requestUserId: requestUserId
         });
 
         newNotification.save(function(err, res){

@@ -1,7 +1,8 @@
 module.exports = Notifications;
 
-var Promise = require('promise');
-var model = getModel('notifications')();
+var Promise      = require('promise');
+var model        = getModel('notifications')();
+var socketAction = getSocketActions(io);
 
 /**
  *  Notifications Repository
@@ -46,13 +47,17 @@ Notifications.prototype.getNotifications = function (userId, start, length, attr
  * @param attributes
  * @returns {Promise}
  */
-Notifications.prototype.sendNotification = function (ownerId, type, attributes) {
+Notifications.prototype.sendNotification = function (ownerId, requestUserId, type, attributes) {
     'use strict';
+
+    var socketNotifyActions = socketAction.init('notifications');
+
+    socketNotifyActions.send(ownerId, requestUserId, type, attributes);
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.newNotificationByOwnerId(ownerId, type, attributes).then(resolve, reject);
+        model.newNotificationByOwnerId(ownerId, requestUserId, type, attributes).then(resolve, reject);
     });
 };

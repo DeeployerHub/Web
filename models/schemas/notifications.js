@@ -5,7 +5,12 @@ module.exports = {
     collectionName: 'notifications',
     schema: {
         ownerId: {
-            type: Schema.Types.ObjectId
+            type: Schema.ObjectId,
+            ref: 'users'
+        },
+        requestUserId: {
+            type: Schema.ObjectId,
+            ref: 'users'
         },
         isRead: {
             type: Boolean,

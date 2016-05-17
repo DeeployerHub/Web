@@ -171,16 +171,9 @@ module.exports = {
                 userRepos.getUserInfoById(req.user._id).then(function (requestUser) {
                     userRelationRepos.follow(requestUser._id, responseUser._id).then(function (followRes) {
                         // notify user
-                        notificationRepos.sendNotification(responseUser._id, 'follow', {
+                        notificationRepos.sendNotification(responseUser._id, requestUser._id, 'follow', {
                             text   : ucfirst(requestUser.username) + ' just followed you.',
-                            pattern: '%requestUser.username% just followed you.',
-                            arg    : {
-                                requestUser: {
-                                    _id     : requestUser._id,
-                                    username: requestUser.username,
-                                    email   : requestUser.email
-                                }
-                            }
+                            pattern: '%requestUser.username% just followed you.'
                         }).then(function () {
                             res.json({
                                 status: followRes
