@@ -52,12 +52,13 @@ Notifications.prototype.sendNotification = function (ownerId, requestUserId, typ
 
     var socketNotifyActions = socketAction.init('notifications');
 
-    socketNotifyActions.send(ownerId, requestUserId, type, attributes);
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.newNotificationByOwnerId(ownerId, requestUserId, type, attributes).then(resolve, reject);
+        socketNotifyActions.send(ownerId, requestUserId, type, attributes).then(function () {
+            model.newNotificationByOwnerId(ownerId, requestUserId, type, attributes).then(resolve, reject);
+        }, reject);
     });
 };

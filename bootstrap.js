@@ -1,5 +1,6 @@
 globalObject = {
-    countries: require('./config/countries.js'),
+    countries: require('./config/countries'),
+    notifications: require('./config/notifications'),
     modelSchemas: {},
     envConfig: require('./env.js'),
     events: {}

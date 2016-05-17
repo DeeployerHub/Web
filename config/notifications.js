@@ -1,12 +1,13 @@
 /**
+ * /**
  * table:
  *      [*]: all the regions
- *
- * @type {*[]}
+ *      
+ * @type {{socketRegion: {follow: string[], normal: string[]}}}
  */
-module.exports = [
+module.exports = {
     socketRegion: {
         follow: ['*'],
         normal: ['*']
     }
-];
+};

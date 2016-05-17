@@ -1,4 +1,4 @@
-var base = module.exports = Actions;
+module.exports = Actions;
 
 /**
  * sockets module actions
@@ -10,12 +10,19 @@ function Actions(io) {
     'use strict';
 
     if (!(this instanceof Actions)) {
-        return new Actions();
+        return new Actions(io);
     }
 
     this.io = io;
 }
 
+/**
+ * initialize the actions
+ * @param action
+ * @returns {*}
+ */
 Actions.prototype.init = function (action) {
-    return require('./' + action)(base.io);
+    'use strict';
+
+    return require('./' + action)(this.io);
 };

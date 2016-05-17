@@ -2,7 +2,7 @@ var Promise = require('promise');
 
 var notificationConfigs = getConfig('notifications');
 
-var base = module.exports = Notifications;
+module.exports = Notifications;
 /**
  * handle the socket.io's notifications actions
  *
@@ -22,11 +22,18 @@ function Notifications(io) {
 }
 
 /**
+ * get
  *
  * @param type
- * @returns {Array}
+ * @returns {*}
  */
 Notifications.prototype.getAudiencesRegion = function (type) {
+    'use strict';
+
+    if ('object' !== typeof notificationConfigs.socketRegion[type]) {
+        throw new Error('following type of notification does not found into system');
+    }
+
     return notificationConfigs.socketRegion[type];
 };
 
@@ -42,9 +49,20 @@ Notifications.prototype.getAudiencesRegion = function (type) {
  * @returns {Promise}
  */
 Notifications.prototype.send = function (ownerId, requestUserId, type, attributes) {
-    console.log('send', ownerId, requestUserId, type, attributes);
+    'use strict';
+
+    var self = this;
 
     return new Promise(function (resolve, reject) {
+        try {
+            var region = self.getAudiencesRegion(type);
+        } catch (e) {
+            reject(e);
 
+            return;
+        }
+
+
+        resolve(true);
     });
 };
