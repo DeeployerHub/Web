@@ -3,6 +3,11 @@
     window.controllers = {};
     var app = angular.module("deeployer", ['btford.socket-io']);
     app.service('$socketConnection', ['socketFactory', function (socketFactory) {
+        window.geoLocationPositions = {
+            latitude: null,
+            longitude: null
+        };
+
         window.socketIo = window.socketIo || socketFactory({
                 ioSocket: io.connect('[[ socketPath ]]', {
                     query     : jQuery.param({
@@ -12,13 +17,63 @@
                 })
             });
 
+        var refreshLocation = function (position) {
+            window.socketIo.emit('refresh-location', {
+                position: position
+            });
+        };
+
+        var geoLocationDetected = function (pos) {
+            var crd = pos.coords;
+
+            if (
+                window.geoLocationPositions.latitude !== crd.latitude ||
+                window.geoLocationPositions.longitude !== crd.longitude
+            ) {
+                window.geoLocationPositions.latitude  = crd.latitude;
+                window.geoLocationPositions.longitude = crd.longitude;
+
+                refreshLocation(window.geoLocationPositions);
+            }
+        };
+
+        var geoLocationNotDetected = function (e) {
+            console.log(e);
+        };
+
+        var geoOptions = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
         window.socketIo.on('connect', function () {
             window.socketStatus = true;
+            if (window.geoLocationPositions.latitude && window.geoLocationPositions.longitude) {
+                refreshLocation(window.geoLocationPositions);
+            }
+
+            window.geoLocationWatch = navigator.geolocation.watchPosition(
+                geoLocationDetected,
+                geoLocationNotDetected,
+                geoOptions
+            );
         });
 
         window.socketIo.on('disconnect', function () {
             window.socketStatus = false;
+            navigator.geolocation.clearWatch(window.geoLocationWatch);
         });
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                geoLocationDetected,
+                geoLocationNotDetected,
+                geoOptions
+            );
+        } else {
+            window.location.href = '/location-detection';
+        }
 
         this.socket = window.socketIo;
 

@@ -82,3 +82,33 @@ Sockets.prototype.deleteSocket = function (socketId) {
             .exec();
     });
 };
+
+/**
+ * delete socket from db
+ *
+ * @param socketId
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        socketsSchema.findOne({
+                socketId: socketId
+        }, function (err, socketObj) {
+            if (err) {
+                reject(err);
+
+                return;
+            }
+
+            socketObj.currentLocation = [position.latitude, position.longitude];
+
+            resolve(socketObj.save());
+        });
+    });
+};

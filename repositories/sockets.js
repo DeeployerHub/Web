@@ -53,3 +53,22 @@ Sockets.prototype.disconnect = function (socketId) {
         model.deleteSocket(socketId).then(resolve, reject);
     });
 };
+
+/**
+ * update the socket's currentGeoLocation
+ *
+ * @param socketId
+ * @param position
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.refreshGeoLocation = function (socketId, position) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.updateSocketGeoLocation(socketId, position).then(resolve, reject);
+    });
+};

@@ -1,4 +1,5 @@
 var Notifications = require('./notifications');
+var Locations     = require('./locations');
 module.exports = Delegations;
 /**
  * handle the socket.io's Delegations
@@ -14,4 +15,5 @@ function Delegations(io, socket) {
     }
 
     new Notifications(io, socket);
+    new Locations(io, socket);
 }

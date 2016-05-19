@@ -22,7 +22,7 @@ function Notifications(io) {
 }
 
 /**
- * get
+ * get audience's region
  *
  * @param type
  * @returns {*}
@@ -54,14 +54,14 @@ Notifications.prototype.send = function (ownerId, requestUserId, type, attribute
     var self = this;
 
     return new Promise(function (resolve, reject) {
+        var region;
         try {
-            var region = self.getAudiencesRegion(type);
+            region = self.getAudiencesRegion(type);
         } catch (e) {
             reject(e);
 
             return;
         }
-
 
         resolve(true);
     });

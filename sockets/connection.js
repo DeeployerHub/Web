@@ -29,13 +29,13 @@ function Connection (base) {
         callback();
     };
 
-    ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT', 'exit'].forEach(function (signal) {
-        process.on(signal, function () {
-            cleanUpSockets(signal, function () {
-                process.exit(1);
-            });
-        });
-    });
+    // ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT', 'exit'].forEach(function (signal) {
+    //     process.on(signal, function () {
+    //         cleanUpSockets(signal, function () {
+    //             process.exit(1);
+    //         });
+    //     });
+    // });
 
     base.io.on('connection', function (socket) {
         var region = socket.handshake.query.region || null;

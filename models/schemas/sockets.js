@@ -10,7 +10,11 @@ module.exports = {
         region: {
             type: String
         },
-        userId: {
+        currentLocation: {
+            type: [Number],  // [<longitude>, <latitude>]
+            index: '2d'      // create the geospatial index
+        },
+        userId         : {
             type: Schema.ObjectId,
             ref: 'users'
         },
