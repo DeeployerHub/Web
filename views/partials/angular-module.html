@@ -13,7 +13,8 @@
                     query     : jQuery.param({
                         region: '[[ socketRegion|default('global') ]]'
                     }),
-                    transports: ['websocket']
+                    transports: ['websocket'],
+                    secure: true
                 })
             });
 
@@ -43,7 +44,7 @@
 
         var geoOptions = {
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: 10000,
             maximumAge: 0
         };
 
