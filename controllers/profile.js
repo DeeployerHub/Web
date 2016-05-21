@@ -32,6 +32,7 @@ module.exports = {
                             requestedUser: userInfo,
                             signedInUser : signedInUser,
                             page         : page,
+                            socketRegion : 'profile.' + page,
                             followed     : (!followed ? 'not-' : '') + 'following'
                         });
                     }, function (err) {
@@ -63,7 +64,8 @@ module.exports = {
                     requestedUser: userInfo,
                     signedInUser : null,
                     page         : page,
-                    followed     : 'empty'
+                    followed     : 'empty',
+                    socketRegion: 'signOut.profile.' + page,
                 });
             } else {
                 errorPageRender(res, 404, 'Sorry, this page isn\'t available');
@@ -83,6 +85,7 @@ module.exports = {
                 requestedUser: signedInUser,
                 signedInUser : signedInUser,
                 page         : page,
+                socketRegion : 'self.profile.' + page,
                 followed     : 'empty'
             });
         }, function (err) {

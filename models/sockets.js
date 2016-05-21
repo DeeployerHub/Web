@@ -106,7 +106,7 @@ Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
                 return;
             }
 
-            socketObj.currentLocation = [position.latitude, position.longitude];
+            socketObj.geoLocation = [position.latitude, position.longitude];
 
             resolve(socketObj.save());
         });

@@ -39,7 +39,16 @@
         };
 
         var geoLocationNotDetected = function (e) {
-            console.log(e);
+            switch (e.code) {
+                case 1: // PERMISSION_DENIED
+                    window.location.href = '/location-detection';
+                    break;
+                case 2: // POSITION_UNAVAILABLE
+                case 3: // TIMEOUT
+                    break;
+                default:
+                    console.log(e);
+            }
         };
 
         var geoOptions = {

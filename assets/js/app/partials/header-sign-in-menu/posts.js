@@ -24,8 +24,15 @@
                     ($scope.maxContentLength - $scope.content.length) < $scope.maxContentLength
                 ) {
                     $scope.waiting = true;
+                    console.log({
+                        content: $scope.content,
+                        geoLatitude: window.geoLocationPositions.latitude,
+                        geoLongitude: window.geoLocationPositions.longitude
+                    });
                     $scope.composeRequest({
-                        content: $scope.content
+                        content: $scope.content,
+                        geoLatitude: window.geoLocationPositions.latitude,
+                        geoLongitude: window.geoLocationPositions.longitude
                     }, function (composeResponse) {
                         $.notify('<span class="text-muted">"' + composeResponse.data.post[0].content + '"</span> Posted!!!', 'success');
                         if ('function' === typeof $scope.renderNewPost) {

@@ -10,7 +10,7 @@ module.exports = {
         region: {
             type: String
         },
-        currentLocation: {
+        geoLocation: {
             type: [Number],  // [<longitude>, <latitude>]
             index: '2d'      // create the geospatial index
         },

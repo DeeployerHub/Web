@@ -23,19 +23,26 @@ function UserPosts () {
  *
  * @param ownerUserId
  * @param content
+ * @param position
  *
  * @returns {Promise}
  */
-UserPosts.prototype.addNewPost = function (ownerUserId, content) {
+UserPosts.prototype.addNewPost = function (ownerUserId, content, position) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
+        var postedGeoLocation = null;
+        if (position.latitude && position.longitude) {
+            postedGeoLocation = [position.latitude, position.longitude];
+        }
+
         var newUserPost = new usersPostsSchema({
             ownerUserId: mongoose.Types.ObjectId(ownerUserId),
-            content    : content
+            content: content,
+            postedGeoLocation: postedGeoLocation
         });
 
         newUserPost.save(function (err, res) {

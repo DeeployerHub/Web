@@ -22,17 +22,18 @@ function UserPosts () {
  *
  * @param ownerUserId
  * @param content
+ * @param position
  *
  * @returns {Promise}
  */
-UserPosts.prototype.addNewPost = function (ownerUserId, content) {
+UserPosts.prototype.addNewPost = function (ownerUserId, content, position) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.addNewPost(ownerUserId, content).then(resolve, reject);
+        model.addNewPost(ownerUserId, content, position).then(resolve, reject);
     });
 };
 
