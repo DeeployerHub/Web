@@ -72,3 +72,24 @@ Sockets.prototype.refreshGeoLocation = function (socketId, position) {
         model.updateSocketGeoLocation(socketId, position).then(resolve, reject);
     });
 };
+
+/**
+ * find socket ids by regions
+ *
+ * @param region
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.findSocketsIdByRegion = function (region) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.findSocketsIdByRegion(
+            region.include || ['*'],
+            region.exclude || []
+        ).then(resolve, reject);
+    });
+};

@@ -1,5 +1,5 @@
 var Promise = require('promise');
-var socketRepo = getRepos('sockets')();
+var socketsRepo = getRepos('sockets')();
 var Deligations = require('./delegations');
 
 module.exports = Connection;
@@ -24,7 +24,7 @@ function Connection(base) {
         console.info('[GC]', process.pid, signal);
         return new Promise(function (resolve, reject) {
             localSockets[process.pid].forEach(function (socketId) {
-                socketRepo.disconnect(socketId).then(function () {
+                socketsRepo.disconnect(socketId).then(function () {
                     base.io.connected[socketId].disconnect();
                 }, reject);
             });
@@ -58,13 +58,13 @@ function Connection(base) {
 
     base.io.on('connection', function (socket) {
         var region = socket.handshake.query.region || null;
-        socketRepo.connect(socket.session.user._id, socket.id, region).then(function () {
+        socketsRepo.connect(socket.session.user._id, socket.id, region).then(function () {
             localSockets[process.pid].push(socket.id);
 
             new Deligations(base.io, socket);
 
             socket.on('disconnect', function () {
-                socketRepo.disconnect(socket.id).then(function () {
+                socketsRepo.disconnect(socket.id).then(function () {
                     localSockets[process.pid].remove(localSockets[process.pid].indexOf(socket.id));
                 }, function (err) {
                     console.error(err);

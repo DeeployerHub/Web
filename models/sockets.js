@@ -112,3 +112,58 @@ Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
         });
     });
 };
+
+/**
+ * delete socket from db
+ *
+ * @param include
+ * @param exclude
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.findSocketsIdByRegion = function (include, exclude) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        if ('object' !== typeof include) {
+            reject(new Error('config for included region must be an object'));
+
+            return;
+        }
+        include = include.length === 0 ? ['*'] : include;
+
+        if ('object' !== typeof exclude) {
+            reject(new Error('config for exclude region must be an object'));
+
+            return;
+        }
+
+        var query = {};
+        if (include.indexOf('*') === -1) {
+            query['$in'] = include;
+        }
+        query['$nin'] = exclude;
+
+        socketsSchema
+            .aggregate({
+                $match: {
+                    region: query
+                }
+            })
+            .group({
+                _id: '$socketId'
+            })
+            .exec(function (err, res) {
+                if (err) {
+                    reject(err);
+
+                    return;
+                }
+
+                resolve(res);
+            });
+    });
+};

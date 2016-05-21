@@ -24,11 +24,6 @@
                     ($scope.maxContentLength - $scope.content.length) < $scope.maxContentLength
                 ) {
                     $scope.waiting = true;
-                    console.log({
-                        content: $scope.content,
-                        geoLatitude: window.geoLocationPositions.latitude,
-                        geoLongitude: window.geoLocationPositions.longitude
-                    });
                     $scope.composeRequest({
                         content: $scope.content,
                         geoLatitude: window.geoLocationPositions.latitude,

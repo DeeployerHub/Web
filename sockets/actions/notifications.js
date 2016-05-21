@@ -1,8 +1,9 @@
-var Promise = require('promise');
+module.exports = Notifications;
 
+var Promise             = require('promise');
+var socketsRepo         = getRepos('sockets')();
 var notificationConfigs = getConfig('notifications');
 
-module.exports = Notifications;
 /**
  * handle the socket.io's notifications actions
  *
@@ -11,32 +12,37 @@ module.exports = Notifications;
  * @returns {Notifications}
  * @constructor
  */
-function Notifications(io) {
+function Notifications(parent) {
     'use strict';
 
     if (!(this instanceof Notifications)) {
-        return new Notifications(io);
+        return new Notifications(parent);
     }
 
-    this.io = io;
+    this.io     = parent.io;
+    this.parent = parent;
 }
 
 /**
  * get audience's region
  *
  * @param type
- * @returns {*}
+ *
+ * @returns {Promise}
  */
 Notifications.prototype.getAudiencesRegion = function (type) {
     'use strict';
 
-    if ('object' !== typeof notificationConfigs.socketRegion[type]) {
-        throw new Error('following type of notification does not found into system');
-    }
+    return new Promise(function (resolve, reject) {
+        if ('object' !== typeof notificationConfigs.socketRegion[type]) {
+            reject(new Error('following type of notification does not found into system'));
 
-    return notificationConfigs.socketRegion[type];
+            return;
+        }
+
+        resolve(notificationConfigs.socketRegion[type]);
+    });
 };
-
 
 /**
  * broadcast the notification to the following audience
@@ -54,15 +60,13 @@ Notifications.prototype.send = function (ownerId, requestUserId, type, attribute
     var self = this;
 
     return new Promise(function (resolve, reject) {
-        var region;
-        try {
-            region = self.getAudiencesRegion(type);
-        } catch (e) {
-            reject(e);
-
-            return;
-        }
-
-        resolve(true);
+        self.getAudiencesRegion(type).then(function (regions) {
+            // get the list of sockets from db according to region
+            socketsRepo.findSocketsIdByRegion(regions).then(function (sockets) {
+                self.parent.broadcast(sockets, 'notification', {data: 'sdfsdfsf'}).then(function () {
+                    resolve(true);
+                }, reject);
+            }, reject);
+        }, reject);
     });
 };
