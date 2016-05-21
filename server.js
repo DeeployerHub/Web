@@ -19,7 +19,7 @@ io.adapter(redis({
     port: getEnvConfig('redis').port
 }));
 
-server.listen(443, function () {
+server.listen(expressPort, function () {
     'use strict';
 
     console.log('[LISTEN] PID: "' + process.pid + '" PORT: "' + expressPort + '"');

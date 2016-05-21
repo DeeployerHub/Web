@@ -42,7 +42,7 @@ UserPosts.prototype.addNewPost = function (ownerUserId, content, position) {
         var newUserPost = new usersPostsSchema({
             ownerUserId: mongoose.Types.ObjectId(ownerUserId),
             content: content,
-            postedGeoLocation: postedGeoLocation
+            postedGeoLocation: postedGeoLocation || undefined
         });
 
         newUserPost.save(function (err, res) {

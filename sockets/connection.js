@@ -39,7 +39,13 @@ function Connection(base) {
             cleanUpSockets(signal).then(function () {
                 setTimeout(function () {
                     if (signal !== 'SIGINT') {
+                        process.exitCode = 1;
                         process.exit(1);
+                    } else {
+                        if (process.send === undefined) {
+                            process.exitCode = 1;
+                            process.exit(1);
+                        }
                     }
                 }, 100);
             }, function (e) {
