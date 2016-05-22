@@ -4,8 +4,7 @@
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
   "main": "boot.js",
   "scripts": {
-    "preinstall": "make install && bower install --allow-root",
-    "install": "gulp",
+    "preinstall": "make install",
     "boot-dev": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
     "boot-dev-single": "npm test && supervisor -i public,upload,assets,node_modules,bower_components server.js",
     "start": "npm test && node boot.js",
@@ -25,10 +24,6 @@
     {
       "name": "Mahan Hazrati",
       "email": "eng.mahan.hazrati@gmail.com"
-    },
-    {
-      "name": "Pooya panahandeh",
-      "email": "Pooya.panahandehpro@gmail.com"
     }
   ],
   "keywords": [
