@@ -42,7 +42,7 @@ Actions.prototype.init = function (action) {
 
     /**
      * leave the sockets from room
-     * @param sockets
+     *
      * @param roomName
      */
     this.leaveFromRoom = function (roomName) {
@@ -50,15 +50,14 @@ Actions.prototype.init = function (action) {
         var socketsInRoom = sockets.in(roomName).connected;
 
         for (var socketId in socketsInRoom) {
-            socketsInRoom[socketId].leave(roomName);
+            if (socketsInRoom.hasOwnProperty(socketId)) {
+                socketsInRoom[socketId].leave(roomName);
+            }
         }
     };
 
     return require('./' + action)(this);
 };
-
-
-
 
 /**
  * broadcast a message to group of sockets
@@ -73,7 +72,6 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
     'use strict';
 
     var self = this;
-
     return new Promise(function (resolve, reject) {
         if ('object' !== typeof socketsList) {
             reject(new Error('socket list is not an object'));
@@ -90,8 +88,8 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
 
             // check if sockets are in the room
             if (++itemsProcessed >= socketsList.length) {
-                // sockets join the room succesfully, broadcast the message
-                connectedSocket.to(roomName).emit(action, data);
+                // sockets join the room successfully, broadcast the message
+                sockets.to(roomName).emit(action, data);
                 self.leaveFromRoom(roomName);
 
                 resolve();

@@ -76,18 +76,20 @@ Sockets.prototype.refreshGeoLocation = function (socketId, position) {
 /**
  * find socket ids by regions
  *
+ * @param userId
  * @param region
  *
  * @returns {Promise}
  */
-Sockets.prototype.findSocketsIdByRegion = function (region) {
+Sockets.prototype.findSocketsIdByRegionAndUser = function (userId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.findSocketsIdByRegion(
+        model.findSocketsIdByRegionAndUser(
+            userId,
             region.include || ['*'],
             region.exclude || []
         ).then(resolve, reject);

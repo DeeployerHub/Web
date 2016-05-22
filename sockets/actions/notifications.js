@@ -62,8 +62,8 @@ Notifications.prototype.send = function (ownerId, requestUserId, type, attribute
     return new Promise(function (resolve, reject) {
         self.getAudiencesRegion(type).then(function (regions) {
             // get the list of sockets from db according to region
-            socketsRepo.findSocketsIdByRegion(regions).then(function (sockets) {
-                self.parent.broadcast(sockets, 'notification', {data: 'sdfsdfsf'}).then(function () {
+            socketsRepo.findSocketsIdByRegionAndUser(ownerId, regions).then(function (sockets) {
+                self.parent.broadcast(sockets, 'notify', attributes).then(function () {
                     resolve(true);
                 }, reject);
             }, reject);

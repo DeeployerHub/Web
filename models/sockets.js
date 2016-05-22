@@ -116,12 +116,13 @@ Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
 /**
  * delete socket from db
  *
+ * @param userId
  * @param include
  * @param exclude
  *
  * @returns {Promise}
  */
-Sockets.prototype.findSocketsIdByRegion = function (include, exclude) {
+Sockets.prototype.findSocketsIdByRegionAndUser = function (userId, include, exclude) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
@@ -143,13 +144,16 @@ Sockets.prototype.findSocketsIdByRegion = function (include, exclude) {
 
         var query = {};
         if (include.indexOf('*') === -1) {
-            query['$in'] = include;
+            query.$in = include;
         }
-        query['$nin'] = exclude;
+        query.$nin = exclude;
 
         socketsSchema
             .aggregate({
                 $match: {
+                    userId: {
+                        $eq: mongoose.Types.ObjectId(userId)
+                    },
                     region: query
                 }
             })
