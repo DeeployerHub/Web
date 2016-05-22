@@ -5,4 +5,3 @@ install:
 	npm install forever -g
 	npm install jshint -g
 	bower install --allow-root
-	gulp
