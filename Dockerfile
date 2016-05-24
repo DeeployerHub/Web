@@ -1,5 +1,7 @@
 FROM node:argon
 
+MAINTAINER Mahan hazrati <eng.mahan.hazrati@gmail.com>
+
 RUN apt-get update
 RUN apt-get install -y -q --no-install-recommends \
     apt-transport-https \
@@ -20,6 +22,6 @@ RUN make install
 RUN npm install --production
 RUN npm run setup
 
-CMD [ 'npm', "boot-dev" ]
+CMD [ "npm", "run", "boot-dev" ]
 
-EXPOSE 7000
+EXPOSE 443

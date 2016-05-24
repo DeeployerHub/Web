@@ -15,13 +15,13 @@ module.exports = {
         }
     },
     redis: {
-        host: '127.0.0.1',
+        host: '192.168.99.100',
         port: 6379,
         ttl: 2600000
     },
     mongoDb: {
         dbName: 'db_dev',
-        host: '127.0.0.1'
+        host: '192.168.99.100'
     },
     tokens: {
         google: {
