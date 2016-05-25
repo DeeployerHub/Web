@@ -11,17 +11,23 @@
 {% endblock %}
 
 {% block angularSection %}
-    ng-app="deeployer"
+ng-app="deeployer"
 {% endblock %}
 
 {% block content %}
 {% include '../../partials/header-fix-sign-in-menu.html' %}
-<div id="fh5co-page">
-    <div class="container">
-        <div class="row row-bottom-padded-lg public-section">
-            <div class="col-md-12">
-            </div>
-        </div>
+<div class="console-page">
+</div>
+
+<div class="row-timeline">
+    <div class="col-md-3">
     </div>
+    <div class="col-md-6">
+        {% set profilePartialPage = '../../partials/profile/posts.html' %}
+        {% include profilePartialPage %}
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="clearfix"></div>
 </div>
 {% endblock %}
