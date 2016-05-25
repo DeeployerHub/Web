@@ -38,5 +38,8 @@ module.exports = {
                 bucket: 'deeployerdev'
             }
         }
+    },
+    googleMap: {
+        key: 'ask manager for token code'
     }
 };

@@ -19,6 +19,9 @@
             });
 
         var refreshLocation = function (position) {
+            var refreshLocationDispatcher = window.refreshLocation || function () {};
+            refreshLocationDispatcher(position);
+
             window.socketIo.emit('refresh-location', {
                 position: position
             });

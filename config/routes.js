@@ -4,6 +4,7 @@ app.use(function(req, res, next) {
     app.locals.request = req;
     app.locals.env = expressEnv;
     app.locals.socketPath = getEnvConfig('app').socketPath;
+    app.locals.googleMapApiKey = getEnvConfig('googleMap').key;
 
     next();
 });

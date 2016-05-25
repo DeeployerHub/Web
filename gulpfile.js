@@ -38,6 +38,7 @@ gulp.task('bower-assets', function () {
     gulp.src(dir.assets.bower + '/**', {base: dir.assets.bower})
         .pipe(gulp.dest(dir.assets.dest + '/bower'));
 });
+
 gulp.task('node-assets', function () {
     'use strict';
 
@@ -64,7 +65,7 @@ gulp.task('assets', ['assets-cleanup'], function () {
         .pipe(gulp.dest(dir.assets.dest + '/css'));
 });
 
-gulp.task('assets:watch', function () {
+gulp.task('watch', function () {
     'use strict';
 
     gulp.watch(dir.assets.source + '/**', ['assets', 'bower-assets', 'node-assets']);

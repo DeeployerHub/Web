@@ -1,0 +1,13 @@
+.console-page {
+    margin-top: 50px;
+    .row-header {
+        height: 300px;
+        box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.1);
+
+        .map-view {
+            height: 100%;
+        }
+    }
+    .row-timeline {
+    }
+}
