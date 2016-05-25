@@ -1,5 +1,5 @@
 <script>
-    function initMap() {
+    function loadMap() {
         var mapStyles = [{
             "featureType": "all",
             "elementType": "all",
@@ -32,7 +32,11 @@
             "featureType": "transit",
             "elementType": "labels",
             "stylers": [
-                {"hue": "#000000"}, {"saturation": -100}, {"lightness": -40}, {"invert_lightness": false}, {"gamma": 1.5}
+                {"hue": "#000000"},
+                {"saturation": -100},
+                {"lightness": -40},
+                {"invert_lightness": false},
+                {"gamma": 1.5}
             ]
         }];
 
@@ -60,4 +64,4 @@
         };
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=[[ googleMapApiKey ]]&callback=initMap" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=[[ googleMapApiKey ]]&callback=loadMap" defer></script>
