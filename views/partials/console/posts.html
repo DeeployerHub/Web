@@ -1,0 +1,94 @@
+<script src='/assets/js/app/partials/console/posts.js'></script>
+<div
+    ng-controller="PartialsConsolePostsController"
+    ng-init="
+        init();
+        "
+    data-username="[[ requestedUser.username ]]"
+    class="profile-posts ng-hide"
+    ng-show="moduleLoaded"
+>
+    <ul
+        class="
+        list-group
+        post-wrapper
+        "
+    >
+        <li class="list-group-item waiting-row" ng-show="postTopWaiting">
+            <div class="cssload-container">
+                <div class="cssload-whirlpool"></div>
+            </div>
+            <div class="clearfix"></div>
+        </li>
+        <li class="list-group-item hide post-area-top"></li>
+
+        <li class="list-group-item hide post-area-bottom"></li>
+        <li
+            ng-class="
+                queue.length === 0
+                ? 'list-group-item waiting-row hide-row text-center no-post'
+                : 'list-group-item waiting-row hide-row text-center'
+            "
+            ng-show="lastPostFetched">
+            <p
+                ng-show="queue.length === 0"
+            >
+                Nobody shared any post. be the first who shares
+            </p>
+            <span
+                ng-show="queue.length !== 0"
+                class="btn btn-info btn-sm"
+                disabled
+            >
+                That's all of it
+            </span>
+        </li>
+        <li class="list-group-item waiting-row hide-row text-center" ng-show="bottomSeeMore && !lastPostFetched">
+            <button
+                class="btn btn-sm btn-info btn-see-more"
+                ng-click="seeMore()"
+            >
+                See more ...
+            </button>
+        </li>
+        <li class="list-group-item waiting-row hide-row" ng-show="postBottomWaiting">
+            <div class="cssload-container">
+                <div class="cssload-whirlpool"></div>
+            </div>
+            <div class="clearfix"></div>
+        </li>
+    </ul>
+</div>
+
+<script type="text/ng-template" id="postNormal.ng.html">
+    <li class="list-group-item post-row" data-post-id="{{ post._id }}">
+        <div class="poster-info">
+            <div class="profile-post-misc">
+                <a href="/profile/{{ post.ownerUserId.username }}">
+                    <img
+                        ng-src="{{ post.ownerUserId.avatar }}"
+                        class="img-thumbnail avatar"
+                        alt="{{ post.ownerUserId.username }}"
+                        title="{{ post.ownerUserId.username }}"
+                        width="75px"
+                        height="75px"
+                        src="{{ post.ownerUserId.avatar }}">
+                    {{ post.ownerUserId.profile[0].firstname | ucwords }} {{ post.ownerUserId.profile[0].lastname | ucwords }}
+                </a>
+                <span class="text-muted">
+                    @{{ post.ownerUserId.username }}
+                </span>
+                &nbsp;
+                <i class="glyphicon glyphicon-time text-muted"></i>
+                <span class="text-muted" data-moment-date="{{ post.postedAt }}"></span>
+                <div class="clearfix"></div>
+                <div class="profile-post-content">
+                    {{ post.content }}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="poster-action"></div>
+        <div class="clearfix"></div>
+    </li>
+</script>
