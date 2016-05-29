@@ -20,6 +20,7 @@
             window.controllers[controller] = this;
 
             $scope.moduleLoaded = true;
+            $scope.mapLoaded = false;
             $scope.requestInProgress = false;
             $scope.bottomSeeMore = false;
             $scope.postTopWaiting = false;
@@ -29,10 +30,6 @@
             $scope.start = 0;
 
             $scope.init = function () {
-                $(document).ready(function () {
-                    $scope.getPosts();
-                });
-
                 setInterval(function () {
                     $('li[data-post-id]').each(function (id, obj) {
                         setTimeout(function () {
@@ -117,8 +114,9 @@
             };
 
             $scope.getPostsQuery = function () {
-                var northEast = window.map.getBounds().getNorthEast();
-                var southWest = window.map.getBounds().getSouthWest();
+                var mapBounds = window.map.getBounds();
+                var northEast = mapBounds.getNorthEast();
+                var southWest = mapBounds.getSouthWest();
                 return {
                     start: $scope.start || undefined,
                     mapView: {
@@ -137,23 +135,21 @@
             $scope.getConsolePostsRequest = function (ok, fail) {
                 if (!$scope.requestInProgress) {
                     $scope.requestInProgress = true;
-                    setTimeout(function () {
-                        $http({
-                            method: 'GET',
-                            url: '/console/get-posts-json',
-                            params: $scope.getPostsQuery()
-                        }).then(function (result) {
-                            // don't allow to request being send anymore in case the last request being empty
-                            if (result.data.posts.length === 0 && !$scope.newestPost) {
-                                $scope.lastPostFetched = true;
-                            }
-                            ok(result);
-                            $scope.requestInProgress = false;
-                        }, function () {
-                            fail();
-                            $scope.requestInProgress = false;
-                        });
-                    }, 1000);
+                    $http({
+                        method: 'GET',
+                        url: '/console/get-posts-json',
+                        params: $scope.getPostsQuery()
+                    }).then(function (result) {
+                        // don't allow to request being send anymore in case the last request being empty
+                        if (result.data.posts.length === 0 && !$scope.newestPost) {
+                            $scope.lastPostFetched = true;
+                        }
+                        ok(result);
+                        $scope.requestInProgress = false;
+                    }, function () {
+                        fail();
+                        $scope.requestInProgress = false;
+                    });
                 }
             };
 
@@ -168,6 +164,14 @@
                     }, 100);
                 });
             };
+
+            angular.element(document).ready(function () {
+                $scope.init();
+            });
+
+            google.maps.event.addListenerOnce(window.map, 'tilesloaded', function () {
+                $scope.getPosts();
+            });
         }
     ]);
 })(window.angular);
