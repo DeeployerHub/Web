@@ -1,7 +1,7 @@
 module.exports = UserPosts;
 
 var Promise = require('promise');
-var model = getModel('usersPosts')();
+var model   = getModel('usersPosts')();
 
 /**
  * UserPosts Repository

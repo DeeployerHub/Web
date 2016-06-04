@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Schema   = mongoose.Schema;
 
 module.exports = {
     collectionName: 'sockets',
@@ -14,7 +14,7 @@ module.exports = {
             type: [Number],  // [<longitude>, <latitude>]
             index: '2d'      // create the geospatial index
         },
-        userId         : {
+        userId: {
             type: Schema.ObjectId,
             ref: 'users'
         },

@@ -1,7 +1,7 @@
 module.exports = Sockets;
 
 var Promise = require('promise');
-var model = getModel('sockets')();
+var model   = getModel('sockets')();
 
 /**
  * Sockets Repository
@@ -9,7 +9,7 @@ var model = getModel('sockets')();
  * @returns {Sockets}
  * @constructor
  */
-function Sockets() {
+function Sockets () {
     'use strict';
 
     if (!(this instanceof Sockets)) {

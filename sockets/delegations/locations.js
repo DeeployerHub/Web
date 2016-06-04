@@ -10,7 +10,7 @@ module.exports = Locations;
  * @returns {Locations}
  * @constructor
  */
-function Locations(io, socket) {
+function Locations (io, socket) {
     'use strict';
 
     if (!(this instanceof Locations)) {

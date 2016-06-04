@@ -5,11 +5,11 @@ var Promise = require('promise');
 
 /**
  * sockets module actions
- * 
+ *
  * @returns {Actions}
  * @constructor
  */
-function Actions(io) {
+function Actions (io) {
     'use strict';
 
     if (!(this instanceof Actions)) {
@@ -46,7 +46,7 @@ Actions.prototype.init = function (action) {
      * @param roomName
      */
     this.leaveFromRoom = function (roomName) {
-        var sockets = this.io.sockets;
+        var sockets       = this.io.sockets;
         var socketsInRoom = sockets.in(roomName).connected;
 
         for (var socketId in socketsInRoom) {

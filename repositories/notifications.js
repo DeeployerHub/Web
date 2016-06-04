@@ -6,11 +6,11 @@ var socketAction = getSocketActions(io);
 
 /**
  *  Notifications Repository
- *  
+ *
  * @returns {Notifications}
  * @constructor
  */
-function Notifications() {
+function Notifications () {
     'use strict';
 
     if (!(this instanceof Notifications)) {
@@ -51,7 +51,6 @@ Notifications.prototype.sendNotification = function (ownerId, requestUserId, typ
     'use strict';
 
     var socketNotifyActions = socketAction.init('notifications');
-
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};

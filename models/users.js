@@ -253,11 +253,11 @@ Users.prototype.updateProfileById = function (userId, profile) {
             {
                 $push: {
                     profile: {
-                        gender     : profile.gender,
-                        firstname  : profile.firstname.toLowerCase(),
-                        lastname   : profile.lastname.toLowerCase(),
-                        country    : profile.country,
-                        phone      : profile.phone,
+                        gender: profile.gender,
+                        firstname: profile.firstname.toLowerCase(),
+                        lastname: profile.lastname.toLowerCase(),
+                        country: profile.country,
+                        phone: profile.phone,
                         geoLocation: profile.geoLocation
                     }
                 }
@@ -326,10 +326,9 @@ Users.prototype.increasePoints = function (userId, increasePointsValue, attribut
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-
         usersSchema.find({
             _id: mongoose.Types.ObjectId(userId)
-        }, function(err, res){
+        }, function (err, res) {
             if (err) {
                 reject(err);
 
@@ -337,7 +336,7 @@ Users.prototype.increasePoints = function (userId, increasePointsValue, attribut
             }
 
             var pointBeforeAction = res[0].points || 0;
-            var pointAfterAction = pointBeforeAction + increasePointsValue;
+            var pointAfterAction  = pointBeforeAction + increasePointsValue;
 
             var pointsHistory = {
                 points: increasePointsValue,

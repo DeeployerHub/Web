@@ -77,7 +77,7 @@ errorPageRender = function (res, code, message) {
     res.status(err.status);
     res.render('error', {
         message: message,
-        error  : err
+        error: err
     });
 };
 

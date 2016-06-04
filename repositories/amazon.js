@@ -8,7 +8,7 @@ var Promise = require('promise');
  * @returns {Amazon}
  * @constructor
  */
-function Amazon() {
+function Amazon () {
     'use strict';
 
     if (!(this instanceof Amazon)) {
@@ -32,14 +32,14 @@ Amazon.prototype.s3Upload = function (savedFile, fileToken, fileType) {
         resolve = resolve || function () {};
 
         var aws = require('aws-sdk'),
-            fs = require('fs');
+            fs  = require('fs');
 
         aws.config.update({
             accessKeyId: getEnvConfig('tokens').aws.s3.accessKeyId,
             secretAccessKey: getEnvConfig('tokens').aws.s3.secretAccessKey
         });
 
-        var s3 = new aws.S3();
+        var s3         = new aws.S3();
         var fileStream = fs.createReadStream(savedFile);
         fileStream.on('open', function () {
             s3.putObject({

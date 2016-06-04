@@ -8,7 +8,7 @@ module.exports = Notifications;
  * @returns {Notifications}
  * @constructor
  */
-function Notifications(io, socket) {
+function Notifications (io, socket) {
     'use strict';
 
     if (!(this instanceof Notifications)) {

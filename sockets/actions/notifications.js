@@ -12,7 +12,7 @@ var notificationConfigs = getConfig('notifications');
  * @returns {Notifications}
  * @constructor
  */
-function Notifications(parent) {
+function Notifications (parent) {
     'use strict';
 
     if (!(this instanceof Notifications)) {

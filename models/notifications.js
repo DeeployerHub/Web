@@ -1,7 +1,7 @@
 module.exports = Notifications;
 
-var Promise = require('promise');
-var mongoose = require('mongoose');
+var Promise             = require('promise');
+var mongoose            = require('mongoose');
 var notificationsSchema = getModelSchema('notifications');
 
 /**
@@ -9,7 +9,7 @@ var notificationsSchema = getModelSchema('notifications');
  * @returns {Notifications}
  * @constructor
  */
-function Notifications() {
+function Notifications () {
     'use strict';
 
     if (!(this instanceof Notifications)) {
@@ -85,7 +85,7 @@ Notifications.prototype.newNotificationByOwnerId = function (ownerId, requestUse
             requestUserId: requestUserId
         });
 
-        newNotification.save(function(err, res){
+        newNotification.save(function (err, res) {
             if (err) {
                 reject(err);
 

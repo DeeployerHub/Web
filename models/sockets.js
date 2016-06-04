@@ -1,16 +1,16 @@
 module.exports = Sockets;
 
-var Promise = require('promise');
-var mongoose = require('mongoose');
+var Promise       = require('promise');
+var mongoose      = require('mongoose');
 var socketsSchema = getModelSchema('sockets');
 
 /**
  *  Sockets Model
- *  
+ *
  * @returns {Sockets}
  * @constructor
  */
-function Sockets() {
+function Sockets () {
     'use strict';
 
     if (!(this instanceof Sockets)) {
@@ -30,8 +30,10 @@ Sockets.prototype.addNewSocket = function (userId, socketId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
-        resolve = resolve || function () {};
-        reject = reject || function () {};
+        resolve = resolve || function () {
+            };
+        reject  = reject || function () {
+            };
 
         var newSocket = new socketsSchema({
             userId: mongoose.Types.ObjectId(userId),
@@ -98,7 +100,7 @@ Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
         reject = reject || function () {};
 
         socketsSchema.findOne({
-                socketId: socketId
+            socketId: socketId
         }, function (err, socketObj) {
             if (err) {
                 reject(err);

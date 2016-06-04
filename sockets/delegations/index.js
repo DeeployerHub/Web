@@ -1,13 +1,13 @@
 var Notifications = require('./notifications');
 var Locations     = require('./locations');
-module.exports = Delegations;
+module.exports    = Delegations;
 /**
  * handle the socket.io's Delegations
  *
  * @returns {Delegations}
  * @constructor
  */
-function Delegations(io, socket) {
+function Delegations (io, socket) {
     'use strict';
 
     if (!(this instanceof Delegations)) {

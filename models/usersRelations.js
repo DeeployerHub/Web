@@ -35,7 +35,7 @@ UserRelations.prototype.isFollowed = function (requestUserId, responseUserId) {
 
         usersRelationsSchema
             .find({
-                requestUserId : mongoose.Types.ObjectId(requestUserId),
+                requestUserId: mongoose.Types.ObjectId(requestUserId),
                 responseUserId: mongoose.Types.ObjectId(responseUserId)
             })
             .exec(function (err, res) {
@@ -71,11 +71,11 @@ UserRelations.prototype.follow = function (requestUserId, responseUserId) {
             if (!followed) {
                 // insert the userRelation to DB
                 var newUserRelation = new usersRelationsSchema({
-                    requestUserId : mongoose.Types.ObjectId(requestUserId),
+                    requestUserId: mongoose.Types.ObjectId(requestUserId),
                     responseUserId: mongoose.Types.ObjectId(responseUserId)
                 });
 
-                newUserRelation.save(function(err, res){
+                newUserRelation.save(function (err, res) {
                     if (err) {
                         reject(err);
 
@@ -113,10 +113,10 @@ UserRelations.prototype.unfollow = function (requestUserId, responseUserId) {
                 // delete the userRelation
                 usersRelationsSchema
                     .find({
-                        requestUserId : mongoose.Types.ObjectId(requestUserId),
+                        requestUserId: mongoose.Types.ObjectId(requestUserId),
                         responseUserId: mongoose.Types.ObjectId(responseUserId)
                     })
-                    .remove(function(err, res){
+                    .remove(function (err, res) {
                         if (err) {
                             reject(err);
 
@@ -142,7 +142,7 @@ UserRelations.prototype.unfollow = function (requestUserId, responseUserId) {
  */
 UserRelations.prototype.getFollowersList = function (responseUserId) {
     'use strict';
-    
+
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};

@@ -1,8 +1,8 @@
-var del = require('del');
-var gulp = require('gulp');
-var sass = require('gulp-sass');
+var del        = require('del');
+var gulp       = require('gulp');
+var sass       = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
-var dir = {
+var dir        = {
     assets: {
         source: './assets',
         dest: './public/assets',

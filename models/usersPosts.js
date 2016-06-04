@@ -70,7 +70,7 @@ UserPosts.prototype.addNewPost = function (ownerUserId, content, position) {
                         var profileStack = obj.ownerUserId.profile.pop();
                         var profileObj   = {
                             firstname: profileStack.firstname,
-                            lastname : profileStack.lastname
+                            lastname: profileStack.lastname
                         };
 
                         obj.ownerUserId.profile = profileObj;
@@ -120,7 +120,7 @@ UserPosts.prototype.getPostsByOwnerId = function (userId, start, length) {
                     var profileStack = obj.ownerUserId.profile.pop();
                     var profileObj   = {
                         firstname: profileStack.firstname,
-                        lastname : profileStack.lastname
+                        lastname: profileStack.lastname
                     };
 
                     obj.ownerUserId.profile = profileObj;
