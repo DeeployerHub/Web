@@ -1,16 +1,17 @@
-module.exports = function() {
-    'use strict';
+'use strict';
 
-    var router = express.Router();
-    var controller = getController('root');
+var router     = express.Router();
+var controller = getController('root')();
+var middleware = getMiddleware('account')();
 
+module.exports = function () {
     // route to specified controllers
-    router.get('/', getMiddleware('account.consoleCheck'), controller.landingPage);
-    
+    router.get('/', middleware.consoleCheck, controller.landingPage);
+
     // static pages
-    router.get('/support', controller.static.support);
-    router.get('/services-features', controller.static.servicesFeatures);
-    router.get('/terms-and-conditions', controller.static.termsAndConditions);
+    router.get('/support', controller.staticSupport);
+    router.get('/services-features', controller.staticServicesFeatures);
+    router.get('/terms-and-conditions', controller.staticTermsAndConditions);
 
     return router;
 };

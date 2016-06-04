@@ -1,4 +1,4 @@
-var Promise = require('promise');
+var Promise     = require('promise');
 var socketsRepo = getRepos('sockets')();
 var Deligations = require('./delegations');
 
@@ -10,14 +10,14 @@ module.exports = Connection;
  * @returns {Connection}
  * @constructor
  */
-function Connection(base) {
+function Connection (base) {
     'use strict';
 
     if (!(this instanceof Connection)) {
         return new Connection(base);
     }
 
-    var localSockets = {};
+    var localSockets          = {};
     localSockets[process.pid] = [];
 
     var cleanUpSockets = function (signal) {

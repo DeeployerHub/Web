@@ -1,18 +1,19 @@
 'use strict';
 
-module.exports = function() {
-    var router = express.Router();
-    var controller = getController('account');
+var router     = express.Router();
+var controller = getController('account')();
+var middleware = getMiddleware('account')();
 
+module.exports = function () {
     // route to specified controllers
     router.get(
         '/sign-in',
-        getMiddleware('account.consoleCheck'),
+        middleware.consoleCheck,
         controller.signIn
     );
     router.get(
         '/sign-in/google/callback',
-        getMiddleware('account.consoleCheck'),
+        middleware.consoleCheck,
         passport.authenticate('google', {
             failureRedirect: '/account/sign-in',
             successRedirect: '/'
@@ -20,7 +21,7 @@ module.exports = function() {
     );
     router.get(
         '/sign-in/google',
-        getMiddleware('account.consoleCheck'),
+        middleware.consoleCheck,
         passport.authenticate('google', {
             scope: [
                 // for more info about scopes, visit:
@@ -30,50 +31,50 @@ module.exports = function() {
             ]
         }));
     router.get(
-        '/sign-out', 
+        '/sign-out',
         controller.signOut
     );
 
     // account activation
     router.post(
         '/activation/account/collect-point',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.accountCollectPoint
+        middleware.isUserActivated,
+        controller.activationStepsAccountCollectPoint
     );
     router.post(
         '/activation/account/avatar-upload',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.accountAvatarUpload
+        middleware.isUserActivated,
+        controller.activationStepsAccountAvatarUpload
     );
     router.get(
         '/activation/account',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.account
+        middleware.isUserActivated,
+        controller.activationStepsAccount
     );
     router.get(
         '/activation/profile',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.profile
+        middleware.isUserActivated,
+        controller.activationStepsProfile
     );
 
     router.post(
         '/activation/profile/collect-point',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.profileCollectPoint
+        middleware.isUserActivated,
+        controller.activationStepsProfileCollectPoint
     );
     router.get(
         '/activation/sharing',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.sharing
+        middleware.isUserActivated,
+        controller.activationStepsSharing
     );
     router.post(
         '/activation/sharing/agree',
-        getMiddleware('account.isUserActivated'),
-        controller.activationSteps.agree
+        middleware.isUserActivated,
+        controller.activationStepsAgree
     );
     router.get(
         '/activation',
-        getMiddleware('account.isUserActivated'),
+        middleware.isUserActivated,
         controller.activation
     );
 

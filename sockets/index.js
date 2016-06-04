@@ -6,7 +6,7 @@ module.exports = Sockets;
  * @returns {Sockets}
  * @constructor
  */
-function Sockets(io) {
+function Sockets (io) {
     'use strict';
 
     if (!(this instanceof Sockets)) {

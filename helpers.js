@@ -35,17 +35,10 @@ getDomain = function (domain) {
         getEnvConfig('app').request.domains[domain || 'main'];
 };
 
-getLib = function (name, lib) {
-    'use strict';
-
-    lib = lib.split('.');
-    return require('./' + name + '/' + lib[0] + '.js')[lib[1]];
-};
-
 getMiddleware = function (middleware) {
     'use strict';
 
-    return getLib('middleware', middleware);
+    return require('./middleware/' + middleware);
 };
 
 getRepos = function (repository) {

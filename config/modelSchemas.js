@@ -1,7 +1,7 @@
 module.exports.bootstrap = function () {
     'use strict';
 
-    var fs = require('fs');
+    var fs   = require('fs');
     var path = require('path');
 
     var schemasObj = [];
@@ -24,7 +24,7 @@ module.exports.bootstrap = function () {
 
     // convert the schema objects to model
     var schemaObject = mongoose.Schema;
-    var schemas = {};
+    var schemas      = {};
     schemasObj.forEach(function (schema) {
         schemas[schema.collectionName] = mongoose.model(
             schema.collectionName,

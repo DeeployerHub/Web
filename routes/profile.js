@@ -1,69 +1,70 @@
 'use strict';
 
-module.exports = function() {
-    var router = express.Router();
-    var controller = getController('profile');
+var router     = express.Router();
+var controller = getController('profile')();
+var middleware = getMiddleware('account')();
 
+module.exports = function () {
     // route for the signed in user
-    router.get('/', getMiddleware('account.signInCheck'), function(req, res) {
-        var page = 'posts';
-        return controller.profile(req, res, page);
-    });
-    
-    router.get('/posts', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/', middleware.signInCheck, function (req, res) {
         var page = 'posts';
         return controller.profile(req, res, page);
     });
 
-    router.get('/about', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/posts', middleware.signInCheck, function (req, res) {
+        var page = 'posts';
+        return controller.profile(req, res, page);
+    });
+
+    router.get('/about', middleware.signInCheck, function (req, res) {
         var page = 'about';
         return controller.profile(req, res, page);
     });
-    router.post('/about/update', getMiddleware('account.signInCheck'), controller.profileAboutUpdate);
+    router.post('/about/update', middleware.signInCheck, controller.profileAboutUpdate);
 
-    router.get('/followers', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/followers', middleware.signInCheck, function (req, res) {
         var page = 'followers';
         return controller.profile(req, res, page);
     });
 
-    router.post('/relation', getMiddleware('account.signInCheck'), controller.relation);
+    router.post('/relation', middleware.signInCheck, controller.relation);
 
     router.post(
         '/avatar-upload',
-        getMiddleware('account.signInCheck'),
+        middleware.signInCheck,
         controller.profileAvatarUpload
     );
     router.post(
         '/cover-upload',
-        getMiddleware('account.signInCheck'),
+        middleware.signInCheck,
         controller.profileCoverUpload
     );
     // route for targeted username 
-    router.get('/:username', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/:username', middleware.signInCheck, function (req, res) {
         var username = req.params.username;
-        var page = 'posts';
+        var page     = 'posts';
         return controller.profile(req, res, page, username);
     });
 
-    router.get('/:username/posts', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/:username/posts', middleware.signInCheck, function (req, res) {
         var username = req.params.username;
-        var page = 'posts';
+        var page     = 'posts';
         return controller.profile(req, res, page, username);
     });
 
-    router.get('/:username/about', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/:username/about', middleware.signInCheck, function (req, res) {
         var username = req.params.username;
-        var page = 'about';
+        var page     = 'about';
         return controller.profile(req, res, page, username);
     });
 
-    router.get('/:username/followers', getMiddleware('account.signInCheck'), function(req, res) {
+    router.get('/:username/followers', middleware.signInCheck, function (req, res) {
         var username = req.params.username;
-        var page = 'followers';
+        var page     = 'followers';
         return controller.profile(req, res, page, username);
     });
-    
-    router.get('/:username/followers/get-json', getMiddleware('account.signInCheck'), function(req, res) {
+
+    router.get('/:username/followers/get-json', middleware.signInCheck, function (req, res) {
         var username = req.params.username;
         return controller.getFollowers(req, res, username);
     });

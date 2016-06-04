@@ -1,17 +1,17 @@
 'use strict';
 
-module.exports = function() {
-    var router = express.Router();
-    var controller = getController('posts');
+var router     = express.Router();
+var controller = getController('posts')();
+var middleware = getMiddleware('account')();
 
-    router.get('/:username/get-posts-json', getMiddleware('account.signInCheck'), function(req, res) {
+module.exports = function () {
+    router.get('/:username/get-posts-json', middleware.signInCheck, function (req, res) {
         var username = req.params.username;
 
         return controller.getProfilePostsJson(req, res, username);
     });
 
+    router.post('/compose', middleware.signInCheck, controller.compose);
 
-    router.post('/compose', getMiddleware('account.signInCheck'), controller.compose);
-    
     return router;
 };

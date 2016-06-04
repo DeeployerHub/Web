@@ -1,11 +1,11 @@
 require('./bootstrap');
 
-passport = require('passport');
 var redis = require('socket.io-redis');
-var fs = require('fs');
+var fs    = require('fs');
 
+passport = require('passport');
 express  = require('express');
-app = express();
+app      = express();
 
 var credentials = {
     key: fs.readFileSync('./sslcert/' + getEnvConfig('app').expressEnv + '/server.key', 'utf8'),
@@ -13,7 +13,8 @@ var credentials = {
 };
 
 server = require('https').Server(credentials, app);
-io = require('socket.io')(server,  {'transports': ['websocket']});
+io     = require('socket.io')(server, {'transports': ['websocket']});
+
 io.adapter(redis({
     host: getEnvConfig('redis').host,
     port: getEnvConfig('redis').port

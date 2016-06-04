@@ -1,10 +1,11 @@
 'use strict';
 
-module.exports = function() {
-    var router = express.Router();
-    var controller = getController('notifications');
+var router     = express.Router();
+var controller = getController('notifications')();
+var middleware = getMiddleware('account')();
 
-    router.get('/get-json', getMiddleware('account.signInCheck'), controller.getJson);
+module.exports = function () {
+    router.get('/get-json', middleware.signInCheck, controller.getJson);
 
     return router;
 };

@@ -27,45 +27,45 @@ module.exports = function (app, express, io) {
 
     var accessLogStream = fileStreamRotator.getStream({
         date_format: 'YYYY-MM-DD',
-        filename   : logDirectory + '/access-%DATE%.log',
-        frequency  : 'daily',
-        verbose    : false
+        filename: logDirectory + '/access-%DATE%.log',
+        frequency: 'daily',
+        verbose: false
     });
 
     app.use(logger(
         '[:pid] [:date[clf]] :method :url :status (:response-time ms)  ":referrer" ":user-agent"', {
             stream: accessLogStream,
-            skip  : function (req, res) {
+            skip: function (req, res) {
                 return res.statusCode <= 400;
             }
         }));
 
     var sessionStore = new redisStore({
-        host  : getEnvConfig('redis').host,
-        port  : getEnvConfig('redis').port,
+        host: getEnvConfig('redis').host,
+        port: getEnvConfig('redis').port,
         client: client,
-        ttl   : getEnvConfig('redis').ttl
+        ttl: getEnvConfig('redis').ttl
     });
 
     app.use(session({
-        cookie           : {
-            path    : '/',
+        cookie: {
+            path: '/',
             httpOnly: true,
-            maxAge  : getEnvConfig('redis').ttl
+            maxAge: getEnvConfig('redis').ttl
         },
-        key              : getEnvConfig('cookie').key,
-        secret           : getEnvConfig('cookie').secret,
+        key: getEnvConfig('cookie').key,
+        secret: getEnvConfig('cookie').secret,
         // create new redis store.
-        store            : sessionStore,
-        proxy            : true,
-        resave           : true,
+        store: sessionStore,
+        proxy: true,
+        resave: true,
         saveUninitialized: true
     }));
 
     var swig = require('swig');
     swig.setDefaults({
         varControls: ['[[', ']]'],
-        cache      : false
+        cache: false
     });
     app.engine('html', swig.renderFile);
     // view engine setup
@@ -78,7 +78,7 @@ module.exports = function (app, express, io) {
 
     app.use(bodyParser.urlencoded({
         extended: false,
-        limit   : '50mb'
+        limit: '50mb'
     }));
 
     app.use(cookieParser());
@@ -101,7 +101,7 @@ module.exports = function (app, express, io) {
                     if (sessionData.passport.user) {
                         socket.session = sessionData.passport;
                         next(null, socket);
-                        
+
                         return;
                     }
                 }
