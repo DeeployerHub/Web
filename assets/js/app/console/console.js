@@ -62,6 +62,16 @@
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 });
 
+            window.mapCenterChangedTimeOut = window.mapCenterChangedTimeOut || null;
+            window.map.addListener('center_changed', function() {
+                var mapCenter = this.getCenter();
+                var mapBounds = this.getBounds();
+                clearTimeout(window.mapCenterChangedTimeOut);
+                window.mapCenterChangedTimeOut = setTimeout(function () {
+                    console.log(mapCenter, mapBounds);
+                }, 200);
+            });
+
             window.refreshLocationCount = 0;
             window.refreshLocation = function (position) {
                 if (window.refreshLocationCount++ < 1) {
@@ -71,11 +81,11 @@
                     };
 
                     window.map.setCenter(pos);
-                    var marker = new google.maps.Marker({
-                        position: pos,
-                        map: window.map,
-                        title: 'Myself!'
-                    });
+                    //var marker = new google.maps.Marker({
+                    //    position: pos,
+                    //    map: window.map,
+                    //    title: 'Myself!'
+                    //});
                 }
             };
         }
