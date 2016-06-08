@@ -6,8 +6,8 @@
 
     var app = angular.module('deeployer');
     app.controller(controller, [
-        '$scope', '$controller', '$http', '$compile', '$templateRequest', '$rootScope',
-        function ($scope, $controller, $http, $compile, $templateRequest, $rootScope) {
+        '$scope', '$controller', '$http', '$compile', '$templateRequest', '$rootScope', '$map',
+        function ($scope, $controller, $http, $compile, $templateRequest, $rootScope, $map) {
             // inherit the classes on the header's
             $controller(extend, {
                 $scope: $scope,
@@ -114,42 +114,33 @@
             };
 
             $scope.getPostsQuery = function () {
-                var mapBounds = window.map.getBounds();
-                var northEast = mapBounds.getNorthEast();
-                var southWest = mapBounds.getSouthWest();
                 return {
                     start: $scope.start || undefined,
                     mapView: {
-                        northEast: {
-                            latitude: northEast.lat(),
-                            longitude: northEast.lng()
-                        },
-                        southWest: {
-                            latitude: southWest.lat(),
-                            longitude: southWest.lng()
-                        }
+                        corners: $map.getCorners(),
+                        center: $map.getViewCenter(),
                     }
                 };
             };
 
             $scope.getConsolePostsRequest = function (ok, fail) {
                 if (!$scope.requestInProgress) {
-                    //$scope.requestInProgress = true;
-                    //$http({
-                    //    method: 'GET',
-                    //    url: '/console/get-posts-json',
-                    //    params: $scope.getPostsQuery()
-                    //}).then(function (result) {
-                    //    // don't allow to request being send anymore in case the last request being empty
-                    //    if (result.data.posts.length === 0 && !$scope.newestPost) {
-                    //        $scope.lastPostFetched = true;
-                    //    }
-                    //    ok(result);
-                    //    $scope.requestInProgress = false;
-                    //}, function () {
-                    //    fail();
-                    //    $scope.requestInProgress = false;
-                    //});
+                    $scope.requestInProgress = true;
+                    $http({
+                        method: 'GET',
+                        url: '/console/get-posts-json',
+                        params: $scope.getPostsQuery()
+                    }).then(function (result) {
+                        // don't allow to request being send anymore in case the last request being empty
+                        if (result.data.posts.length === 0 && !$scope.newestPost) {
+                            $scope.lastPostFetched = true;
+                        }
+                        ok(result);
+                        $scope.requestInProgress = false;
+                    }, function () {
+                        fail();
+                        $scope.requestInProgress = false;
+                    });
                 }
             };
 

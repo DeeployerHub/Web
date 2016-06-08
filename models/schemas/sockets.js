@@ -14,6 +14,20 @@ module.exports = {
             type: [Number],  // [<longitude>, <latitude>]
             index: '2d'      // create the geospatial index
         },
+        mapViewCenter: {
+            type: [Number],  // [<longitude>, <latitude>]
+            index: '2d'      // create the geospatial index
+        },
+        mapViewBorder: {
+            northEast: {
+                type: [Number],  // [<longitude>, <latitude>]
+                index: '2d'      // create the geospatial index
+            },
+            southWest: {
+                type: [Number],  // [<longitude>, <latitude>]
+                index: '2d'      // create the geospatial index
+            }
+        },
         userId: {
             type: Schema.ObjectId,
             ref: 'users'

@@ -86,7 +86,7 @@ Sockets.prototype.deleteSocket = function (socketId) {
 };
 
 /**
- * delete socket from db
+ * update socket geo locaiton
  *
  * @param socketId
  *
@@ -116,7 +116,41 @@ Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
 };
 
 /**
- * delete socket from db
+ * update map view geo socket from db
+ *
+ * @param socketId
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.updateSocketMapViewGeo = function (socketId, center, corners) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        socketsSchema.findOne({
+            socketId: socketId
+        }, function (err, socketObj) {
+            if (err) {
+                reject(err);
+
+                return;
+            }
+
+            socketObj.mapViewCenter = [center.latitude, center.longitude];
+            socketObj.mapViewBorder = {
+                northEast: [corners.northEast.latitude, corners.northEast.longitude],
+                southWest: [corners.southWest.latitude, corners.southWest.longitude]
+            };
+
+            resolve(socketObj.save());
+        });
+    });
+};
+
+/**
+ * find socket id by region and userid
  *
  * @param userId
  * @param include

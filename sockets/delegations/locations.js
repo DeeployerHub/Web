@@ -24,5 +24,13 @@ function Locations (io, socket) {
             console.error(e);
         });
     });
+
+    socket.on('refresh-map-view', function (data) {
+        socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function (s) {
+            // do some action when map view refreshed
+        }, function (e) {
+            console.error(e);
+        });
+    });
 }
 

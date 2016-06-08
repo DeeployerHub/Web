@@ -74,6 +74,25 @@ Sockets.prototype.refreshGeoLocation = function (socketId, position) {
 };
 
 /**
+ * update the socket's mapViewGeo
+ *
+ * @param socketId
+ * @param position
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.refreshMapViewGeo = function (socketId, center, corners) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.updateSocketMapViewGeo(socketId, center, corners).then(resolve, reject);
+    });
+};
+
+/**
  * find socket ids by regions
  *
  * @param userId
