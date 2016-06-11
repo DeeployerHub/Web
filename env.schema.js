@@ -4,7 +4,7 @@ module.exports = {
         secret: 'redis-secret'
     },
     app: {
-        expressPort: 443,
+        expressPort: 7000,
         expressEnv: 'dev',
         socketPath: 'wss://deeployer.dev.com',
         request: {

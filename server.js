@@ -6,14 +6,8 @@ var fs    = require('fs');
 passport = require('passport');
 express  = require('express');
 app      = express();
-
-var credentials = {
-    key: fs.readFileSync('./sslcert/' + getEnvConfig('app').expressEnv + '/server.key', 'utf8'),
-    cert: fs.readFileSync('./sslcert/' + getEnvConfig('app').expressEnv + '/server.crt', 'utf8')
-};
-
-server = require('https').Server(credentials, app);
-io     = require('socket.io')(server, {'transports': ['websocket']});
+server   = require('http').Server(app);
+io       = require('socket.io')(server, {'transports': ['websocket']});
 
 io.adapter(redis({
     host: getEnvConfig('redis').host,
