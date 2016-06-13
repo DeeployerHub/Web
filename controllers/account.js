@@ -90,7 +90,7 @@ AccountController.prototype.activationStepsAccountAvatarUpload = function (req, 
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         fileToken = uuid.v4() + path.extname(filename);
-        savedFile = path.join(os.tmpDir() + '/upload', fileToken);
+        savedFile = path.join(process.cwd() + '/upload', fileToken);
         file.pipe(fs.createWriteStream(savedFile));
     });
     busboy.on('finish', function () {

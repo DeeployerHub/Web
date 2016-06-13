@@ -307,7 +307,7 @@ ProfileController.prototype.profileAvatarUpload = function (req, res) {
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         fileToken = uuid.v4() + path.extname(filename);
-        savedFile = path.join(os.tmpDir() + '/upload', fileToken);
+        savedFile = path.join(process.cwd() + '/upload', fileToken);
         file.pipe(fs.createWriteStream(savedFile));
     });
     busboy.on('finish', function () {
@@ -369,7 +369,7 @@ ProfileController.prototype.profileCoverUpload = function (req, res) {
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         fileToken = uuid.v4() + path.extname(filename);
-        savedFile = path.join(os.tmpDir() + '/upload', fileToken);
+        savedFile = path.join(process.cwd() + '/upload', fileToken);
         file.pipe(fs.createWriteStream(savedFile));
     });
     busboy.on('finish', function () {
