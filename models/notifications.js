@@ -65,6 +65,7 @@ Notifications.prototype.getNotificationsByOwnerId = function (userId, start, len
  * add new notification for user by ownerId
  *
  * @param ownerId
+ * @param requestUserId
  * @param type
  * @param attributes
  *

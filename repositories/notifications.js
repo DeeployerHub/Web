@@ -1,8 +1,9 @@
 module.exports = Notifications;
 
-var Promise      = require('promise');
-var model        = getModel('notifications')();
-var socketAction = getSocketActions(io);
+var Promise             = require('promise');
+var model               = getModel('notifications')();
+var socketAction        = getSocketActions(io);
+var socketNotifyActions = socketAction.init('notifications');
 
 /**
  *  Notifications Repository
@@ -43,14 +44,13 @@ Notifications.prototype.getNotifications = function (userId, start, length, attr
  * send notification to specific user
  *
  * @param ownerId
+ * @param requestUserId
  * @param type
  * @param attributes
  * @returns {Promise}
  */
 Notifications.prototype.sendNotification = function (ownerId, requestUserId, type, attributes) {
     'use strict';
-
-    var socketNotifyActions = socketAction.init('notifications');
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};

@@ -72,6 +72,7 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
     'use strict';
 
     var self = this;
+
     return new Promise(function (resolve, reject) {
         if ('object' !== typeof socketsList) {
             reject(new Error('socket list is not an object'));
@@ -80,6 +81,10 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
         var itemsProcessed = 0;
         var sockets        = self.io.sockets;
         var roomName       = uuid.v1();
+
+        if (socketsList.length === 0) {
+            resolve();
+        }
 
         socketsList.forEach(function (socket) {
             // check if the socket is still alive

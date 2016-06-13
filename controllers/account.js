@@ -93,6 +93,7 @@ AccountController.prototype.activationStepsAccountAvatarUpload = function (req, 
         savedFile = path.join(process.cwd() + '/upload', fileToken);
         file.pipe(fs.createWriteStream(savedFile));
     });
+
     busboy.on('finish', function () {
         amazon.s3Upload(savedFile, fileToken, req.query.file_type).then(function (err) {
             fs.unlink(savedFile);
@@ -133,7 +134,6 @@ AccountController.prototype.activationStepsAccountAvatarUpload = function (req, 
  */
 AccountController.prototype.activationStepsAccountCollectPoint = function (req, res) {
     'use strict';
-
     var username = req.body.username;
     if (username) {
         // validate the username
