@@ -207,3 +207,70 @@ Sockets.prototype.findSocketsIdByRegionAndUser = function (userId, include, excl
             });
     });
 };
+
+/**
+ * find socket id by region and sight point
+ *
+ * @param corners
+ * @param excludeSocketId
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, excludeSocketId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        if ('string' !== typeof excludeSocketId) {
+            reject(new Error('config for exclude region must be an object'));
+
+            return;
+        }
+
+        var mapCorners = {
+            northEast: [corners.northEast.latitude, corners.northEast.longitude],
+            southWest: [corners.southWest.latitude, corners.southWest.longitude]
+        };
+
+        var box = [
+            mapCorners.southWest, mapCorners.northEast
+        ];
+
+        socketsSchema
+            .aggregate({
+                $match: {
+                    region: {
+                        $in: ['console']
+                    },
+                    socketId: {
+                        $nin: [excludeSocketId]
+                    },
+                    mapViewCenter: {
+                        $within: {
+                            $box: box
+                        }
+                    }
+                }
+            })
+            .group({
+                _id: {
+                    userId: '$userId',
+                    socketId: '$socketId',
+                    mapViewCenter: '$mapViewCenter',
+                    mapViewBorder: '$mapViewBorder',
+                    connectedAt: '$connectedAt'
+                }
+            })
+            .exec(function (err, res) {
+                if (err) {
+                    reject(err);
+
+                    return;
+                }
+
+                resolve(res);
+            });
+    });
+};

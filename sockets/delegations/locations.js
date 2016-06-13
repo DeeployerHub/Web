@@ -1,6 +1,8 @@
+module.exports = Locations;
+
+var Promise    = require('promise');
 var socketRepo = getRepos('sockets')();
 
-module.exports = Locations;
 /**
  * handle the socket.io's Locations
  *
@@ -25,9 +27,21 @@ function Locations (io, socket) {
         });
     });
 
+    var fetchSocketsInsight = function (socketId, center, corners) {
+
+        return new Promise(function (resolve, reject) {
+            socketRepo.fetchSocketsInSight(corners, socketId).then(function (data) {
+                console.log(data);
+                socket.emit('test', data);
+            }, reject);
+        });
+    };
+
     socket.on('refresh-map-view', function (data) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function (s) {
-            // do some action when map view refreshed
+            fetchSocketsInsight(socket.id, data.center, data.corners).then(function () {}, function () {
+                console.error(e);
+            });
         }, function (e) {
             console.error(e);
         });

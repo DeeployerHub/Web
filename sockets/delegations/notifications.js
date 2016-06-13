@@ -14,9 +14,5 @@ function Notifications (io, socket) {
     if (!(this instanceof Notifications)) {
         return new Notifications(io, socket);
     }
-
-    // socket.emit('notify', {
-    //     text: 'new notification'
-    // });
 }
 

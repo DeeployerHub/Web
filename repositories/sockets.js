@@ -114,3 +114,22 @@ Sockets.prototype.findSocketsIdByRegionAndUser = function (userId, region) {
         ).then(resolve, reject);
     });
 };
+
+/**
+ * find socket ids that has common sight point
+ *
+ * @param corners
+ * @param excludeSocketId
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.fetchSocketsInSight = function (corners, excludeSocketId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.findSocketsIdByRegionAndSightPoint(corners, excludeSocketId).then(resolve, reject);
+    });
+};
