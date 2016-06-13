@@ -161,7 +161,8 @@
             ]
         }];
 
-        window.map = window.map || new google.maps.Map($('.map-view').get(0), {
+        window.map = window.map || $('.map-view').length > 0
+            ? new google.maps.Map($('.map-view').get(0), {
                 scrollwheel: false,
                 styles: mapStyles,
                 zoom: 15,
@@ -170,34 +171,36 @@
                 streetViewControl: false,
                 mapTypeControl: false,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
+            })
+            : null;
 
-        window.map.getCorners = function () {
-            var mapBounds = window.map.getBounds();
-            var northEast = mapBounds.getNorthEast();
-            var southWest = mapBounds.getSouthWest();
+        if ($('.map-view').length > 0) {
+            window.map.getCorners = function () {
+                var mapBounds = window.map.getBounds();
+                var northEast = mapBounds.getNorthEast();
+                var southWest = mapBounds.getSouthWest();
 
-            return {
-                northEast: {
-                    latitude: northEast.lat(),
-                    longitude: northEast.lng()
-                },
-                southWest: {
-                    latitude: southWest.lat(),
-                    longitude: southWest.lng()
-                }
+                return {
+                    northEast: {
+                        latitude: northEast.lat(),
+                        longitude: northEast.lng()
+                    },
+                    southWest: {
+                        latitude: southWest.lat(),
+                        longitude: southWest.lng()
+                    }
+                };
             };
-        };
 
-        window.map.getViewCenter = function () {
-            var mapCenter = window.map.getCenter();
+            window.map.getViewCenter = function () {
+                var mapCenter = window.map.getCenter();
 
-            return {
-                latitude: mapCenter.lat(),
-                longitude: mapCenter.lng()
+                return {
+                    latitude: mapCenter.lat(),
+                    longitude: mapCenter.lng()
+                };
             };
-        };
-
+        }
         return window.map;
     });
 

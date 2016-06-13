@@ -160,9 +160,11 @@
                 $scope.init();
             });
 
-            google.maps.event.addListenerOnce(window.map, 'tilesloaded', function () {
-                $scope.getPosts();
-            });
+            if (window.map) {
+                google.maps.event.addListenerOnce(window.map, 'tilesloaded', function () {
+                    $scope.getPosts();
+                });
+            }
         }
     ]);
 })(window.angular);

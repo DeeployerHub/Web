@@ -84,6 +84,7 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
 
         if (socketsList.length === 0) {
             resolve();
+            return;
         }
 
         socketsList.forEach(function (socket) {
