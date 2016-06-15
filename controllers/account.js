@@ -208,7 +208,7 @@ AccountController.prototype.activationStepsProfile = function (req, res) {
             res.redirect('/account/activation/account');
         } else {
             // check if user already inserted the profile
-            if (userInfo.profile && userInfo.profile.length > 0) {
+            if (userInfo.profile) {
                 res.redirect('/account/activation/sharing');
             } else {
                 res.render('account/pages/activation/profile', {
@@ -302,7 +302,7 @@ AccountController.prototype.activationStepsSharing = function (req, res) {
             res.redirect('/account/activation/account');
         } else {
             // check if user already inserted the profile
-            if (!(userInfo.profile && userInfo.profile.length > 0)) {
+            if (!(userInfo.profile)) {
                 res.redirect('/account/activation/profile');
             } else {
                 res.render('account/pages/activation/sharing', {
@@ -331,7 +331,7 @@ AccountController.prototype.activationStepsAgree = function (req, res) {
             });
         } else {
             // check if user already inserted the profile
-            if (!(userInfo.profile && userInfo.profile.length > 0)) {
+            if (!(userInfo.profile)) {
                 res.json({
                     status: false
                 });

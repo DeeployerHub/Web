@@ -31,7 +31,7 @@ module.exports = {
             type: Date,
             default: Date.now
         },
-        profile: [new Schema({
+        profile: new Schema({
             gender: String,
             firstname: String,
             lastname: String,
@@ -42,7 +42,7 @@ module.exports = {
                 type: Date,
                 default: Date.now
             }
-        })],
+        }),
         points: Number,
         pointsHistory: [new Schema({
             occurredAt: {

@@ -154,7 +154,7 @@ UserRelations.prototype.getFollowersList = function (responseUserId) {
             .sort({
                 followedAt: -1
             })
-            .populate('requestUserId')
+            .populate('requestUserId', '_id avatar username profile')
             .exec(function (err, queryResult) {
                 if (err) {
                     reject(err);

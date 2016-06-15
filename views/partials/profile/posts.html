@@ -91,7 +91,7 @@
                         width="75px"
                         height="75px"
                         src="{{ post.ownerUserId.avatar }}">
-                    {{ post.ownerUserId.profile[0].firstname | ucwords }} {{ post.ownerUserId.profile[0].lastname | ucwords }}
+                    {{ post.ownerUserId.profile.firstname | ucwords }} {{ post.ownerUserId.profile.lastname | ucwords }}
                 </a>
                 <span class="text-muted">
                     @{{ post.ownerUserId.username }}

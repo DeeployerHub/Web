@@ -258,7 +258,6 @@ Users.prototype.updateProfileEntities = function (userId, oldProfileEntities, pr
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        oldProfileEntities = oldProfileEntities.pop();
         for (var index in profileEntities) {
             if (index) {
                 oldProfileEntities[index] = profileEntities[index];

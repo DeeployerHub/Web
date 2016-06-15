@@ -30,10 +30,8 @@ Sockets.prototype.addNewSocket = function (userId, socketId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
-        resolve = resolve || function () {
-            };
-        reject  = reject || function () {
-            };
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
 
         var newSocket = new socketsSchema({
             userId: mongoose.Types.ObjectId(userId),
@@ -239,30 +237,27 @@ Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, exclud
         ];
 
         socketsSchema
-            .aggregate({
-                $match: {
-                    region: {
-                        $in: ['console']
-                    },
-                    socketId: {
-                        $nin: [excludeSocketId]
-                    },
-                    mapViewCenter: {
-                        $within: {
-                            $box: box
-                        }
+            .find({
+                region: {
+                    $in: ['console']
+                },
+                socketId: {
+                    $nin: [excludeSocketId]
+                },
+                mapViewCenter: {
+                    $within: {
+                        $box: box
                     }
                 }
             })
-            .group({
-                _id: {
-                    userId: '$userId',
-                    socketId: '$socketId',
-                    mapViewCenter: '$mapViewCenter',
-                    mapViewBorder: '$mapViewBorder',
-                    connectedAt: '$connectedAt'
-                }
+            .select({
+                userId: 1,
+                socketId: 1,
+                mapViewCenter: 1,
+                mapViewBorder: 1,
+                connectedAt: 1
             })
+            .populate('userId', '_id avatar username profile')
             .exec(function (err, res) {
                 if (err) {
                     reject(err);

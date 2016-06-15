@@ -114,7 +114,7 @@
                                 <li>
                                     <a href="/profile">
                                         <strong class="dropdown-username">
-                                            {% set userProfile = user.profile|last %}
+                                            {% set userProfile = user.profile %}
 
                                             [[ userProfile.firstname | title ]] 
                                             [[ userProfile.lastname | title ]]

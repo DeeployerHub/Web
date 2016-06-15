@@ -31,7 +31,7 @@ function Locations (io, socket) {
 
         return new Promise(function (resolve, reject) {
             socketRepo.fetchSocketsInSight(corners, socketId).then(function (data) {
-                console.log(data);
+                // console.log(data);
                 socket.emit('test', data);
             }, reject);
         });

@@ -21,7 +21,7 @@ module.exports = function () {
             passReqToCallback: true
         },
         function (accessToken, refreshToken, arg, profile, done) {
-            userRepos.isUserRegistered(profile, profile.emails[0].value).then(function (signedInUser) {
+            userRepos.isUserRegistered(profile, profile.emails.value).then(function (signedInUser) {
                 done(null, {
                     '_id': signedInUser._id,
                     'email': signedInUser.email

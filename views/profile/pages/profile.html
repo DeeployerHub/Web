@@ -24,7 +24,7 @@
 
 {% block content %}
 {% include '../../partials/header-fix-sign-in-menu.html' %}
-    {% set userProfile = requestedUser.profile|last %}
+    {% set userProfile = requestedUser.profile %}
     <div class="timeline-cover" ng-controller="ProfileCoverController">
         <img
             class="img-responsive"
