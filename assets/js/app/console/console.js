@@ -23,6 +23,17 @@
                 }, 200);
             });
 
+            $socketConnection.socket.on('refresh-users-in-map-view', function (sockets) {
+                if (sockets.length === 0) {
+                    return;
+                }
+
+                sockets.forEach(function (socket) {
+                    console.log(socket._id);
+                    $socketConnection.sockets.involved[socket._id] = socket;
+                });
+            });
+
             window.refreshLocationCount = 0;
             window.refreshLocation = function (position) {
                 if (window.refreshLocationCount++ < 1) {

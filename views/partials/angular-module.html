@@ -109,8 +109,11 @@
             window.location.href = '/location-detection';
         }
 
-        this.socket = window.socketIo;
-
+        this.socket  = window.socketIo;
+        this.sockets = {
+            involved: {},
+            inSight: {}
+        };
     }]);
 
     app.directive('mapView', function () {

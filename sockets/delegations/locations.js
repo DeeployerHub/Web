@@ -31,8 +31,10 @@ function Locations (io, socket) {
 
         return new Promise(function (resolve, reject) {
             socketRepo.fetchSocketsInSight(corners, socketId).then(function (data) {
-                // console.log(data);
-                socket.emit('test', data);
+                console.log(data);
+                // broadcast too all the users who are in this region 
+                // and add following user to the list of audiences
+                socket.emit('refresh-users-in-map-view', data);
             }, reject);
         });
     };
