@@ -31,6 +31,13 @@
                 sockets.forEach(function (socket) {
                     console.log(socket._id);
                     $socketConnection.sockets.involved[socket._id] = socket;
+                    var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[0]};
+
+                    var marker = new google.maps.Marker({
+                        position: myLatLng,
+                        map: $map,
+                        title: 'Hello World!'
+                    });
                 });
             });
 
