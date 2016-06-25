@@ -27,14 +27,22 @@ function Locations (io, socket) {
         });
     });
 
+    var broadcastCurrentSocketInfoToOthers = function () {
+        return new Promise(function (resolve, reject) {
+
+        });
+    };
+
     var fetchSocketsInsight = function (socketId, center, corners) {
         return new Promise(function (resolve, reject) {
-            socketRepo.fetchSocketsInSight(corners, socketId).then(function (data) {
+            socketRepo.fetchSocketsInSight(corners, socketId).then(function (sockets) {
                 // uncomment next line in order to debug the results
-                //console.log(data);
-                // broadcast too all the users who are in this region 
-                // and add following user to the list of audiences
-                socket.emit('refresh-users-in-map-view', data);
+                console.log(sockets);
+                // first step - send to current socket the list of online sockets in this region
+                socket.emit('refresh-users-in-map-view', sockets);
+
+                // second step - broadcast too all the users who are in this region
+                broadcastCurrentSocketInfoToOthers(sockets).then(resolve, reject);
             }, reject);
         });
     };
