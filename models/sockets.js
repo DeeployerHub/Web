@@ -136,11 +136,11 @@ Sockets.prototype.updateSocketMapViewGeo = function (socketId, center, corners) 
                 return;
             }
 
-            socketObj.mapViewCenter = [center.latitude, center.longitude];
-            socketObj.mapViewBorder = {
+            socketObj.mapViewCenter = center ? [center.latitude, center.longitude] : undefined;
+            socketObj.mapViewBorder = corners ? {
                 northEast: [corners.northEast.latitude, corners.northEast.longitude],
                 southWest: [corners.southWest.latitude, corners.southWest.longitude]
-            };
+            } : undefined;
 
             resolve(socketObj.save());
         });

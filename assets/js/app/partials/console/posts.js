@@ -135,6 +135,7 @@
                         if (result.data.posts.length === 0 && !$scope.newestPost) {
                             $scope.lastPostFetched = true;
                         }
+
                         ok(result);
                         $scope.requestInProgress = false;
                     }, function () {
@@ -168,6 +169,7 @@
         }
     ]);
 })(window.angular);
+
 window.onscroll = function () {
     if (document.body.scrollHeight == document.body.scrollTop + window.innerHeight) {
         setTimeout(function () {
