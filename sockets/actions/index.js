@@ -78,6 +78,7 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
             reject(new Error('socket list is not an object'));
         }
 
+
         var itemsProcessed = 0;
         var sockets        = self.io.sockets;
         var roomName       = uuid.v1();
@@ -89,7 +90,7 @@ Actions.prototype.broadcast = function (socketsList, action, data) {
 
         socketsList.forEach(function (socket) {
             // check if the socket is still alive
-            var connectedSocket = sockets.connected[socket._id] || false;
+            var connectedSocket = sockets.connected[socket.socketId || socket._id] || false;
             self.joinToRoom(connectedSocket, roomName);
 
             // check if sockets are in the room

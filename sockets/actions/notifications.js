@@ -7,7 +7,7 @@ var notificationConfigs = getConfig('notifications');
 /**
  * handle the socket.io's notifications actions
  *
- * @param io
+ * @param parent
  *
  * @returns {Notifications}
  * @constructor

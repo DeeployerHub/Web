@@ -269,3 +269,43 @@ Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, exclud
             });
     });
 };
+
+/**
+ * get the socket info by socket id
+ *
+ * @param socketId
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.findSocketInfoBySocketId = function (socketId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        socketsSchema
+            .find({
+                socketId: {
+                    $eq: socketId
+                }
+            })
+            .select({
+                userId: 1,
+                socketId: 1,
+                mapViewCenter: 1,
+                mapViewBorder: 1,
+                connectedAt: 1
+            })
+            .populate('userId', '_id avatar username profile')
+            .exec(function (err, res) {
+                if (err) {
+                    reject(err);
+
+                    return;
+                }
+
+                resolve(res);
+            });
+    });
+};

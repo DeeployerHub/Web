@@ -133,3 +133,21 @@ Sockets.prototype.fetchSocketsInSight = function (corners, excludeSocketId) {
         model.findSocketsIdByRegionAndSightPoint(corners, excludeSocketId).then(resolve, reject);
     });
 };
+
+/**
+ * find socket ids that has common sight point
+ *
+ * @param socketId
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.fetchSocketsBySocketId = function (socketId) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.findSocketInfoBySocketId(socketId).then(resolve, reject);
+    });
+};
