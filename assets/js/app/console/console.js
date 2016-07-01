@@ -23,6 +23,26 @@
                 }, 200);
             });
 
+            var markerCleanup = function (socketId) {
+                $map.mapMarker = $map.mapMarker || {};
+
+                if (socketId) {
+                    if ($map.mapMarker.hasOwnProperty(socketId)) {
+                        $map.mapMarker[socketId].setMap(null);
+                        delete $map.mapMarker[socketId];
+                    }
+
+                    return;
+                }
+
+                for (var key in $map.mapMarker) {
+                    if ($map.mapMarker.hasOwnProperty(socketId)) {
+                        $map.mapMarker[key].setMap(null);
+                        delete $map.mapMarker[key];
+                    }
+                }
+            };
+
             $socketConnection.socket.on('refresh-users-in-map-view', function (sockets) {
                 if (sockets.length === 0) {
                     return;
@@ -30,9 +50,14 @@
 
                 sockets.forEach(function (socket) {
                     $socketConnection.sockets.involved[socket._id] = socket;
+
                     var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
 
-                    var marker = new google.maps.Marker({
+                    $map.mapMarker = $map.mapMarker || {};
+
+                    markerCleanup(socket._id);
+
+                    $map.mapMarker[socket._id] = new google.maps.Marker({
                         position: myLatLng,
                         map: $map,
                         title: 'Hello World!'
