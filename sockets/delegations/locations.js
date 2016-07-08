@@ -64,8 +64,8 @@ function Locations (io, socket) {
     };
 
     socket.on('refresh-map-view', function (data) {
-        socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function (s) {
-            fetchSocketsInsight(socket.id, data.center, data.corners).then(function () {}, function () {
+        socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
+            fetchSocketsInsight(socket.id, data.center, data.corners).then(function () {}, function (e) {
                 console.error(e);
             });
         }, function (e) {
