@@ -56,19 +56,35 @@ function Connection (base) {
         });
     });
 
+    var socketDisconnectAction = function (socket, process) {
+        // remove socket from database
+        socketsRepo.disconnect(socket.id).then(function () {
+            localSockets[process.pid].remove(localSockets[process.pid].indexOf(socket.id));
+        }, function (err) {
+            console.error(err);
+        });
+    }
+
+    var socketDisconnect = function (socket, process) {
+        // TODO: remove this sockets info audience list of the other sockets
+        socketsRepo.fetchSocketsBySocketId(socket.id).then(function () {
+            socketDisconnectAction(socket, process);
+        }, function () {
+            socketDisconnectAction(socket, process);
+        });
+    };
+
     base.io.on('connection', function (socket) {
         var region = socket.handshake.query.region || null;
         socketsRepo.connect(socket.session.user._id, socket.id, region).then(function () {
             localSockets[process.pid].push(socket.id);
 
+            // handle the deligations
             new Deligations(base.io, socket);
 
+            // handle the disconnect
             socket.on('disconnect', function () {
-                socketsRepo.disconnect(socket.id).then(function () {
-                    localSockets[process.pid].remove(localSockets[process.pid].indexOf(socket.id));
-                }, function (err) {
-                    console.error(err);
-                });
+                socketDisconnect(socket, process);
             });
         }, function (err) {
             console.error(err);

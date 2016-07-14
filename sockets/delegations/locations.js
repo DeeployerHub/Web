@@ -65,7 +65,11 @@ function Locations (io, socket) {
 
     socket.on('refresh-map-view', function (data) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
-            fetchSocketsInsight(socket.id, data.center, data.corners).then(function () {}, function (e) {
+            fetchSocketsInsight(socket.id, data.center, data.corners).then(function () {
+                // TODO:
+                // Step 1: see who is not in the sight and remove this socket from their audience list
+                // Step 2: remove the people who no longer in my sight from my audience list
+            }, function (e) {
                 console.error(e);
             });
         }, function (e) {

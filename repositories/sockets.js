@@ -135,19 +135,20 @@ Sockets.prototype.fetchSocketsInSight = function (corners, excludeSocketId) {
 };
 
 /**
- * find socket ids that has common sight point
+ * find socket ids
  *
  * @param socketId
+ * @param fields
  *
  * @returns {Promise}
  */
-Sockets.prototype.fetchSocketsBySocketId = function (socketId) {
+Sockets.prototype.fetchSocketsBySocketId = function (socketId, fields) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.findSocketInfoBySocketId(socketId).then(resolve, reject);
+        model.findSocketInfoBySocketId(socketId, fields).then(resolve, reject);
     });
 };

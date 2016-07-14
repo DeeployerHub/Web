@@ -136,6 +136,12 @@ Sockets.prototype.updateSocketMapViewGeo = function (socketId, center, corners) 
                 return;
             }
 
+            if (!corners) {
+                reject(new Error('North East or North West are undefined'));
+
+                return;
+            }
+            
             socketObj.mapViewCenter = center ? [center.latitude, center.longitude] : undefined;
             socketObj.mapViewBorder = corners ? {
                 northEast: [corners.northEast.latitude, corners.northEast.longitude],
@@ -227,6 +233,12 @@ Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, exclud
             return;
         }
 
+        if (!corners) {
+            reject(new Error('North East or North West are undefined'));
+
+            return;
+        }
+
         var mapCorners = {
             northEast: [corners.northEast.latitude, corners.northEast.longitude],
             southWest: [corners.southWest.latitude, corners.southWest.longitude]
@@ -274,38 +286,43 @@ Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, exclud
  * get the socket info by socket id
  *
  * @param socketId
+ * @param fields
  *
  * @returns {Promise}
  */
-Sockets.prototype.findSocketInfoBySocketId = function (socketId) {
+Sockets.prototype.findSocketInfoBySocketId = function (socketId, fields) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
-        reject = reject || function () {};
+        reject  = reject || function () {};
 
-        socketsSchema
-            .find({
-                socketId: {
-                    $eq: socketId
-                }
-            })
-            .select({
+        fields = fields || {
                 userId: 1,
                 socketId: 1,
                 mapViewCenter: 1,
                 mapViewBorder: 1,
                 connectedAt: 1
-            })
-            .populate('userId', '_id avatar username profile')
-            .exec(function (err, res) {
-                if (err) {
-                    reject(err);
+            };
 
-                    return;
-                }
+        var query = socketsSchema.find({
+            socketId: {
+                $eq: socketId
+            }
+        }).select();
 
-                resolve(res);
-            });
+        if (fields.userId === 1) {
+            query.populate('userId', '_id avatar username profile')
+        }
+
+        query.exec(function (err, res) {
+            if (err) {
+                reject(err);
+
+                return;
+            }
+
+            resolve(res);
+        });
     });
 };
