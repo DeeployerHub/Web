@@ -17,7 +17,7 @@ io.adapter(redis({
 server.listen(expressPort, function () {
     'use strict';
 
-    console.log('[LISTEN] PID: "' + process.pid + '" PORT: "' + expressPort + '"');
+    console.log('[LISTEN]\tPID: "' + process.pid + '" PORT: "' + expressPort + '"');
 });
 
 require('./config/env.js')(app, express, io);

@@ -7,14 +7,14 @@ if (cluster.isMaster) {
         cluster.fork();
     }
 
-    console.log('[CLUSTER] Worker' + (numCPUs > 1 ? 's' : '') + ' count: "' + numCPUs.toString() + '"');
+    console.log('[CLUSTER]\tWorker' + (numCPUs > 1 ? 's' : '') + ' count: "' + numCPUs.toString() + '"');
 
     cluster.on('exit', function (worker) {
         'use strict';
 
-        console.log('[RIP] Worker "' + worker.process.pid + '" died.');
+        console.log('[RIP]\t\tWorker "' + worker.process.pid + '" died.');
         cluster.fork();
-        console.log('[CPR] Worker recovered.');
+        console.log('[CPR]\t\tWorker recovered.');
     });
 } else {
     // each worker run this server

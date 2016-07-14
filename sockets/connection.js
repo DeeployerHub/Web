@@ -1,6 +1,7 @@
-var Promise     = require('promise');
-var socketsRepo = getRepos('sockets')();
-var Deligations = require('./delegations');
+var Promise       = require('promise');
+var socketsRepo   = getRepos('sockets')();
+var nodesPoolRepo = getRepos('nodesPool')();
+var Deligations   = require('./delegations');
 
 module.exports = Connection;
 
@@ -21,37 +22,56 @@ function Connection (base) {
     localSockets[process.pid] = [];
 
     var cleanUpSockets = function (signal) {
-        console.info('[GC]', process.pid, signal);
+        console.info('[GC]\t\t' + process.pid, signal.toUpperCase());
+
         return new Promise(function (resolve, reject) {
             localSockets[process.pid].forEach(function (socketId) {
                 socketsRepo.disconnect(socketId).then(function () {
                     base.io.connected[socketId].disconnect();
                 }, reject);
             });
+
             process.exitCode = 1;
+
+            if  (signal === 'exit') {
+                console.info('[POOL]\t\tPID:', process.pid, 'HAS LEFT THE POOL');
+                nodesPoolRepo.leaves(process.pid).then(resolve, reject);
+            }
 
             resolve();
         });
     };
 
+    var finalExit = function () {
+        process.exitCode = 1;
+        process.exit(1);
+    };
+
+    var leavingFailed = function () {
+        console.error(e);
+
+        finalExit();
+    };
+
+    console.info('[POOL]\t\tPID:', process.pid, 'HAS JOINED THE POOL');
+    nodesPoolRepo.join(process);
     ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGQUIT', 'exit'].forEach(function (signal) {
         process.on(signal, function () {
             cleanUpSockets(signal).then(function () {
+                //console.log('not leave ' + process.pid, signal);
                 setTimeout(function () {
                     if (signal !== 'SIGINT') {
-                        process.exitCode = 1;
-                        process.exit(1);
+                        finalExit();
                     } else {
                         if (process.send === undefined) {
-                            process.exitCode = 1;
-                            process.exit(1);
+                            finalExit();
                         }
                     }
                 }, 100);
             }, function (e) {
                 console.error(e);
-                process.exitCode = 1;
-                process.exit(1);
+
+                finalExit();
             });
         });
     });
