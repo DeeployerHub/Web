@@ -63,7 +63,7 @@ function Connection (base) {
         }, function (err) {
             console.error(err);
         });
-    }
+    };
 
     var socketDisconnect = function (socket, process) {
         // TODO: remove this sockets info audience list of the other sockets

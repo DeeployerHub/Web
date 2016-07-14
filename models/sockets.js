@@ -312,7 +312,7 @@ Sockets.prototype.findSocketInfoBySocketId = function (socketId, fields) {
         }).select();
 
         if (fields.userId === 1) {
-            query.populate('userId', '_id avatar username profile')
+            query.populate('userId', '_id avatar username profile');
         }
 
         query.exec(function (err, res) {
