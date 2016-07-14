@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
 module.exports = {
-    collectionName: 'usersPosts',
+    alias: 'usersPosts',
+    collectionName: 'users_posts',
     schema: {
         ownerUserId: {
             type: Schema.ObjectId,

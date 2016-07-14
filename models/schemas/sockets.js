@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
 module.exports = {
+    alias: 'sockets',
     collectionName: 'sockets',
     schema: {
         socketId: {

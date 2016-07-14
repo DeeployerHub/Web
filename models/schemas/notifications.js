@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 module.exports = {
+    alias: 'notifications',
     collectionName: 'notifications',
     schema: {
         ownerId: {

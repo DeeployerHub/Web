@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 
 module.exports = {
-    collectionName: 'nodesPool',
+    alias: 'nodesPool',
+    collectionName: 'nodes_pool',
     schema: {
         pid: {
             type: Number
