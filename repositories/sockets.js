@@ -77,7 +77,8 @@ Sockets.prototype.refreshGeoLocation = function (socketId, position) {
  * update the socket's mapViewGeo
  *
  * @param socketId
- * @param position
+ * @param center
+ * @param corners
  *
  * @returns {Promise}
  */
