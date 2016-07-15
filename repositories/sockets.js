@@ -153,3 +153,49 @@ Sockets.prototype.fetchSocketsBySocketId = function (socketId, fields) {
         model.findSocketInfoBySocketId(socketId, fields).then(resolve, reject);
     });
 };
+
+/**
+ * convert socket object to array of socketIds
+ *
+ * @param obj
+ * @returns {Array}
+ */
+var prepareInsightData = function (obj) {
+    'use strict';
+
+    if (!obj || typeof obj !== 'object') {
+        return;
+    }
+
+    var result = [];
+    obj.forEach(function (innerObj) {
+        if (typeof innerObj === 'string') {
+            result.push(innerObj);
+        } else {
+            result.push(innerObj.socketId);
+        }
+    });
+
+    return result;
+};
+
+/**
+ * push sockets into socketAudienceList
+ *
+ * @param socketId
+ * @param inSightSockets
+ *
+ * @returns {*}
+ */
+Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSockets) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        inSightSockets = prepareInsightData(inSightSockets);
+
+        model.pushSocketsIntoAudienceList(socketId, inSightSockets).then(resolve, reject);
+    });
+};

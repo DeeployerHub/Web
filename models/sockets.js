@@ -16,6 +16,29 @@ function Sockets () {
     if (!(this instanceof Sockets)) {
         return new Sockets();
     }
+
+    /**
+     * return an array with unique data
+     *
+     * @param array
+     * @param data
+     *
+     * @returns {Array.<*>}
+     */
+    this.arrayUnique = function (array, data) {
+        data = data || null;
+
+        var a = array.concat();
+        for(var i=0; i<a.length; ++i) {
+            for(var j=i+1; j<a.length; ++j) {
+                if(a[i] === a[j] || a[i] === data) {
+                    a.splice(j--, 1);
+                }
+            }
+        }
+
+        return a;
+    };
 }
 
 /**
@@ -323,6 +346,44 @@ Sockets.prototype.findSocketInfoBySocketId = function (socketId, fields) {
             }
 
             resolve(res);
+        });
+    });
+};
+
+/**
+ * update/push into AudienceList
+ *
+ * @param socketId
+ * @param inSightSockets
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSockets) {
+    'use strict';
+
+    var base = this;
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        socketsSchema.findOne({
+            socketId: socketId
+        }, function (err, socketObj) {
+            if (err) {
+                reject(err);
+
+                return;
+            }
+
+            var tmpAudienceList = socketObj.audienceList || [];
+
+            socketObj.audienceList = base.arrayUnique(tmpAudienceList.concat(inSightSockets), socketId);
+            var stashAudienceList = socketObj.audienceList;
+
+            socketObj.save();
+
+            resolve(stashAudienceList);
         });
     });
 };

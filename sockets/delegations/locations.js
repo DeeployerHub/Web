@@ -58,14 +58,32 @@ function Locations (io, socket) {
                 socket.emit('refresh-users-in-map-view', sockets);
 
                 // second step - broadcast too all the users who are in this region
-                broadcastCurrentSocketInfoToOthers(sockets, socketId).then(resolve, reject);
+                broadcastCurrentSocketInfoToOthers(sockets, socketId).then(function () {
+                    resolve(sockets);
+                }, reject);
+            }, reject);
+        });
+    };
+
+    var storeInsightSockets = function (inSightSockets) {
+        return new Promise(function (resolve, reject) {
+            // store insight sockets into my socket's audience list
+            socketRepo.pushSocketsIntoAudienceList(socket.id, inSightSockets).then(function (finalInSightSockets) {
+                // store/push my socketId into insight socket's audienceList
+                finalInSightSockets.forEach(function (targetAudienceSocketId) {
+                    socketRepo.pushSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
+                });
+                
+                resolve();
             }, reject);
         });
     };
 
     socket.on('refresh-map-view', function (data) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
-            fetchSocketsInsight(socket.id, data.center, data.corners).then(function () {
+            fetchSocketsInsight(socket.id, data.center, data.corners).then(function (inSightSockets) {
+                // store insight sockets into my socket's audience list
+                storeInsightSockets(inSightSockets);
                 // TODO:
                 // Step 1: see who is not in the sight and remove this socket from their audience list
                 // Step 2: remove the people who no longer in my sight from my audience list

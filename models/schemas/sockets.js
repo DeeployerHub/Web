@@ -29,6 +29,10 @@ module.exports = {
                 index: '2d'      // create the geospatial index
             }
         },
+        audienceList: {
+            type: [String],
+            default: []
+        },
         userId: {
             type: Schema.ObjectId,
             ref: 'users'

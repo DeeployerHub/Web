@@ -58,7 +58,6 @@ function Connection (base) {
     ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGQUIT', 'exit'].forEach(function (signal) {
         process.on(signal, function () {
             cleanUpSockets(signal).then(function () {
-                //console.log('not leave ' + process.pid, signal);
                 setTimeout(function () {
                     if (signal !== 'SIGINT') {
                         finalExit();
