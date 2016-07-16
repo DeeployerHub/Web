@@ -199,3 +199,25 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
         model.pushSocketsIntoAudienceList(socketId, inSightSockets).then(resolve, reject);
     });
 };
+
+
+/**
+ * remove sockets from socketAudienceList
+ *
+ * @param socketId
+ * @param sockets
+ *
+ * @returns {*}
+ */
+Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        sockets = prepareInsightData(sockets);
+
+        model.removeSocketsIntoAudienceList(socketId, sockets).then(resolve, reject);
+    });
+};

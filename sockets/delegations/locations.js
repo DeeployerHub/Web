@@ -48,23 +48,35 @@ function Locations (io, socket) {
         });
     };
 
-    var fetchSocketsInsight = function (socketId, center, corners) {
+    var refreshSocketsClientsView = function (socketId, sockets) {
         return new Promise(function (resolve, reject) {
-            socketRepo.fetchSocketsInSight(corners, socketId).then(function (sockets) {
-                // uncomment next line in order to debug the results
-                // console.log(sockets);
+            // uncomment next line in order to debug the results
 
-                // first step - send to current socket the list of online sockets in this region
-                socket.emit('refresh-users-in-map-view', sockets);
+            // first step - send to current socket the list of online sockets in this region
+            socket.emit('refresh-users-in-map-view', sockets);
 
-                // second step - broadcast too all the users who are in this region
-                broadcastCurrentSocketInfoToOthers(sockets, socketId).then(function () {
-                    resolve(sockets);
-                }, reject);
+            // second step - broadcast too all the users who are in this region
+            broadcastCurrentSocketInfoToOthers(sockets, socketId).then(function () {
+                resolve(sockets);
             }, reject);
         });
     };
 
+    var fetchSocketsInsight = function (socketId, center, corners) {
+        return new Promise(function (resolve, reject) {
+            socketRepo.fetchSocketsInSight(corners, socketId).then(function (sockets) {
+                resolve(sockets);
+            }, reject);
+        });
+    };
+
+    /**
+     * store insightSockets into socket's audience List
+     *
+     * @param inSightSockets
+     *
+     * @returns {*}
+     */
     var storeInsightSockets = function (inSightSockets) {
         return new Promise(function (resolve, reject) {
             // store insight sockets into my socket's audience list
@@ -74,7 +86,26 @@ function Locations (io, socket) {
                     socketRepo.pushSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
                 });
                 
-                resolve();
+                resolve(finalInSightSockets);
+            }, reject);
+        });
+    };
+
+    /**
+     * remove outSightSockets from socket's audience list
+     * @param outSightSockets
+     * @returns {*}
+     */
+    var removeOutSightSockets = function (outSightSockets) {
+        return new Promise(function (resolve, reject) {
+            // remove insight sockets from my socket's audience list
+            socketRepo.removeSocketsIntoAudienceList(socket.id, outSightSockets).then(function (finalInSightSockets) {
+                // store/push my socketId into insight socket's audienceList
+                finalInSightSockets.forEach(function (targetAudienceSocketId) {
+                    socketRepo.removeSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
+                });
+
+                resolve(finalInSightSockets);
             }, reject);
         });
     };
@@ -83,10 +114,16 @@ function Locations (io, socket) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
             fetchSocketsInsight(socket.id, data.center, data.corners).then(function (inSightSockets) {
                 // store insight sockets into my socket's audience list
-                storeInsightSockets(inSightSockets);
-                // TODO:
-                // Step 1: see who is not in the sight and remove this socket from their audience list
-                // Step 2: remove the people who no longer in my sight from my audience list
+                storeInsightSockets(inSightSockets).then(function (finalInSightSockets) {
+                    removeOutSightSockets(inSightSockets).then(function () {
+                        // everything is fine now can refresh sockets on clients view
+                        refreshSocketsClientsView(socket.id, inSightSockets);
+                    }, function (e) {
+                        console.error(e);
+                    });
+                }, function (e) {
+                    console.error(e);
+                });
             }, function (e) {
                 console.error(e);
             });

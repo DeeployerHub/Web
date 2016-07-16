@@ -69,6 +69,12 @@ getSocketActions = function (io) {
     return require('./sockets/actions')(io);
 };
 
+getLib = function (lib) {
+    'use strict';
+
+    return require('./libs/' + lib);
+};
+
 errorPageRender = function (res, code, message) {
     'use strict';
 

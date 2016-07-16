@@ -3,6 +3,7 @@ module.exports = Sockets;
 var Promise       = require('promise');
 var mongoose      = require('mongoose');
 var socketsSchema = getModelSchema('sockets');
+var arrayLib      = getLib('array')();
 
 /**
  *  Sockets Model
@@ -16,29 +17,6 @@ function Sockets () {
     if (!(this instanceof Sockets)) {
         return new Sockets();
     }
-
-    /**
-     * return an array with unique data
-     *
-     * @param array
-     * @param data
-     *
-     * @returns {Array.<*>}
-     */
-    this.arrayUnique = function (array, data) {
-        data = data || null;
-
-        var a = array.concat();
-        for(var i=0; i<a.length; ++i) {
-            for(var j=i+1; j<a.length; ++j) {
-                if(a[i] === a[j] || a[i] === data) {
-                    a.splice(j--, 1);
-                }
-            }
-        }
-
-        return a;
-    };
 }
 
 /**
@@ -361,7 +339,41 @@ Sockets.prototype.findSocketInfoBySocketId = function (socketId, fields) {
 Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSockets) {
     'use strict';
 
-    var base = this;
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        socketsSchema.findOne({
+            socketId: socketId
+        }, function (err, socketObj) {
+            if (err) {
+                reject(err);
+
+                return;
+            }
+
+            var tmpAudienceList = socketObj.audienceList || [];
+
+            var stashAudienceList = arrayLib.unique(tmpAudienceList.concat(inSightSockets), socketId);
+            socketObj.audienceList = stashAudienceList;
+
+            socketObj.save();
+
+            resolve(stashAudienceList);
+        });
+    });
+};
+
+/**
+ * update/remove from AudienceList
+ *
+ * @param socketId
+ * @param sockets
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
+    'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
@@ -378,8 +390,14 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
 
             var tmpAudienceList = socketObj.audienceList || [];
 
-            socketObj.audienceList = base.arrayUnique(tmpAudienceList.concat(inSightSockets), socketId);
-            var stashAudienceList = socketObj.audienceList;
+            // get the deference between the audience list and fetched socket
+            var socketsDiff = arrayLib.diff(tmpAudienceList, sockets);
+
+            // remove the deference from the list of the audience
+            var substracted = arrayLib.substract(tmpAudienceList, socketsDiff);
+            var stashAudienceList = arrayLib.unique(substracted, socketId);
+
+            socketObj.audienceList = stashAudienceList;
 
             socketObj.save();
 
