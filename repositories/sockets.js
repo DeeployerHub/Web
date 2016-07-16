@@ -200,7 +200,6 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
     });
 };
 
-
 /**
  * remove sockets from socketAudienceList
  *
@@ -219,5 +218,23 @@ Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
         sockets = prepareInsightData(sockets);
 
         model.removeSocketsIntoAudienceList(socketId, sockets).then(resolve, reject);
+    });
+};
+
+/**
+ * transform socketId into socket object
+ *
+ * @param socketLists
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.transformSocketId = function (socketLists) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.transformSocketId(socketLists).then(resolve, reject);
     });
 };

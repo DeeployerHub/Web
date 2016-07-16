@@ -375,6 +375,8 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
 Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
     'use strict';
 
+    var base = this;
+
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
@@ -394,14 +396,62 @@ Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
             var socketsDiff = arrayLib.diff(tmpAudienceList, sockets);
 
             // remove the deference from the list of the audience
-            var substracted = arrayLib.substract(tmpAudienceList, socketsDiff);
+            var substracted       = arrayLib.substract(tmpAudienceList, socketsDiff);
             var stashAudienceList = arrayLib.unique(substracted, socketId);
 
             socketObj.audienceList = stashAudienceList;
 
             socketObj.save();
 
-            resolve(stashAudienceList);
+            base.transformSocketId(socketsDiff).then(function (socketsDiffObj) {
+                resolve({
+                    audienceList: stashAudienceList,
+                    socketsDiffObj: socketsDiffObj
+                });
+            }, reject);
         });
+    });
+};
+
+/**
+ * transform socketId into socket object
+ *
+ * @param socketLists
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.transformSocketId = function (socketLists) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        socketLists = socketLists || []
+
+
+        socketsSchema
+            .find({
+                socketId: {
+                    $in: [socketLists]
+                },
+            })
+            .select({
+                userId: 1,
+                socketId: 1,
+                mapViewCenter: 1,
+                mapViewBorder: 1,
+                connectedAt: 1
+            })
+            .populate('userId', '_id avatar username profile')
+            .exec(function (err, res) {
+                if (err) {
+                    reject(err);
+
+                    return;
+                }
+
+                resolve(res);
+            });
     });
 };

@@ -43,20 +43,28 @@
                 }
             };
 
-            $socketConnection.socket.on('refresh-users-in-map-view', function (sockets) {
+            $socketConnection.socket.on('refresh-users-in-map-view', function (data) {
+                var sockets = data.sockets || [];
+                var diff    = data.diff || [];
+
                 if (sockets.length === 0) {
                     return;
                 }
+
+                diff.forEach(function (socket) {
+                    delete $socketConnection.sockets.involved[socket._id];
+
+                    markerCleanup(socket._id);
+                });
 
                 sockets.forEach(function (socket) {
                     $socketConnection.sockets.involved[socket._id] = socket;
 
                     var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
 
-                    $map.mapMarker = $map.mapMarker || {};
-
                     markerCleanup(socket._id);
 
+                    $map.mapMarker = $map.mapMarker || {};
                     $map.mapMarker[socket._id] = new google.maps.Marker({
                         position: myLatLng,
                         map: $map,

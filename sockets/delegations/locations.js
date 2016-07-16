@@ -30,34 +30,69 @@ function Locations (io, socket) {
     });
 
     /**
-     *
+     * broadcast current socket's info to ther sockets
      * @param sockets
      * @param socketId
      * 
      * @returns {*}
      */
-    var broadcastCurrentSocketInfoToOthers = function (sockets, socketId) {
+    var broadcastCurrentSocketInfoToOthers = function (sockets, socketIds) {
         return new Promise(function (resolve, reject) {
             // fetch the current socket's info
             socketRepo.fetchSocketsBySocketId(socketId).then(function (socketInfo) {
                 // broadcast current socket's info to the audiences
-                socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', socketInfo).then(function () {
+                socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
+                    sockets: socketInfo,
+                    diff: [socketId]
+                }).then(function () {
                     resolve(true);
                 }, reject);
             }, reject);
         });
     };
 
-    var refreshSocketsClientsView = function (socketId, sockets) {
+    /**
+     * broadcast diff socket's info to ther sockets
+     *
+     * @param sockets
+     * @param socketId
+     *
+     * @returns {*}
+     */
+    var broadcastDiffToOthers = function (sockets, socketIds) {
+        return new Promise(function (resolve, reject) {
+            socketRepo.transformSocketIdtId([socketIds]).then(function (transSockets) {
+                var socketId = transSockets[0].socketId;
+                // fetch the current socket's info
+                socketRepo.fetchSocketsBySocketId(socketObj.socketId).then(function (socketInfo) {
+                    // broadcast current socket's info to the audiences
+                    socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
+                        diff: [socketObj.socketId]
+                    }).then(function () {
+                        resolve(true);
+                    }, reject);
+                }, reject);
+            }.reject);
+
+        });
+    };
+
+    var refreshSocketsClientsView = function (socketId, sockets, socketsDiff) {
         return new Promise(function (resolve, reject) {
             // uncomment next line in order to debug the results
 
             // first step - send to current socket the list of online sockets in this region
-            socket.emit('refresh-users-in-map-view', sockets);
+            socket.emit('refresh-users-in-map-view', {
+                sockets: sockets,
+                diff: socketsDiff
+            });
 
             // second step - broadcast too all the users who are in this region
             broadcastCurrentSocketInfoToOthers(sockets, socketId).then(function () {
-                resolve(sockets);
+                // third step - broadcast too all the removed Sockets
+                broadcastDiffToOthers(socketsDiff, socket.id).then(function () {
+                    resolve(sockets);
+                }, reject);
             }, reject);
         });
     };
@@ -99,14 +134,21 @@ function Locations (io, socket) {
     var removeOutSightSockets = function (outSightSockets) {
         return new Promise(function (resolve, reject) {
             // remove insight sockets from my socket's audience list
-            socketRepo.removeSocketsIntoAudienceList(socket.id, outSightSockets).then(function (finalInSightSockets) {
-                // store/push my socketId into insight socket's audienceList
-                finalInSightSockets.forEach(function (targetAudienceSocketId) {
-                    socketRepo.removeSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
-                });
+            socketRepo.removeSocketsIntoAudienceList(socket.id, outSightSockets)
+                      .then(function (result) {
+                          var finalInSightSockets = result.audienceList;
+                          var socketsDiffObj      = result.socketsDiffObj;
 
-                resolve(finalInSightSockets);
-            }, reject);
+                          // store/push my socketId into insight socket's audienceList
+                          finalInSightSockets.forEach(function (targetAudienceSocketId) {
+                              socketRepo.removeSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
+                          });
+
+                          resolve({
+                              finalInSightSockets: finalInSightSockets,
+                              socketsDiffObj: socketsDiffObj
+                          });
+                      }, reject);
         });
     };
 
@@ -115,9 +157,11 @@ function Locations (io, socket) {
             fetchSocketsInsight(socket.id, data.center, data.corners).then(function (inSightSockets) {
                 // store insight sockets into my socket's audience list
                 storeInsightSockets(inSightSockets).then(function (finalInSightSockets) {
-                    removeOutSightSockets(inSightSockets).then(function () {
+                    removeOutSightSockets(inSightSockets).then(function (result) {
+                        var finalInSightSockets = result.finalInSightSockets;
+                        var socketsDiffObj      = result.socketsDiffObj;
                         // everything is fine now can refresh sockets on clients view
-                        refreshSocketsClientsView(socket.id, inSightSockets);
+                        refreshSocketsClientsView(socket.id, inSightSockets, socketsDiffObj);
                     }, function (e) {
                         console.error(e);
                     });
