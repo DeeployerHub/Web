@@ -427,8 +427,7 @@ Sockets.prototype.transformSocketId = function (socketLists) {
         resolve = resolve || function () {};
         reject = reject || function () {};
 
-        socketLists = socketLists || []
-
+        socketLists = socketLists || [];
 
         socketsSchema
             .find({

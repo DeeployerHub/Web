@@ -31,8 +31,6 @@
                         $map.mapMarker[socketId].setMap(null);
                         delete $map.mapMarker[socketId];
                     }
-
-                    return;
                 }
 
                 for (var key in $map.mapMarker) {
@@ -47,30 +45,32 @@
                 var sockets = data.sockets || [];
                 var diff    = data.diff || [];
 
-                if (sockets.length === 0) {
-                    return;
-                }
+                sockets.forEach(function (socket) {
+                    $socketConnection.sockets.involved[socket._id] = socket;
+                    markerCleanup(socket._id);
+                });
 
                 diff.forEach(function (socket) {
                     delete $socketConnection.sockets.involved[socket._id];
-
                     markerCleanup(socket._id);
                 });
 
-                sockets.forEach(function (socket) {
-                    $socketConnection.sockets.involved[socket._id] = socket;
+                var involved = $socketConnection.sockets.involved;
+                for (var i in involved) {
+                    if (involved[i]) {
+                        var socket = involved[i];
 
-                    var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
+                        $map.mapMarker = $map.mapMarker || {};
 
-                    markerCleanup(socket._id);
+                        var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
 
-                    $map.mapMarker = $map.mapMarker || {};
-                    $map.mapMarker[socket._id] = new google.maps.Marker({
-                        position: myLatLng,
-                        map: $map,
-                        title: 'Hello World!'
-                    });
-                });
+                        $map.mapMarker[socket._id] = new google.maps.Marker({
+                            position: myLatLng,
+                            map: $map,
+                            title: 'this is "' + socket._id + '"'
+                        });
+                    }
+                }
             });
 
             window.refreshLocationCount = 0;

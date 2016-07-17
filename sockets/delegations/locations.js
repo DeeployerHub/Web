@@ -38,19 +38,24 @@ function Locations (io, socket) {
      */
     var broadcastCurrentSocketInfoToOthers = function (sockets, socketIds) {
         return new Promise(function (resolve, reject) {
-            // fetch the current socket's info
-            socketRepo.fetchSocketsBySocketId(socketId).then(function (socketInfo) {
-                // broadcast current socket's info to the audiences
-                socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
-                    sockets: socketInfo,
-                    diff: [socketId]
-                }).then(function () {
-                    resolve(true);
+            if (typeof socketIds === 'string') {
+                socketIds = [socketIds];
+            }
+
+            socketIds.forEach(function (socketId) {
+                // fetch the current socket's info
+                socketRepo.fetchSocketsBySocketId(socketId).then(function (socketInfo) {
+                    // broadcast current socket's info to the audiences
+                    socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
+                        sockets: socketInfo,
+                        diff: [socketInfo]
+                    }).then(function () {
+                        resolve(true);
+                    }, reject);
                 }, reject);
-            }, reject);
+            });
         });
     };
-
     /**
      * broadcast diff socket's info to ther sockets
      *
@@ -61,19 +66,22 @@ function Locations (io, socket) {
      */
     var broadcastDiffToOthers = function (sockets, socketIds) {
         return new Promise(function (resolve, reject) {
-            socketRepo.transformSocketIdtId([socketIds]).then(function (transSockets) {
-                var socketId = transSockets[0].socketId;
+            if (typeof socketIds === 'string') {
+                socketIds = [socketIds];
+            }
+
+            socketIds.forEach(function (socketId) {
                 // fetch the current socket's info
-                socketRepo.fetchSocketsBySocketId(socketObj.socketId).then(function (socketInfo) {
+                socketRepo.fetchSocketsBySocketId(socketId).then(function (socketInfo) {
                     // broadcast current socket's info to the audiences
                     socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
-                        diff: [socketObj.socketId]
+                        sockets: [],
+                        diff: socketInfo
                     }).then(function () {
                         resolve(true);
                     }, reject);
                 }, reject);
-            }.reject);
-
+            });
         });
     };
 
