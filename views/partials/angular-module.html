@@ -1,4 +1,5 @@
 <script>
+    window.lastViewCenter;
     window.socketStatus = false;
     window.controllers = {};
     var app = angular.module("deeployer", ['btford.socket-io']);
@@ -10,13 +11,28 @@
 
         window.socketIo = window.socketIo || socketFactory({
                 ioSocket: io.connect('[[ socketPath ]]', {
-                    query     : jQuery.param({
+                    query: jQuery.param({
                         region: '[[ socketRegion|default('global') ]]'
                     }),
                     transports: ['websocket'],
                     secure: true
                 })
             });
+
+        var refreshMapView = function () {
+            if (mapFactory) {
+                var currentViewCenter = mapFactory.getViewCenter();
+
+                if (!angular.equals(window.lastViewCenter, currentViewCenter)) {
+                    window.lastViewCenter = currentViewCenter;
+
+                    window.socketIo.emit('refresh-map-view', {
+                        corners: mapFactory.getCorners(),
+                        center: currentViewCenter
+                    });
+                }
+            }
+        };
 
         var refreshLocation = function (position) {
             var refreshLocationDispatcher = window.refreshLocation || function () {};
@@ -26,21 +42,7 @@
                 position: position
             });
 
-            if (mapFactory) {
-                window.socketIo.emit('refresh-map-view', {
-                    corners: mapFactory.getCorners(),
-                    center: mapFactory.getViewCenter()
-                })
-            }
-        };
-
-        var refreshMapView = function () {
-            if (mapFactory) {
-                window.socketIo.emit('refresh-map-view', {
-                    corners: mapFactory.getCorners(),
-                    center: mapFactory.getViewCenter()
-                })
-            }
+            refreshMapView();
         };
 
         var geoLocationDetected = function (pos) {
@@ -77,6 +79,9 @@
         };
 
         window.socketIo.on('connect', function () {
+            // just for debug 
+            // TODO : REMOVE THIS IN PRODUCTION
+            // document.title = this.id.substr(this.id.length - 4);
             window.connectionCount = window.connectionCount++ || 1;
             window.socketStatus    = true;
             if (window.geoLocationPositions.latitude && window.geoLocationPositions.longitude) {
@@ -96,6 +101,7 @@
 
         window.socketIo.on('disconnect', function () {
             window.socketStatus = false;
+            window.lastViewCenter = null;
             navigator.geolocation.clearWatch(window.geoLocationWatch);
         });
 

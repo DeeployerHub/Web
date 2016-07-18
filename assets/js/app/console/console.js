@@ -10,16 +10,23 @@
             if (typeof window.controllers[controller] === 'object') {
                 return;
             }
+
             window.controllers[controller] = this;
 
             $scope.mapCenterChangedTimeOut = $scope.mapCenterChangedTimeOut || null;
             $map.addListener('center_changed', function() {
                 clearTimeout($scope.mapCenterChangedTimeOut);
                 $scope.mapCenterChangedTimeOut = setTimeout(function () {
-                    $socketConnection.socket.emit('refresh-map-view', {
-                        corners: $map.getCorners(),
-                        center: $map.getViewCenter()
-                    });
+                    var currentViewCenter = $map.getViewCenter();
+
+                    if (!angular.equals(window.lastViewCenter, currentViewCenter)) {
+                        window.lastViewCenter = currentViewCenter;
+
+                        $socketConnection.socket.emit('refresh-map-view', {
+                            corners: $map.getCorners(),
+                            center: currentViewCenter
+                        });
+                    }
                 }, 200);
             });
 
@@ -31,6 +38,8 @@
                         $map.mapMarker[socketId].setMap(null);
                         delete $map.mapMarker[socketId];
                     }
+
+                    return;
                 }
 
                 for (var key in $map.mapMarker) {
@@ -46,13 +55,13 @@
                 var diff    = data.diff || [];
 
                 sockets.forEach(function (socket) {
-                    $socketConnection.sockets.involved[socket._id] = socket;
-                    markerCleanup(socket._id);
+                    $socketConnection.sockets.involved[socket.socketId] = socket;
+                    markerCleanup(socket.socketId);
                 });
 
                 diff.forEach(function (socket) {
-                    delete $socketConnection.sockets.involved[socket._id];
-                    markerCleanup(socket._id);
+                    delete $socketConnection.sockets.involved[socket.socketId];
+                    markerCleanup(socket.socketId);
                 });
 
                 var involved = $socketConnection.sockets.involved;
@@ -60,14 +69,13 @@
                     if (involved[i]) {
                         var socket = involved[i];
 
-                        $map.mapMarker = $map.mapMarker || {};
-
+                        markerCleanup();
                         var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
 
-                        $map.mapMarker[socket._id] = new google.maps.Marker({
+                        $map.mapMarker[socket.socketId] = new google.maps.Marker({
                             position: myLatLng,
                             map: $map,
-                            title: 'this is "' + socket._id + '"'
+                            title: 'this is "' + socket.socketId.substr(socket.socketId.length - 4) + '"'
                         });
                     }
                 }
