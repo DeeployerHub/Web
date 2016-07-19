@@ -1,4 +1,6 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=[[ googleMapApiKey ]]"></script>
 <script>
+    window.lastRefreshLocation;
     window.lastViewCenter;
     window.socketStatus = false;
     window.controllers = {};
@@ -21,13 +23,18 @@
 
         var refreshMapView = function () {
             if (mapFactory) {
+                var currentCorners    = mapFactory.getCorners();
                 var currentViewCenter = mapFactory.getViewCenter();
+
+                if (!currentViewCenter || !currentCorners) {
+                    return;
+                }
 
                 if (!angular.equals(window.lastViewCenter, currentViewCenter)) {
                     window.lastViewCenter = currentViewCenter;
 
                     window.socketIo.emit('refresh-map-view', {
-                        corners: mapFactory.getCorners(),
+                        corners: currentCorners,
                         center: currentViewCenter
                     });
                 }
@@ -35,12 +42,16 @@
         };
 
         var refreshLocation = function (position) {
-            var refreshLocationDispatcher = window.refreshLocation || function () {};
-            refreshLocationDispatcher(position);
+            if (!angular.equals(window.lastRefreshLocation, position)) {
+                window.lastRefreshLocation = position;
 
-            window.socketIo.emit('refresh-location', {
-                position: position
-            });
+                var refreshLocationDispatcher = window.refreshLocation || function () {};
+
+                refreshLocationDispatcher(position);
+                window.socketIo.emit('refresh-location', {
+                    position: position
+                });
+            }
 
             refreshMapView();
         };
@@ -81,7 +92,7 @@
         window.socketIo.on('connect', function () {
             // just for debug 
             // TODO : REMOVE THIS IN PRODUCTION
-            // document.title = this.id.substr(this.id.length - 4);
+             document.title = this.id.substr(this.id.length - 4);
             window.connectionCount = window.connectionCount++ || 1;
             window.socketStatus    = true;
             if (window.geoLocationPositions.latitude && window.geoLocationPositions.longitude) {
@@ -271,5 +282,3 @@
         }
     });
 </script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=[[ googleMapApiKey ]]"></script>

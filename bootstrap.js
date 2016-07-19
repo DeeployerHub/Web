@@ -7,6 +7,7 @@ globalObject = {
 };
 
 require('./helpers.js');
+require('./config/logs.js');
 
 var modelSchemas          = require('./config/modelSchemas.js');
 globalObject.modelSchemas = modelSchemas.bootstrap();

@@ -118,6 +118,8 @@ Sockets.prototype.updateSocketGeoLocation = function (socketId, position) {
  * update map view geo socket from db
  *
  * @param socketId
+ * @param center
+ * @param corners
  *
  * @returns {Promise}
  */

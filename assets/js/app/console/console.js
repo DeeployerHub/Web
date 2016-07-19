@@ -13,39 +13,91 @@
 
             window.controllers[controller] = this;
 
-            $scope.mapCenterChangedTimeOut = $scope.mapCenterChangedTimeOut || null;
+            var mapCenterChangedTimeOut;
             $map.addListener('center_changed', function() {
-                clearTimeout($scope.mapCenterChangedTimeOut);
-                $scope.mapCenterChangedTimeOut = setTimeout(function () {
+                clearTimeout(mapCenterChangedTimeOut);
+                mapCenterChangedTimeOut = setTimeout(function () {
+                    var currentCorners    = $map.getCorners();
                     var currentViewCenter = $map.getViewCenter();
+
+                    if (!currentViewCenter || !currentCorners) {
+                        return;
+                    }
 
                     if (!angular.equals(window.lastViewCenter, currentViewCenter)) {
                         window.lastViewCenter = currentViewCenter;
 
                         $socketConnection.socket.emit('refresh-map-view', {
-                            corners: $map.getCorners(),
+                            corners: currentCorners,
                             center: currentViewCenter
                         });
                     }
                 }, 200);
             });
 
-            var markerCleanup = function (socketId) {
+            /**
+             * remove the marker from the map
+             *
+             * @param socketId
+             */
+            var markerRemove = function (socketId) {
                 $map.mapMarker = $map.mapMarker || {};
 
+                if ($map.mapMarker.hasOwnProperty(socketId)) {
+                    $map.mapMarker[socketId].setMap(null);
+                    delete $map.mapMarker[socketId];
+                }
+            };
+
+            /**
+             * cleanup the map from markers and get ready to remove them
+             *
+             * @param socketId
+             */
+            var markerCleanup = function (socketId) {
                 if (socketId) {
-                    if ($map.mapMarker.hasOwnProperty(socketId)) {
-                        $map.mapMarker[socketId].setMap(null);
-                        delete $map.mapMarker[socketId];
-                    }
+                    markerRemove();
 
                     return;
                 }
 
-                for (var key in $map.mapMarker) {
-                    if ($map.mapMarker.hasOwnProperty(socketId)) {
-                        $map.mapMarker[key].setMap(null);
-                        delete $map.mapMarker[key];
+                for (var sid in $map.mapMarker) {
+                    if ($map.mapMarker.hasOwnProperty(sid)) {
+                        markerRemove(sid);
+                    }
+                }
+            };
+
+            /**
+             * draw a new marker on the map
+             *
+             * @param socketId
+             * @param position
+             */
+            var markerDraw = function (socketId, position) {
+                $map.mapMarker = $map.mapMarker || {};
+
+                $map.mapMarker[socketId] = new google.maps.Marker({
+                    position: position,
+                    map: $map,
+                    title: 'this is "' + socketId.substr(socketId.length - 4) + '"'
+                });
+            };
+
+            /**
+             * cleanup and draw markers on the map
+             */
+            var markerDrawInvolved = function () {
+                markerCleanup();
+
+                var involved = $socketConnection.sockets.involved;
+
+                for (var i in involved) {
+                    if (involved.hasOwnProperty(i)) {
+                        var socket   = involved[i];
+                        var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
+
+                        markerDraw(i, myLatLng);
                     }
                 }
             };
@@ -64,21 +116,7 @@
                     markerCleanup(socket.socketId);
                 });
 
-                var involved = $socketConnection.sockets.involved;
-                for (var i in involved) {
-                    if (involved[i]) {
-                        var socket = involved[i];
-
-                        markerCleanup();
-                        var myLatLng = {lat: socket.mapViewCenter[0], lng: socket.mapViewCenter[1]};
-
-                        $map.mapMarker[socket.socketId] = new google.maps.Marker({
-                            position: myLatLng,
-                            map: $map,
-                            title: 'this is "' + socket.socketId.substr(socket.socketId.length - 4) + '"'
-                        });
-                    }
-                }
+                markerDrawInvolved();
             });
 
             window.refreshLocationCount = 0;

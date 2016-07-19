@@ -32,7 +32,7 @@ function Locations (io, socket) {
     /**
      * broadcast current socket's info to ther sockets
      * @param sockets
-     * @param socketId
+     * @param socketIds
      * 
      * @returns {*}
      */
@@ -47,8 +47,7 @@ function Locations (io, socket) {
                 socketRepo.fetchSocketsBySocketId(socketId).then(function (socketInfo) {
                     // broadcast current socket's info to the audiences
                     socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
-                        sockets: socketInfo,
-                        diff: [socketInfo]
+                        sockets: socketInfo
                     }).then(function () {
                         resolve(true);
                     }, reject);
@@ -60,7 +59,7 @@ function Locations (io, socket) {
      * broadcast diff socket's info to ther sockets
      *
      * @param sockets
-     * @param socketId
+     * @param socketIds
      *
      * @returns {*}
      */
@@ -75,7 +74,6 @@ function Locations (io, socket) {
                 socketRepo.fetchSocketsBySocketId(socketId).then(function (socketInfo) {
                     // broadcast current socket's info to the audiences
                     socketLocationsActions.parent.broadcast(sockets, 'refresh-users-in-map-view', {
-                        sockets: [],
                         diff: socketInfo
                     }).then(function () {
                         resolve(true);
@@ -164,11 +162,15 @@ function Locations (io, socket) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
             fetchSocketsInsight(socket.id, data.center, data.corners).then(function (inSightSockets) {
                 // store insight sockets into my socket's audience list
-                storeInsightSockets(inSightSockets).then(function (finalInSightSockets) {
+                storeInsightSockets(inSightSockets).then(function () {
                     removeOutSightSockets(inSightSockets).then(function (result) {
-                        var finalInSightSockets = result.finalInSightSockets;
-                        var socketsDiffObj      = result.socketsDiffObj;
-                        // everything is fine now can refresh sockets on clients view
+                        var socketsDiffObj = result.socketsDiffObj;
+
+                        console.log('sockets:', inSightSockets);
+                        console.log('socketsDiff:', result.socketsDiffObj);
+                        console.log('\n---------------\n', result.socketsDiffObj, '\n---------------\n');
+
+                        // everything is fine now can refresh sockets on client's view
                         refreshSocketsClientsView(socket.id, inSightSockets, socketsDiffObj);
                     }, function (e) {
                         console.error(e);
