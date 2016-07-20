@@ -158,25 +158,32 @@ Sockets.prototype.fetchSocketsBySocketId = function (socketId, fields) {
  * convert socket object to array of socketIds
  *
  * @param obj
- * @returns {Array}
+ *
+ * @returns {Promise}
  */
 var prepareInsightData = function (obj) {
     'use strict';
 
-    if (!obj || typeof obj !== 'object') {
-        return;
-    }
+    return new Promise(function (resolve, reject) {
+        try {
+            if (!obj || typeof obj !== 'object') {
+                return;
+            }
 
-    var result = [];
-    obj.forEach(function (innerObj) {
-        if (typeof innerObj === 'string') {
-            result.push(innerObj);
-        } else {
-            result.push(innerObj.socketId);
+            var result = [];
+            obj.forEach(function (innerObj) {
+                if (typeof innerObj === 'string') {
+                    result.push(innerObj);
+                } else {
+                    result.push(innerObj.socketId);
+                }
+            });
+
+            resolve(result);
+        } catch (e) {
+            reject(e);
         }
     });
-
-    return result;
 };
 
 /**
@@ -194,9 +201,9 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        inSightSockets = prepareInsightData(inSightSockets);
-
-        model.pushSocketsIntoAudienceList(socketId, inSightSockets).then(resolve, reject);
+        prepareInsightData(inSightSockets).then(function (inSightSocketsProcessed) {
+            model.pushSocketsIntoAudienceList(socketId, inSightSocketsProcessed).then(resolve, reject);
+        }, reject);
     });
 };
 
@@ -204,20 +211,25 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
  * remove sockets from socketAudienceList
  *
  * @param socketId
+ * @param storedInsightSockets
  * @param sockets
+ * @param doUpdate
  *
  * @returns {*}
  */
-Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
+Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsightSockets, sockets, doUpdate) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        sockets = prepareInsightData(sockets);
-
-        model.removeSocketsIntoAudienceList(socketId, sockets).then(resolve, reject);
+        prepareInsightData(storedInsightSockets).then(function (storedInsightSocketsProcessed) {
+            prepareInsightData(sockets).then(function (socketsProcessed) {
+                model.removeSocketsFromAudienceList(socketId, storedInsightSocketsProcessed, socketsProcessed, doUpdate)
+                     .then(resolve, reject);
+            }, reject);
+        }, reject);
     });
 };
 

@@ -370,11 +370,13 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
  * update/remove from AudienceList
  *
  * @param socketId
+ * @param storedInsightSockets
  * @param sockets
+ * @param doUpdate
  *
  * @returns {Promise}
  */
-Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
+Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsightSockets, sockets, doUpdate) {
     'use strict';
 
     var base = this;
@@ -391,17 +393,19 @@ Sockets.prototype.removeSocketsIntoAudienceList = function (socketId, sockets) {
 
                 return;
             }
-
-            var tmpAudienceList = socketObj.audienceList || [];
+            // TODO this method needs improvement
+            if (!storedInsightSockets) {
+                storedInsightSockets = socketObj.audienceList;
+            }
 
             // get the deference between the audience list and fetched socket
-            var socketsDiff = arrayLib.diff(tmpAudienceList, sockets);
+            var socketsDiff = arrayLib.diff(storedInsightSockets, sockets);
 
             // remove the deference from the list of the audience
-            var substracted       = arrayLib.substract(tmpAudienceList, socketsDiff);
+            var substracted       = arrayLib.substract(storedInsightSockets, socketsDiff);
             var stashAudienceList = arrayLib.unique(substracted, socketId);
 
-            socketObj.audienceList = stashAudienceList;
+            socketObj.audienceList = doUpdate ? stashAudienceList : sockets;
 
             socketObj.save();
 

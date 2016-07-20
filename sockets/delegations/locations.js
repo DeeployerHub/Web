@@ -55,6 +55,7 @@ function Locations (io, socket) {
             });
         });
     };
+
     /**
      * broadcast diff socket's info to ther sockets
      *
@@ -134,20 +135,23 @@ function Locations (io, socket) {
 
     /**
      * remove outSightSockets from socket's audience list
+     *
+     * @param storedInsightSockets
      * @param outSightSockets
+     *
      * @returns {*}
      */
-    var removeOutSightSockets = function (outSightSockets) {
+    var removeOutSightSockets = function (storedInsightSockets, outSightSockets) {
         return new Promise(function (resolve, reject) {
             // remove insight sockets from my socket's audience list
-            socketRepo.removeSocketsIntoAudienceList(socket.id, outSightSockets)
+            socketRepo.removeSocketsFromAudienceList(socket.id, storedInsightSockets, outSightSockets, 4, 5)
                       .then(function (result) {
                           var finalInSightSockets = result.audienceList;
                           var socketsDiffObj      = result.socketsDiffObj;
-
+                          // TODO this method meeds improvement. still buggy
                           // store/push my socketId into insight socket's audienceList
                           finalInSightSockets.forEach(function (targetAudienceSocketId) {
-                              socketRepo.removeSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
+                              socketRepo.removeSocketsFromAudienceList(targetAudienceSocketId, null,[socket.id], true);
                           });
 
                           resolve({
@@ -162,15 +166,10 @@ function Locations (io, socket) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
             fetchSocketsInsight(socket.id, data.center, data.corners).then(function (inSightSockets) {
                 // store insight sockets into my socket's audience list
-                storeInsightSockets(inSightSockets).then(function () {
-                    removeOutSightSockets(inSightSockets).then(function (result) {
+                storeInsightSockets(inSightSockets).then(function (storedInsightSockets) {
+                    removeOutSightSockets(storedInsightSockets, inSightSockets).then(function (result) {
                         var socketsDiffObj = result.socketsDiffObj;
 
-                        console.log('sockets:', inSightSockets);
-                        console.log('socketsDiff:', result.socketsDiffObj);
-                        console.log('\n---------------\n', result.socketsDiffObj, '\n---------------\n');
-
-                        // everything is fine now can refresh sockets on client's view
                         refreshSocketsClientsView(socket.id, inSightSockets, socketsDiffObj);
                     }, function (e) {
                         console.error(e);
