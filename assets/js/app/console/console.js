@@ -3,7 +3,7 @@
 
     var controller = 'ConsoleController';
 
-    var app = angular.module("deeployer");
+    var app = angular.module("eloyt");
     app.controller(controller, [
         '$scope', '$http', '$socketConnection', '$map',
         function ($scope, $http, $socketConnection, $map) {

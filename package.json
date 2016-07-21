@@ -1,5 +1,5 @@
 {
-  "name": "deeployer-web",
+  "name": "eloyt.com",
   "version": "1.0.0",
   "description": "A platform for online startups to find good teammates, manage the startup, help to get fund by VC or crowd sources. server & test platform",
   "main": "boot.js",
@@ -28,7 +28,7 @@
     }
   ],
   "keywords": [
-    "deeployer",
+    "eloyt",
     "platform",
     "startup",
     "vc",

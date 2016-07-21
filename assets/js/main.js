@@ -126,7 +126,7 @@
     };
 
     var notifyJs = function () {
-        $.notify.addStyle('deeployer', {
+        $.notify.addStyle('eloyt', {
             html: '<div>\n<p data-notify-html></p>\n</div>',
             classes: {
                 base: {
@@ -171,7 +171,7 @@
             autoHideDelay: 7000,
             arrowShow: false,
             position: 'bottom left',
-            style: 'deeployer',
+            style: 'eloyt',
             className: 'normal'
         });
     };

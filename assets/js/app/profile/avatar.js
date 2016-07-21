@@ -3,7 +3,7 @@
 
     var controller = 'ProfileAvatarController';
 
-    var app = angular.module('deeployer');
+    var app = angular.module('eloyt');
     app.controller(controller, [
         '$scope', '$http',
         function ($scope, $http) {

@@ -4,7 +4,7 @@
     window.lastViewCenter;
     window.socketStatus = false;
     window.controllers = {};
-    var app = angular.module("deeployer", ['btford.socket-io']);
+    var app = angular.module("eloyt", ['btford.socket-io']);
     app.service('$socketConnection', ['socketFactory', 'mapFactory', function (socketFactory, mapFactory) {
         window.geoLocationPositions = {
             latitude: null,

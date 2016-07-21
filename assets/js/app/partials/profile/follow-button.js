@@ -1,7 +1,7 @@
 (function(angular) {
     'use strict';
 
-    angular.module('deeployer')
+    angular.module('eloyt')
     .controller('PartialsProfileFollowButtonController', [
         '$scope', '$http', 
         function ($scope, $http) {

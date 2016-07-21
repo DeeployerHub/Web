@@ -4,7 +4,7 @@
     var extend = 'HeaderSignInMenuPostsController';
     var controller = 'PartialsConsolePostsController';
 
-    var app = angular.module('deeployer');
+    var app = angular.module('eloyt');
     app.controller(controller, [
         '$scope', '$controller', '$http', '$compile', '$templateRequest', '$rootScope', '$map',
         function ($scope, $controller, $http, $compile, $templateRequest, $rootScope, $map) {

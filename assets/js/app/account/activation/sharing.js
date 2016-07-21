@@ -3,7 +3,7 @@
 
     var controller = 'SharingController';
 
-    var app = angular.module('deeployer');
+    var app = angular.module('eloyt');
     app.controller(controller, [
         '$scope', '$http', 
         function ($scope, $http) {
@@ -18,7 +18,7 @@
                 if (window.FB) {
                     FB.ui({
                         method: 'share',
-                        href: 'http://deeployer.com'
+                        href: 'https://eloyt.com'
                     });
                 }
             };

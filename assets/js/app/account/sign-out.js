@@ -3,7 +3,7 @@
 
     var controller = 'SignOutController';
 
-    angular.module('deeployer')
+    angular.module('eloyt')
     .controller(controller, [
         '$scope', 
         function ($scope) {

@@ -6,11 +6,11 @@ module.exports = {
     app: {
         expressPort: 7000,
         expressEnv: 'dev',
-        socketPath: 'wss://deeployer.dev.com',
+        socketPath: 'wss://dev.eloyt.com',
         request: {
             protocol: 'https://',
             domains: {
-                main: 'deeployer.dev.com'
+                main: 'dev.eloyt.com'
             }
         }
     },
@@ -35,7 +35,7 @@ module.exports = {
                 accessKeyId: 'ask manager for token code',
                 secretAccessKey: 'ask manager for token code',
                 regin: 'us-west-2',
-                bucket: 'deeployerdev'
+                bucket: 'eloytdev'
             }
         }
     },

@@ -3,7 +3,7 @@
 
     var controller = 'HeaderSignInMenuNotificationsController';
 
-    var app = angular.module("deeployer");
+    var app = angular.module("eloyt");
     app.controller(controller, [
         '$scope', '$http', '$socketConnection',
         function ($scope, $http, $socketConnection) {
