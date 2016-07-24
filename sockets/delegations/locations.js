@@ -144,15 +144,20 @@ function Locations (io, socket) {
     var removeOutSightSockets = function (storedInsightSockets, outSightSockets) {
         return new Promise(function (resolve, reject) {
             // remove insight sockets from my socket's audience list
-            socketRepo.removeSocketsFromAudienceList(socket.id, storedInsightSockets, outSightSockets, 4, 5)
+            socketRepo.removeSocketsFromAudienceList(socket.id, storedInsightSockets, outSightSockets)
                       .then(function (result) {
                           var finalInSightSockets = result.audienceList;
                           var socketsDiffObj      = result.socketsDiffObj;
                           // TODO this method meeds improvement. still buggy
                           // store/push my socketId into insight socket's audienceList
-                          finalInSightSockets.forEach(function (targetAudienceSocketId) {
-                              socketRepo.removeSocketsFromAudienceList(targetAudienceSocketId, null,[socket.id], true);
-                          });
+
+                          for (var i in socketsDiffObj) {
+                              if (socketsDiffObj.hasOwnProperty(i)) {
+                                  socketRepo.removeSocketsFromAudienceListExtra(
+                                      socketsDiffObj[i].socketId, [socket.id]
+                                  );
+                              }
+                          }
 
                           resolve({
                               finalInSightSockets: finalInSightSockets,

@@ -166,11 +166,20 @@ var prepareInsightData = function (obj) {
 
     return new Promise(function (resolve, reject) {
         try {
-            if (!obj || typeof obj !== 'object') {
+            var result = [];
+
+            if (!obj) {
+                resolve(result);
+
                 return;
             }
 
-            var result = [];
+            if (typeof obj !== 'object') {
+                reject(new Error('it has to be object'));
+
+                return;
+            }
+
             obj.forEach(function (innerObj) {
                 if (typeof innerObj === 'string') {
                     result.push(innerObj);
@@ -213,11 +222,10 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
  * @param socketId
  * @param storedInsightSockets
  * @param sockets
- * @param doUpdate
  *
  * @returns {*}
  */
-Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsightSockets, sockets, doUpdate) {
+Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsightSockets, sockets) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
@@ -226,9 +234,29 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
 
         prepareInsightData(storedInsightSockets).then(function (storedInsightSocketsProcessed) {
             prepareInsightData(sockets).then(function (socketsProcessed) {
-                model.removeSocketsFromAudienceList(socketId, storedInsightSocketsProcessed, socketsProcessed, doUpdate)
+                model.removeSocketsFromAudienceList(socketId, storedInsightSocketsProcessed, socketsProcessed)
                      .then(resolve, reject);
             }, reject);
+        }, reject);
+    });
+};
+
+/**
+ * remove sockets extra from socketAudienceList
+ *
+ * @param socketId
+ * @param sockets
+ */
+Sockets.prototype.removeSocketsFromAudienceListExtra = function (socketId, sockets) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        prepareInsightData(sockets).then(function (socketsProcessed) {
+            model.removeSocketsFromAudienceListExtra(socketId, socketsProcessed)
+                 .then(resolve, reject);
         }, reject);
     });
 };

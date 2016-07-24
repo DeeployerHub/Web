@@ -372,11 +372,10 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
  * @param socketId
  * @param storedInsightSockets
  * @param sockets
- * @param doUpdate
  *
  * @returns {Promise}
  */
-Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsightSockets, sockets, doUpdate) {
+Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsightSockets, sockets) {
     'use strict';
 
     var base = this;
@@ -393,6 +392,7 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
 
                 return;
             }
+
             // TODO this method needs improvement
             if (!storedInsightSockets) {
                 storedInsightSockets = socketObj.audienceList;
@@ -405,7 +405,7 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
             var substracted       = arrayLib.substract(storedInsightSockets, socketsDiff);
             var stashAudienceList = arrayLib.unique(substracted, socketId);
 
-            socketObj.audienceList = doUpdate ? stashAudienceList : sockets;
+            socketObj.audienceList = sockets;
 
             socketObj.save();
 
@@ -415,6 +415,51 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
                     socketsDiffObj: socketsDiffObj
                 });
             }, reject);
+        });
+    });
+};
+
+/**
+ * update/remove extra from AudienceList
+ *
+ * @param socketId
+ * @param sockets
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.removeSocketsFromAudienceListExtra = function (socketId, sockets) {
+    'use strict';
+
+    var base = this;
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        socketsSchema.findOne({
+            socketId: socketId
+        }, function (err, socketObj) {
+            if (err) {
+                reject(err);
+
+                return;
+            }
+
+            console.log('remove extra from', socketId);
+
+            var storedInsightSockets = socketObj.audienceList;
+            console.log('db list', storedInsightSockets );
+
+            // remove the deference from the list of the audience
+            var substracted       = arrayLib.substract(storedInsightSockets, sockets);
+            var stashAudienceList = arrayLib.unique(substracted, socketId);
+
+            socketObj.audienceList = stashAudienceList;
+            console.log('db save', stashAudienceList);
+
+            socketObj.save();
+
+            resolve();
         });
     });
 };
