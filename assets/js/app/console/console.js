@@ -119,6 +119,10 @@
                 markerDrawInvolved();
             });
 
+            $socketConnection.socket.on('disconnect', function () {
+                markerCleanup();
+            });
+
             window.refreshLocationCount = 0;
             window.refreshLocation = function (position) {
                 if (window.refreshLocationCount++ < 1) {
