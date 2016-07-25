@@ -90,9 +90,6 @@
         };
 
         window.socketIo.on('connect', function () {
-            // just for debug 
-            // TODO : REMOVE THIS IN PRODUCTION
-             document.title = this.id.substr(this.id.length - 4);
             window.connectionCount = window.connectionCount++ || 1;
             window.socketStatus    = true;
             if (window.geoLocationPositions.latitude && window.geoLocationPositions.longitude) {

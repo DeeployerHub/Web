@@ -148,9 +148,8 @@ function Locations (io, socket) {
                       .then(function (result) {
                           var finalInSightSockets = result.audienceList;
                           var socketsDiffObj      = result.socketsDiffObj;
-                          // TODO this method meeds improvement. still buggy
-                          // store/push my socketId into insight socket's audienceList
 
+                          // store/push my socketId into insight socket's audienceList
                           for (var i in socketsDiffObj) {
                               if (socketsDiffObj.hasOwnProperty(i)) {
                                   socketRepo.removeSocketsFromAudienceListExtra(

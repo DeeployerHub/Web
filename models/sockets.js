@@ -393,7 +393,6 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
                 return;
             }
 
-            // TODO this method needs improvement
             if (!storedInsightSockets) {
                 storedInsightSockets = socketObj.audienceList;
             }
@@ -445,17 +444,11 @@ Sockets.prototype.removeSocketsFromAudienceListExtra = function (socketId, socke
                 return;
             }
 
-            console.log('remove extra from', socketId);
-
             var storedInsightSockets = socketObj.audienceList;
-            console.log('db list', storedInsightSockets );
-
             // remove the deference from the list of the audience
-            var substracted       = arrayLib.substract(storedInsightSockets, sockets);
-            var stashAudienceList = arrayLib.unique(substracted, socketId);
+            var listWithoutSockets = arrayLib.substract(storedInsightSockets, sockets);
 
-            socketObj.audienceList = stashAudienceList;
-            console.log('db save', stashAudienceList);
+            socketObj.audienceList = listWithoutSockets;
 
             socketObj.save();
 

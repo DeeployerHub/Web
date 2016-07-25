@@ -51,9 +51,13 @@ ArrayLib.prototype.unique = function (array, data) {
 ArrayLib.prototype.substract = function (input, toRemove) {
     'use strict';
 
-    for (var i = input.length - 1; i >= 0; i--) {
+    if (!toRemove) {
+        return input;
+    }
+
+    for (var i = 0; i < input.length ; i++) {
         for (var j = 0; j < toRemove.length; j++) {
-            if (input[i] && toRemove[j]) {
+            if (input[i] === toRemove[j]) {
                 input.splice(i, 1);
             }
         }
@@ -65,31 +69,31 @@ ArrayLib.prototype.substract = function (input, toRemove) {
 /**
  * return the difference of the second array against to first one
  *
- * @param a1
- * @param a2
+ * @param arr1
+ * @param arr2
  *
  * @returns []
  */
-ArrayLib.prototype.diff = function (a1, a2) {
+ArrayLib.prototype.diff = function (arr1, arr2) {
     'use strict';
 
-    var a = [], diff = [];
+    var arrayBank = [], diff = [];
 
-    for (var i1 = 0; i1 < a1.length; i1++) {
-        a[a1[i1]] = true;
+    for (var index1 = 0; index1 < arr1.length; index1++) {
+        arrayBank[arr1[index1]] = true;
     }
 
-    for (var i2 = 0; i2 < a2.length; i2++) {
-        if (a[a2[i2]]) {
-            delete a[a2[i2]];
+    for (var index2 = 0; index2 < arr2.length; index2++) {
+        if (arrayBank[arr2[index2]]) {
+            delete arrayBank[arr2[index2]];
         } else {
-            a[a2[i2]] = true;
+            arrayBank[arr2[index2]] = true;
         }
     }
 
-    for (var k in a) {
-        if (a) {
-            diff.push(k);
+    for (var iab in arrayBank) {
+        if (arrayBank[iab]) {
+            diff.push(iab);
         }
     }
 
