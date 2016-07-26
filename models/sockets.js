@@ -348,14 +348,13 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
         socketsSchema.findOne({
             socketId: socketId
         }, function (err, socketObj) {
-            if (err) {
+            if (err || !socketObj) {
                 reject(err);
 
                 return;
             }
 
             var tmpAudienceList = socketObj.audienceList || [];
-
             var stashAudienceList = arrayLib.unique(tmpAudienceList.concat(inSightSockets), socketId);
             socketObj.audienceList = stashAudienceList;
 

@@ -121,6 +121,7 @@
 
             $socketConnection.socket.on('disconnect', function () {
                 markerCleanup();
+                $socketConnection.sockets.involved = [];
             });
 
             window.refreshLocationCount = 0;
