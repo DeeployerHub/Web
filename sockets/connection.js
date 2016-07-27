@@ -84,15 +84,6 @@ function Connection (base) {
         });
     };
 
-    var socketDisconnect = function (socket, process) {
-        // TODO: remove this sockets info audience list of the other sockets
-        socketsRepo.fetchSocketsBySocketId(socket.id).then(function () {
-            socketDisconnectAction(socket, process);
-        }, function () {
-            socketDisconnectAction(socket, process);
-        });
-    };
-
     base.io.on('connection', function (socket) {
         var region = socket.handshake.query.region || null;
         socketsRepo.connect(socket.session.user._id, socket.id, region).then(function () {
@@ -103,7 +94,9 @@ function Connection (base) {
 
             // handle the disconnect
             socket.on('disconnect', function () {
-                socketDisconnect(socket, process);
+                setTimeout(function () {
+                    socketDisconnectAction(socket, process);
+                }, 100);
             });
         }, function (err) {
             console.error(err);

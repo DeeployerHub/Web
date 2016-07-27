@@ -127,7 +127,7 @@ function Locations (io, socket) {
                 finalInSightSockets.forEach(function (targetAudienceSocketId) {
                     socketRepo.pushSocketsIntoAudienceList(targetAudienceSocketId, [socket.id]);
                 });
-                
+
                 resolve(finalInSightSockets);
             }, reject);
         });
@@ -166,7 +166,34 @@ function Locations (io, socket) {
         });
     };
 
-    socket.on('refresh-map-view', function (data) {
+    var socketDisconnect = function () {
+        socketRepo.fetchSocketsBySocketId(socket.id).then(function (dcSockets) {
+            var dcSocket = dcSockets.pop();
+
+            // send dc socket id to the audiences to remove it from their audience list
+            for (var i in dcSocket.audienceList) {
+                if (dcSocket.audienceList.hasOwnProperty(i)) {
+                    socketRepo.removeSocketsFromAudienceListExtra(
+                        dcSocket.audienceList[i], [dcSocket.socketId]
+                    );
+                }
+            }
+
+            socketRepo.transformSocketId(dcSocket.audienceList).then(function (audienceList) {
+                broadcastDiffToOthers(audienceList, dcSocket.socketId).then(function () {
+                    return;
+                }, function (e) {
+                    console.error(e);
+                });
+            }, function (e) {
+                console.error(e);
+            });
+        }, function (e) {
+            console.error(e);
+        });
+    };
+
+    var refreshMapView = function (data) {
         socketRepo.refreshMapViewGeo(socket.id, data.center, data.corners).then(function () {
             fetchSocketsInsight(socket.id, data.center, data.corners).then(function (inSightSockets) {
                 // store insight sockets into my socket's audience list
@@ -187,5 +214,9 @@ function Locations (io, socket) {
         }, function (e) {
             console.error(e);
         });
-    });
+    };
+
+    socket.on('disconnect', socketDisconnect);
+
+    socket.on('refresh-map-view', refreshMapView);
 }
