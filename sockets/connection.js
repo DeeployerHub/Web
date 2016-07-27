@@ -35,7 +35,9 @@ function Connection (base) {
 
             if  (signal === 'exit') {
                 console.info('[POOL]\t\tPID:', process.pid, 'HAS LEFT THE POOL');
-                nodesPoolRepo.leaves(process.pid).then(resolve, reject);
+                nodesPoolRepo.leaves(process.pid).then(resolve, reject).then(resolve, reject);
+
+                return;
             }
 
             resolve();
