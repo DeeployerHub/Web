@@ -475,7 +475,7 @@ Sockets.prototype.transformSocketId = function (socketLists) {
         socketsSchema
             .find({
                 socketId: {
-                    $in: [socketLists]
+                    $in: socketLists
                 },
             })
             .select({

@@ -219,12 +219,13 @@
             ? new google.maps.Map($('.map-view').get(0), {
                 scrollwheel: false,
                 styles: nowIsDay() ? dayMapStyle : nightMapStyle,
-                zoom: 15,
-                maxZoom: 16,
+                zoom: 13,
+                maxZoom: 13,
                 minZoom: 13,
                 streetViewControl: false,
                 mapTypeControl: false,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDefaultUI: true
             })
             : null;
 
