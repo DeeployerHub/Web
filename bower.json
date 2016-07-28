@@ -34,6 +34,7 @@
     "moment": "^2.13.0",
     "angular-socket-io": "^0.7.0",
     "notifyjs": "^0.4.2",
-    "google-maps": "^3.2.1"
+    "google-maps": "^3.2.1",
+    "js-marker-clusterer": "*"
   }
 }

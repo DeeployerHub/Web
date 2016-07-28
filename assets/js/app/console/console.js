@@ -84,6 +84,29 @@
                 });
             };
 
+            var markerCluster;
+
+            /**
+             * cluster the pins in the page
+             */
+            var drawPinCluster = function () {
+                var markers = [];
+
+                for (var i in $map.mapMarker) {
+                    if ($map.mapMarker.hasOwnProperty(i)) {
+                        markers.push($map.mapMarker[i]);
+                    }
+                }
+
+                if (markerCluster) {
+                    markerCluster.clearMarkers();
+                }
+
+                markerCluster = new MarkerClusterer($map, markers, {
+                    imagePath: '/assets/bower/js-marker-clusterer/images/m'
+                });
+            };
+
             /**
              * cleanup and draw markers on the map
              */
@@ -100,6 +123,8 @@
                         markerDraw(i, myLatLng);
                     }
                 }
+
+                drawPinCluster()
             };
 
             $socketConnection.socket.on('refresh-users-in-map-view', function (data) {
