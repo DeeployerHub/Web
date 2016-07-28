@@ -78,9 +78,7 @@
                 $map.mapMarker = $map.mapMarker || {};
 
                 $map.mapMarker[socketId] = new google.maps.Marker({
-                    position: position,
-                    map: $map,
-                    title: 'this is "' + socketId.substr(socketId.length - 4) + '"'
+                    position: position
                 });
             };
 
