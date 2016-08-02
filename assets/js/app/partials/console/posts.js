@@ -126,22 +126,22 @@
             $scope.getConsolePostsRequest = function (ok, fail) {
                 if (!$scope.requestInProgress) {
                     $scope.requestInProgress = true;
-                    // $http({
-                    //     method: 'GET',
-                    //     url: '/console/get-posts-json',
-                    //     params: $scope.getPostsQuery()
-                    // }).then(function (result) {
-                    //     // don't allow to request being send anymore in case the last request being empty
-                    //     if (result.data.posts.length === 0 && !$scope.newestPost) {
-                    //         $scope.lastPostFetched = true;
-                    //     }
-                    //
-                    //     ok(result);
-                    //     $scope.requestInProgress = false;
-                    // }, function () {
-                    //     fail();
-                    //     $scope.requestInProgress = false;
-                    // });
+                     $http({
+                         method: 'GET',
+                         url: '/console/get-posts-json',
+                         params: $scope.getPostsQuery()
+                     }).then(function (result) {
+                         // don't allow to request being send anymore in case the last request being empty
+                         if (result.data.posts.length === 0 && !$scope.newestPost) {
+                             $scope.lastPostFetched = true;
+                         }
+
+                         ok(result);
+                         $scope.requestInProgress = false;
+                     }, function () {
+                         fail();
+                         $scope.requestInProgress = false;
+                     });
                 }
             };
 
