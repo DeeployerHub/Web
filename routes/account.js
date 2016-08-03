@@ -37,9 +37,9 @@ module.exports = function () {
 
     // account activation
     router.post(
-        '/activation/account/collect-point',
+        '/activation/account/submit',
         middleware.isUserActivated,
-        controller.activationStepsAccountCollectPoint
+        controller.activationStepsAccountSubmit
     );
     router.post(
         '/activation/account/avatar-upload',
@@ -56,11 +56,10 @@ module.exports = function () {
         middleware.isUserActivated,
         controller.activationStepsProfile
     );
-
     router.post(
-        '/activation/profile/collect-point',
+        '/activation/profile/submit',
         middleware.isUserActivated,
-        controller.activationStepsProfileCollectPoint
+        controller.activationStepsProfileSubmit
     );
     router.get(
         '/activation/sharing',

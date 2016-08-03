@@ -61,7 +61,7 @@
             };
 
             $scope.submitForm = function (form) {
-                $scope.collectPointError = '';
+                $scope.submitError       = '';
                 $scope.picValidationText = '';
                 if (form.$valid) {
                     if ($scope.avatar === $scope.avatarDefault) {
@@ -71,7 +71,7 @@
 
                     $http({
                         method: 'POST',
-                        url: '/account/activation/account/collect-point',
+                        url: '/account/activation/account/submit',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         },
@@ -85,14 +85,14 @@
                         } else {
                             switch (result.data.reason) {
                                 case 'username-already-exists':
-                                    $scope.collectPointError = 'Username already exists.';
+                                    $scope.submitError = 'Username already exists.';
                                     break;
                                 default:
-                                    $scope.collectPointError = 'Process Failed! Please Try again.';
+                                    $scope.submitError = 'Process Failed! Please Try again.';
                             }
                         }
                     }, function(){
-                        $scope.collectPointError = 'Process Failed! Please Try again.'
+                        $scope.submitError = 'Process Failed! Please Try again.'
                     });
                 }
             };

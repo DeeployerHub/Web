@@ -128,7 +128,10 @@
                     $scope.requestInProgress = true;
                      $http({
                          method: 'GET',
-                         url: '/console/get-posts-json',
+                         //url: '/console/get-posts-json',
+                         // TODO: this is just a temporary thing,
+                         //         need to fix it later
+                         url: '/posts/mahan/get-posts-json',
                          params: $scope.getPostsQuery()
                      }).then(function (result) {
                          // don't allow to request being send anymore in case the last request being empty

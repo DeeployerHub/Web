@@ -30,7 +30,8 @@
                     <form name="accountForm" ng-submit="submitForm(accountForm)" role="form" novalidate>
                         <div class="col-md-12">
                             <p>
-                                First of all you need to set your username and your avatar that you wish to work with in to the system.
+                                First of all you need to set your username and profile avatar
+                                that you wish to work with into the platform.
                             </p>
                             <div class="avatar-wrapper">
                                 <img
@@ -62,7 +63,7 @@
                                 ng-model="username"
                                 required="required"
                                 placeholder="@Username">
-                            <p class="text-danger">{{ picValidationText || collectPointError}}</p>
+                            <p class="text-danger">{{ picValidationText || submitError}}</p>
                             <br>
                             <a
                                 href="/account/activation"
@@ -73,7 +74,7 @@
                                 ng-disabled="!accountForm.$valid"
                                 type="submit"
                                 class="btn btn-success submitButton">
-                                +50 Points
+                                Submit...
                             </button>
                         </div>
                     </form>

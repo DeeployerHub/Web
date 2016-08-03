@@ -24,10 +24,13 @@
                     <form name="profileForm" ng-submit="submitForm(profileForm)" role="form" novalidate>
                         <div class="col-md-12">
                             <p class="text-success">
-                                Congratulation <strong>[[ user.username | title ]]</strong>, you just earned <strong>+50</strong> points by completing the first step.
+                                Congratulation <strong>[[ user.username | title ]]</strong>. First step is done.
                             </p>
+                            <br>
                             <p>
-                                Now it's time to complete your profile in order to earn another 50 points.
+                                Now you need to fill your basic information about urself.<br>
+                                Have in mind that you need to fill the correct information.<br>
+                                <strong>Users with fake information will be banned from the platform.</strong>
                             </p>
                             <br>
                             <div class="col-md-6 col-md-offset-3">
@@ -90,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
-                                <p class="text-danger">{{ collectPointError }}</p>
+                                <p class="text-danger">{{ submitError }}</p>
                                 <div class="clearfix"></div>
 
                                 <a
@@ -102,7 +105,7 @@
                                     ng-disabled="!profileForm.$valid"
                                     type="submit"
                                     class="btn btn-success submitButton">
-                                    +50 Points
+                                    Submit...
                                 </button>
                             </div>
                         </div>

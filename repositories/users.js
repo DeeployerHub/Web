@@ -119,7 +119,7 @@ Users.prototype.isUserRegistered = function (profile, email) {
             }
         }, function () {
             model.registerNewUser(email).then(function (registerRes) {
-                resolve(registerRes, profile);
+                resolve(registerRes);
             }, function (err) {
                 reject(err);
             });
@@ -219,26 +219,6 @@ Users.prototype.updateActivation = function (userId, value) {
         reject  = reject || function () {};
 
         model.updateActivationById(userId, value).then(resolve, reject);
-    });
-};
-
-/**
- * earn point to user
- *
- * @param userId
- * @param value
- * @param attributes
- *
- * @returns {Promise}
- */
-Users.prototype.earnPoint = function (userId, value, attributes) {
-    'use strict';
-
-    return new Promise(function (resolve, reject) {
-        resolve = resolve || function () {};
-        reject  = reject || function () {};
-
-        model.increasePoints(userId, value, attributes).then(resolve, reject);
     });
 };
 

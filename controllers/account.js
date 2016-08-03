@@ -132,7 +132,7 @@ AccountController.prototype.activationStepsAccountAvatarUpload = function (req, 
  * @param req
  * @param res
  */
-AccountController.prototype.activationStepsAccountCollectPoint = function (req, res) {
+AccountController.prototype.activationStepsAccountSubmit = function (req, res) {
     'use strict';
     var username = req.body.username;
     if (username) {
@@ -140,34 +140,8 @@ AccountController.prototype.activationStepsAccountCollectPoint = function (req, 
         userRepos.isUsernameExists(username).then(function (status) {
             if (!status) {
                 userRepos.updateUsername(req.user._id, username).then(function () {
-                    // increase the users's point for 50
-                    userRepos.earnPoint(req.user._id, 50, {
-                        point: 50,
-                        type: 'activation',
-                        reason: 'account-section-completed',
-                        description: ''
-                    }).then(function (pointsAfterAction) {
-                        // send a notification
-                        notificationRepos.sendNotification(req.user._id, req.user._id, 'normal', {
-                            text: 'Congrats, you earned +50 Points for setup your account.'
-                        }).then(function () {
-                            res.json({
-                                status: true,
-                                pointsAfterAction: pointsAfterAction
-                            });
-                        }, function (err) {
-                            console.error(err);
-
-                            res.status(400).json({
-                                status: false
-                            });
-                        });
-                    }, function (err) {
-                        console.error(err);
-
-                        res.status(400).json({
-                            status: false
-                        });
+                    res.json({
+                        status: true,
                     });
                 }, function (err) {
                     console.error(err);
@@ -228,7 +202,7 @@ AccountController.prototype.activationStepsProfile = function (req, res) {
  * @param req
  * @param res
  */
-AccountController.prototype.activationStepsProfileCollectPoint = function (req, res) {
+AccountController.prototype.activationStepsProfileSubmit = function (req, res) {
     'use strict';
 
     var profile = {
@@ -248,33 +222,8 @@ AccountController.prototype.activationStepsProfileCollectPoint = function (req, 
         profile.gender
     ) {
         userRepos.updateProfile(req.user._id, profile).then(function () {
-            // increase the users's point for 50
-            userRepos.earnPoint(req.user._id, 50, {
-                point: 50,
-                type: 'activation',
-                reason: 'profile-section-completed',
-                description: ''
-            }).then(function () {
-                // send a notification
-                notificationRepos.sendNotification(req.user._id, req.user._id, 'normal', {
-                    text: 'Congrats, you earned +50 Points for Complete your profile.'
-                }).then(function () {
-                    res.json({
-                        status: true
-                    });
-                }, function (err) {
-                    console.error(err);
-
-                    res.status(400).json({
-                        status: false
-                    });
-                });
-            }, function (err) {
-                console.error(err);
-
-                res.status(400).json({
-                    status: false
-                });
+            res.json({
+                status: true
             });
         }, function (err) {
             console.error(err);

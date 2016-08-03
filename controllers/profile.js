@@ -141,7 +141,6 @@ ProfileController.prototype.profileSelfShow = function (req, res, page) {
  */
 ProfileController.prototype.getFollowers = function (req, res, username) {
     'use strict';
-
     userRepos.getUserInfoByUsername(username).then(function (targetedUserInfo) {
         userRelationRepos.getUserFollowers(targetedUserInfo._id).then(function (followers) {
             res.json({

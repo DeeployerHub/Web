@@ -27,18 +27,19 @@
                 <div class="row">
                     <form name="sharingForm" role="form" novalidate>
                         <div class="col-md-12">
-
                             <div class="col-md-6 col-md-offset-3 text-justify">
                                 <p class="text-success">
-                                    Congratulation <strong>[[ user.username | title ]]</strong>, you just earned <strong>+50</strong> points by completing your profile.<br>
-                                    Your current points : <strong>+100</strong> points
+                                    Congratulation <strong>[[ user.username | title ]]</strong>, now your profile
+                                    is completed.
                                 </p>
+                                <br>
                                 <p>
-                                    Our comunity is growing and getting bigger and bigger. but you can also help us to grow faster by sharing us on the social networks.
+                                    your comunity is growing and getting bigger and bigger.
+                                    but you can also help us to grow and gather more people for you
+                                    by <strong>sharing</strong> us on the social networks.
                                 </p>
                             </div>
                             <br>
-
                             <div class="col-md-4 col-md-offset-4">
                                 <button
                                     ng-click="facebookSharing()"
@@ -58,9 +59,19 @@
                             <br>
                             <br>
 
+                            <div class="col-md-6 col-md-offset-3 text-justify">
+                                <p class="text-danger">
+                                    like all the other platforms, we have our policies which you can find and read it
+                                    in our <a href="/terms-and-conditions">Terms and conditions</a> page.
+                                </p>
+                                <p>
+                                    all of our policies are part of who we are and what we can provide for you.
+                                    and from the fact that you are important to us, whomever wish to use our platform,
+                                    needs to agree with it and obey these simple rules.
+                                </p>
+                            </div>
                             <div class="col-md-6 col-md-offset-3">
                                 <p ng-show="message">{{ message }}<p>
-                                <a href="/terms-and-conditions">Read the Terms and conditions</a>
                                 <button
                                     ng-click="agreeWithConditions()"
                                     class="btn btn-block btn-success">

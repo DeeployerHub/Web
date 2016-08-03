@@ -33,7 +33,7 @@
             $scope.submitForm = function (form) {
                 $http({
                     method: 'POST',
-                    url: '/account/activation/profile/collect-point',
+                    url: '/account/activation/profile/submit',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
@@ -52,11 +52,11 @@
                     } else {
                         switch (result.data.reason) {
                             default:
-                                $scope.collectPointError = 'Process Failed! Please Try again.';
+                                $scope.submitError = 'Process Failed! Please Try again.';
                         }
                     }
                 }, function(){
-                    $scope.collectPointError = 'Process Failed! Please Try again.'
+                    $scope.submitError = 'Process Failed! Please Try again.'
                 });
             };
         }

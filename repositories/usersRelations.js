@@ -94,14 +94,16 @@ UserRelations.prototype.getUserFollowers = function (responseUserId) {
             findRes.forEach(function (item) {
                 var requestUserObject = item.requestUserId;
 
-                var requestUserProfileObject = requestUserObject.profile;
-                responseData.push({
-                    _id: requestUserObject._id,
-                    avatar: requestUserObject.avatar,
-                    username: requestUserObject.username,
-                    firstname: requestUserProfileObject.firstname,
-                    lastname: requestUserProfileObject.lastname
-                });
+                if (requestUserObject) {
+                    var requestUserProfileObject = requestUserObject.profile;
+                    responseData.push({
+                        _id: requestUserObject._id,
+                        avatar: requestUserObject.avatar,
+                        username: requestUserObject.username,
+                        firstname: requestUserProfileObject.firstname,
+                        lastname: requestUserProfileObject.lastname
+                    });
+                }
             });
 
             resolve(responseData);
