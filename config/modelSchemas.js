@@ -1,7 +1,6 @@
 var fs       = require('fs');
 var path     = require('path');
 var mongoose = require('mongoose');
-var Promise  = require('promise');
 
 module.exports.bootstrap = function () {
     'use strict';
@@ -17,7 +16,7 @@ module.exports.bootstrap = function () {
         }
     });
 
-    mongoose.Promise = Promise;
+    mongoose.Promise = global.Promise;
     mongoose.connect(
         'mongodb://' + getEnvConfig('mongoDb').host + '/' + getEnvConfig('mongoDb').dbName
     );

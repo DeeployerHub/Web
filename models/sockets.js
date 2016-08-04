@@ -345,12 +345,15 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        socketsSchema.findOne({
+
+        var promise = socketsSchema.findOne({
             socketId: socketId,
             region: 'console'
-        }, function (err, socketObj) {
-            if (err || !socketObj) {
-                reject(err);
+        }).exec();
+
+        promise.then(function (socketObj) {
+            if (!socketObj) {
+                reject(new Error('No Socket Found'));
 
                 return;
             }
@@ -362,7 +365,7 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
             socketObj.save();
 
             resolve(stashAudienceList);
-        });
+        }).catch(reject);
     });
 };
 
@@ -384,16 +387,12 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        socketsSchema.findOne({
+        var promise = socketsSchema.findOne({
             socketId: socketId,
             region: 'console'
-        }, function (err, socketObj) {
-            if (err) {
-                reject(err);
+        }).exec();
 
-                return;
-            }
-
+        promise.then(function (socketObj) {
             if (!storedInsightSockets) {
                 storedInsightSockets = socketObj.audienceList;
             }
@@ -415,7 +414,7 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
                     socketsDiffObj: socketsDiffObj
                 });
             }, reject);
-        });
+        }).catch(reject);
     });
 };
 
@@ -436,26 +435,22 @@ Sockets.prototype.removeSocketsFromAudienceListExtra = function (socketId, socke
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        socketsSchema.findOne({
+        var promise = socketsSchema.findOne({
             socketId: socketId,
             region: 'console'
-        }, function (err, socketObj) {
-            if (err) {
-                reject(err);
+        }).exec();
 
-                return;
-            }
-
+        promise.then(function (socketObj) {
             var storedInsightSockets = socketObj.audienceList;
             // remove the deference from the list of the audience
-            var listWithoutSockets = arrayLib.substract(storedInsightSockets, sockets);
+            var listWithoutSockets   = arrayLib.substract(storedInsightSockets, sockets);
 
             socketObj.audienceList = listWithoutSockets;
 
             socketObj.save();
 
             resolve();
-        });
+        }).catch(reject);
     });
 };
 
