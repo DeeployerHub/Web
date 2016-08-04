@@ -346,7 +346,8 @@ Sockets.prototype.pushSocketsIntoAudienceList = function (socketId, inSightSocke
         reject  = reject || function () {};
 
         socketsSchema.findOne({
-            socketId: socketId
+            socketId: socketId,
+            region: 'console'
         }, function (err, socketObj) {
             if (err || !socketObj) {
                 reject(err);
@@ -384,7 +385,8 @@ Sockets.prototype.removeSocketsFromAudienceList = function (socketId, storedInsi
         reject  = reject || function () {};
 
         socketsSchema.findOne({
-            socketId: socketId
+            socketId: socketId,
+            region: 'console'
         }, function (err, socketObj) {
             if (err) {
                 reject(err);
@@ -435,7 +437,8 @@ Sockets.prototype.removeSocketsFromAudienceListExtra = function (socketId, socke
         reject  = reject || function () {};
 
         socketsSchema.findOne({
-            socketId: socketId
+            socketId: socketId,
+            region: 'console'
         }, function (err, socketObj) {
             if (err) {
                 reject(err);

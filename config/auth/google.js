@@ -1,9 +1,8 @@
-var userRepos = getRepos('users')();
+var GoogleStrategy = require('passport-google-oauth20');
+var userRepos      = getRepos('users')();
 
 module.exports = function () {
     'use strict';
-
-    var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
     passport.serializeUser(function (user, done) {
         done(null, user);
