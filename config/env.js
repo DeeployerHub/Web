@@ -95,9 +95,10 @@ module.exports = function (app, express, io) {
         var reqCookie = socket.request.headers.cookie;
         if (reqCookie) {
             socket.cookie    = cookie.parse(reqCookie);
-            socket.sessionId = cookieParser.signedCookie(socket.cookie[getEnvConfig('cookie').key], getEnvConfig('cookie').secret);
+            var socketCookie = socket.cookie[getEnvConfig('cookie').key] || '';
+            socket.sessionId = cookieParser.signedCookie(socketCookie, getEnvConfig('cookie').secret);
             sessionStore.get(socket.sessionId, function (err, sessionData) {
-                if (!err) {
+                if (!err && sessionData) {
                     if (sessionData.passport.user) {
                         socket.session = sessionData.passport;
                         next(null, socket);
