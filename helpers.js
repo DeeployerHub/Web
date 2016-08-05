@@ -60,7 +60,7 @@ getModelSchema = function (model) {
 getModel = function (model) {
     'use strict';
 
-    return require('./models/' + model + '.js');
+    return require('./models/' + model);
 };
 
 getSocketActions = function (io) {

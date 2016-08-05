@@ -8,7 +8,8 @@
     "boot-dev": "npm test && supervisor -i public,upload,assets,node_modules,bower_components boot.js",
     "boot-dev-single": "npm test && supervisor -i public,upload,assets,node_modules,bower_components server.js",
     "start": "npm test && node boot.js",
-    "test": "npm cache clear && jshint . && exit 0",
+    "mocha-test": "mocha ./tests",
+    "test": "npm cache clear && jshint . && npm run mocha-test && exit 0",
     "dir-fix": "chown -R $(whoami) ."
   },
   "pre-commit": {
@@ -71,6 +72,7 @@
   },
   "devDependencies": {
     "mocha": "^3.0.0",
+    "chai": "^3.5.0",
     "pre-commit": "^1.1.2",
     "pre-push": "^0.1.1",
     "supertest": "^2.0.0"
