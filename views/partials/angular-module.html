@@ -108,7 +108,7 @@
         });
 
         window.socketIo.on('disconnect', function () {
-            window.socketStatus = false;
+            window.socketStatus   = false;
             window.lastViewCenter = null;
             navigator.geolocation.clearWatch(window.geoLocationWatch);
         });

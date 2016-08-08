@@ -220,10 +220,11 @@ Sockets.prototype.findSocketsIdByRegionAndUser = function (userId, include, excl
  *
  * @param corners
  * @param excludeSocketId
+ * @param region
  *
  * @returns {Promise}
  */
-Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, excludeSocketId) {
+Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, excludeSocketId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
@@ -254,7 +255,7 @@ Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, exclud
         socketsSchema
             .find({
                 region: {
-                    $in: ['console']
+                    $in: region || ['console']
                 },
                 socketId: {
                     $nin: [excludeSocketId]

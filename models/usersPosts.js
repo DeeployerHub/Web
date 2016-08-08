@@ -130,3 +130,54 @@ UserPosts.prototype.getPostsByOwnerId = function (userId, start, length) {
             });
     });
 };
+
+/**
+ * TODO: FIX IT
+ * get the posts of the user's by ownerId and map view
+ *
+ * @param userId
+ * @param mapView
+ * @param start
+ * @param length
+ *
+ * @returns {Promise}
+ */
+UserPosts.prototype.getPostsByOwnerIdAndMapView = function (userId, mapView, start, length) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        usersPostsSchema
+            .find({
+                ownerUserId: mongoose.Types.ObjectId(userId)
+            })
+
+            .populate('ownerUserId', '_id avatar username profile')
+            .sort({
+                postedAt: -1
+            })
+            .skip(parseInt(start))
+            .limit(parseInt(length))
+            .exec(function (err, res) {
+                if (err) {
+                    reject(err);
+
+                    return;
+                }
+
+                res.forEach(function (obj) {
+                    var profileStack = obj.ownerUserId.profile;
+                    var profileObj   = {
+                        firstname: profileStack.firstname,
+                        lastname: profileStack.lastname
+                    };
+
+                    obj.ownerUserId.profile = profileObj;
+                });
+
+                resolve(res);
+            });
+    });
+};

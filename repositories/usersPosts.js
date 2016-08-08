@@ -56,3 +56,24 @@ UserPosts.prototype.getProfilePosts = function (userId, start, length) {
         model.getPostsByOwnerId(userId, start, length).then(resolve, reject);
     });
 };
+
+/**
+ * get the console's posts from model
+ *
+ * @param userId
+ * @param mapView
+ * @param start
+ * @param length
+ *
+ * @returns {Promise}
+ */
+UserPosts.prototype.getConsolePosts = function (userId, mapView, start, length) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.getPostsByOwnerIdAndMapView(userId, mapView, start, length).then(resolve, reject);
+    });
+};
