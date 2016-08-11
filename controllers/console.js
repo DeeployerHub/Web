@@ -49,7 +49,7 @@ ConsoleController.prototype.getConsolePostsJson = function (req, res) {
 
     var start   = req.query.start || 0;
     var length  = req.query.length || 10;
-    var mapView = req.query.mapView || null;
+    var mapView = JSON.parse(req.query.mapView) || null;
 
     if (!mapView) {
         res.status(400).json({
@@ -65,7 +65,7 @@ ConsoleController.prototype.getConsolePostsJson = function (req, res) {
     userRepos.getUserInfo(req.user.email).then(function (userInfo) {
         usersPostsRepos.getConsolePosts(
             userInfo._id,
-            mapView,
+            mapView.corners,
             start,
             length
         ).then(function (posts) {

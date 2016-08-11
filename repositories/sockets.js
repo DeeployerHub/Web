@@ -121,17 +121,38 @@ Sockets.prototype.findSocketsIdByRegionAndUser = function (userId, region) {
  *
  * @param corners
  * @param excludeSocketId
+ * @param region
  *
  * @returns {Promise}
  */
-Sockets.prototype.fetchSocketsInSight = function (corners, excludeSocketId) {
+Sockets.prototype.fetchSocketsInSight = function (corners, excludeSocketId, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.findSocketsIdByRegionAndSightPoint(corners, excludeSocketId).then(resolve, reject);
+        model.findSocketsIdByRegionAndSightPoint(corners, excludeSocketId, region).then(resolve, reject);
+    });
+};
+
+/**
+ * find user ids that has common sight point
+ *
+ * @param corners
+ * @param excludeSocketId
+ * @param region
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.fetchUserIdFromSocketsInSight = function (corners, excludeSocketId, region) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject  = reject || function () {};
+
+        model.findUserIdFromSocketsIdByRegionAndSightPoint(corners, excludeSocketId, region).then(resolve, reject);
     });
 };
 

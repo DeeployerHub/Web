@@ -287,6 +287,76 @@ Sockets.prototype.findSocketsIdByRegionAndSightPoint = function (corners, exclud
 };
 
 /**
+ * find user ids that has common sight point
+ *
+ * @param corners
+ * @param excludeSocketId
+ * @param region
+ *
+ * @returns {Promise}
+ */
+Sockets.prototype.findUserIdFromSocketsIdByRegionAndSightPoint = function (corners, excludeSocketId, region) {
+    'use strict';
+
+    return new Promise(function (resolve, reject) {
+        resolve = resolve || function () {};
+        reject = reject || function () {};
+
+        if ('string' !== typeof excludeSocketId) {
+            reject(new Error('config for exclude region must be an object'));
+
+            return;
+        }
+
+        if (!corners) {
+            reject(new Error('North East or North West are undefined'));
+
+            return;
+        }
+
+        var mapCorners = {
+            northEast: [corners.northEast.latitude, corners.northEast.longitude],
+            southWest: [corners.southWest.latitude, corners.southWest.longitude]
+        };
+
+        var box = [
+            mapCorners.southWest, mapCorners.northEast
+        ];
+
+        socketsSchema.aggregate([
+            {
+                $match: {
+                    region: {
+                        $in: region || ['console']
+                    },
+                    socketId: {
+                        $nin: [excludeSocketId]
+                    },
+                    mapViewCenter: {
+                        $within: {
+                            $box: box
+                        }
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: '$userId',
+                }
+            }
+        ]).exec(function (err, res) {
+            if (err) {
+                reject(err);
+
+                return;
+            } 
+
+            resolve(res);
+        });
+    });
+};
+
+/**
  * get the socket info by socket id
  *
  * @param socketId

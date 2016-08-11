@@ -1,7 +1,8 @@
 module.exports = UserPosts;
 
-var Promise = require('promise');
-var model   = getModel('usersPosts')();
+var Promise    = require('promise');
+var model      = getModel('usersPosts')();
+var socketRepo = getRepos('sockets')();
 
 /**
  * UserPosts Repository
@@ -61,19 +62,25 @@ UserPosts.prototype.getProfilePosts = function (userId, start, length) {
  * get the console's posts from model
  *
  * @param userId
- * @param mapView
+ * @param corners
  * @param start
  * @param length
  *
  * @returns {Promise}
  */
-UserPosts.prototype.getConsolePosts = function (userId, mapView, start, length) {
+UserPosts.prototype.getConsolePosts = function (userId, corners, start, length) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.getPostsByOwnerIdAndMapView(userId, mapView, start, length).then(resolve, reject);
+        // get the list of the users who are in the map view of console
+        
+        socketRepo.fetchUserIdFromSocketsInSight(corners, '').then(function (data) {
+            console.log(data);
+        }, reject);
+
+        //model.getPostsByOwnerIdAndMapView(userId, corners, start, length).then(resolve, reject);
     });
 };
