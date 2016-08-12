@@ -89,7 +89,7 @@ module.exports = function (app, express, io) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    var cookie = require('express/node_modules/cookie');
+    var cookie = require('cookie');
 
     io.use(function (socket, next) {
         var reqCookie = socket.request.headers.cookie;
