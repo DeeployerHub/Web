@@ -165,16 +165,31 @@ UserPosts.prototype.getPostsByOwnerIdAndMapView = function (userIds, mapView, st
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
+        // prepare the users
         var users = [];
-
         userIds.forEach(function (userId) {
             users.push(mongoose.Types.ObjectId(typeof userId === 'object' ? userId._id : userId));
         });
+
+        // prepare the corners
+        var mapCorners = {
+            northEast: [mapView.northEast.latitude, mapView.northEast.longitude],
+            southWest: [mapView.southWest.latitude, mapView.southWest.longitude]
+        };
+
+        var box = [
+            mapCorners.southWest, mapCorners.northEast
+        ];
         
         usersPostsSchema
             .find({
                 ownerUserId: {
                     $in: users
+                },
+                postedMapViewCenter: {
+                    $within: {
+                        $box: box
+                    }
                 }
             })
 
