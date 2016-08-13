@@ -24,17 +24,20 @@ function UserPosts () {
  * @param ownerUserId
  * @param content
  * @param position
+ * @param mapView
+ * @param mapCenterView
+ * @param region
  *
  * @returns {Promise}
  */
-UserPosts.prototype.addNewPost = function (ownerUserId, content, position) {
+UserPosts.prototype.addNewPost = function (ownerUserId, content, position, mapView, mapCenterView, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        model.addNewPost(ownerUserId, content, position).then(resolve, reject);
+        model.addNewPost(ownerUserId, content, position, mapView, mapCenterView, region).then(resolve, reject);
     });
 };
 
@@ -76,11 +79,9 @@ UserPosts.prototype.getConsolePosts = function (userId, corners, start, length) 
         reject  = reject || function () {};
 
         // get the list of the users who are in the map view of console
-        
-        socketRepo.fetchUserIdFromSocketsInSight(corners, '').then(function (data) {
-            console.log(data);
+        socketRepo.fetchUserIdFromSocketsInSight(corners, '').then(function (users) {
+            model.getPostsByOwnerIdAndMapView(users, corners, start, length).then(resolve, reject);
         }, reject);
 
-        //model.getPostsByOwnerIdAndMapView(userId, corners, start, length).then(resolve, reject);
     });
 };

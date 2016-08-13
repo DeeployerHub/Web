@@ -11,10 +11,12 @@
             longitude: null
         };
 
+        window.socketRegion = window.socketRegion || '[[ socketRegion|default('global') ]]';
+
         window.socketIo = window.socketIo || socketFactory({
                 ioSocket: io.connect('[[ socketPath ]]', {
                     query: jQuery.param({
-                        region: '[[ socketRegion|default('global') ]]'
+                        region: window.socketRegion
                     }),
                     transports: ['websocket'],
                     secure: true
@@ -123,6 +125,7 @@
             window.location.href = '/location-detection';
         }
 
+        this.region  = window.socketRegion;
         this.socket  = window.socketIo;
         this.sockets = {
             involved: {},
@@ -233,12 +236,16 @@
             window.map.getCorners = function () {
                 var mapBounds = window.map.getBounds();
 
-                if (mapBounds === undefined) {
+                if (!mapBounds) {
                     return;
                 }
 
                 var northEast = mapBounds.getNorthEast();
                 var southWest = mapBounds.getSouthWest();
+
+                if (!northEast || !southWest) {
+                    return;
+                }
 
                 return {
                     northEast: {
@@ -254,6 +261,9 @@
 
             window.map.getViewCenter = function () {
                 var mapCenter = window.map.getCenter();
+                if (!mapCenter) {
+                    return;
+                }
 
                 return {
                     latitude: mapCenter.lat(),

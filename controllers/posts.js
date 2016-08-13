@@ -25,10 +25,10 @@ PostsController.prototype.compose = function (req, res) {
     'use strict';
 
     var content  = req.body.content;
-    var position = {
-        latitude: req.body.geoLatitude || undefined,
-        longitude: req.body.geoLongitude || undefined,
-    };
+    var position = req.body.geoLocation;
+    var mapView = req.body.mapView || null;
+    var mapCenterView = req.body.mapCenterView || null;
+    var region = req.body.region || null;
 
     if (content.length > 250) {
         res.json({
@@ -38,7 +38,7 @@ PostsController.prototype.compose = function (req, res) {
         return;
     }
 
-    usersPostsRepos.addNewPost(req.user._id, content, position).then(function (postRes) {
+    usersPostsRepos.addNewPost(req.user._id, content, position, mapView, mapCenterView, region).then(function (postRes) {
         res.json({
             status: true,
             post: postRes

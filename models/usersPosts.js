@@ -24,25 +24,41 @@ function UserPosts () {
  * @param ownerUserId
  * @param content
  * @param position
+ * @param mapView
+ * @param mapCenterView
+ * @param region
  *
  * @returns {Promise}
  */
-UserPosts.prototype.addNewPost = function (ownerUserId, content, position) {
+UserPosts.prototype.addNewPost = function (ownerUserId, content, position, mapView, mapCenterView, region) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
-        var postedGeoLocation = null;
-        if (position.latitude && position.longitude) {
+        var postedGeoLocation;
+        if (position && position.latitude && position.longitude) {
             postedGeoLocation = [position.latitude, position.longitude];
+        }
+
+        var postedMapView = mapView ? {
+            northEast: [mapView.northEast.latitude, mapView.northEast.longitude],
+            southWest: [mapView.southWest.latitude, mapView.southWest.longitude]
+        } : undefined;
+
+        var postedMapViewCenter;
+        if (mapCenterView && mapCenterView.latitude && mapCenterView.longitude) {
+            postedMapViewCenter = [mapCenterView.latitude, mapCenterView.longitude];
         }
 
         var newUserPost = new usersPostsSchema({
             ownerUserId: mongoose.Types.ObjectId(ownerUserId),
             content: content,
-            postedGeoLocation: postedGeoLocation || undefined
+            postedGeoLocation: postedGeoLocation,
+            postedMapView: postedMapView || undefined,
+            postedMapViewCenter: postedMapViewCenter,
+            postedRegion: region || undefined
         });
 
         newUserPost.save(function (err, res) {
@@ -142,16 +158,24 @@ UserPosts.prototype.getPostsByOwnerId = function (userId, start, length) {
  *
  * @returns {Promise}
  */
-UserPosts.prototype.getPostsByOwnerIdAndMapView = function (userId, mapView, start, length) {
+UserPosts.prototype.getPostsByOwnerIdAndMapView = function (userIds, mapView, start, length) {
     'use strict';
 
     return new Promise(function (resolve, reject) {
         resolve = resolve || function () {};
         reject  = reject || function () {};
 
+        var users = [];
+
+        userIds.forEach(function (userId) {
+            users.push(mongoose.Types.ObjectId(typeof userId === 'object' ? userId._id : userId));
+        });
+        
         usersPostsSchema
             .find({
-                ownerUserId: mongoose.Types.ObjectId(userId)
+                ownerUserId: {
+                    $in: users
+                }
             })
 
             .populate('ownerUserId', '_id avatar username profile')

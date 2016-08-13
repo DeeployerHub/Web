@@ -19,6 +19,23 @@ module.exports = {
         postedGeoLocation: {
             type: [Number],  // [<longitude>, <latitude>]
             index: '2d'      // create the geospatial index
+        },
+        postedMapView: {
+            northEast: {
+                type: [Number],  // [<longitude>, <latitude>]
+                index: '2d'      // create the geospatial index
+            },
+            southWest: {
+                type: [Number],  // [<longitude>, <latitude>]
+                index: '2d'      // create the geospatial index
+            }
+        },
+        postedMapViewCenter: {
+            type: [Number],  // [<longitude>, <latitude>]
+            index: '2d'      // create the geospatial index
+        },
+        postedRegion: {
+            type: String
         }
     }
 };

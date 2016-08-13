@@ -5,8 +5,8 @@
 
     var app = angular.module('eloyt');
     app.controller(controller, [
-        '$scope', '$http',
-        function ($scope, $http) {
+        '$scope', '$http', '$socketConnection',
+        function ($scope, $http, $socketConnection) {
             $scope.waiting          = false;
             $scope.content          = '';
             $scope.maxContentLength = 250;
@@ -24,12 +24,23 @@
                     ($scope.maxContentLength - $scope.content.length) < $scope.maxContentLength
                 ) {
                     $scope.waiting = true;
-                    $scope.composeRequest({
+                    var composeData = {
                         content: $scope.content,
-                        geoLatitude: window.geoLocationPositions.latitude,
-                        geoLongitude: window.geoLocationPositions.longitude
-                    }, function (composeResponse) {
-                        $.notify('<span class="text-muted">"' + composeResponse.data.post[0].content + '"</span> Posted!!!', 'success');
+                        geoLocation: window.geoLocationPositions,
+                        mapView: undefined,
+                        mapCenterView: undefined,
+                        region: $socketConnection.region
+                    };
+
+                    if (window.map && window.map.getCorners && window.map.getViewCenter) {
+                        composeData.mapView       = window.map.getCorners();
+                        composeData.mapCenterView = window.map.getViewCenter();
+                    }
+
+                    $scope.composeRequest(composeData, function (composeResponse) {
+                        $.notify('<span class="text-muted">"' +
+                            composeResponse.data.post[0].content + '"</span> Posted!!!', 'success');
+
                         if ('function' === typeof $scope.renderNewPost) {
                             $scope.renderNewPost(composeResponse.data);
                         }
@@ -46,10 +57,7 @@
                 $http({
                     method: 'POST',
                     url: '/posts/compose',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    data: $.param(data)
+                    data: data
                 }).then(function (result) {
                     if (result.status) {
                         ok(result);
