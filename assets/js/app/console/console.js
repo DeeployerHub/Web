@@ -31,6 +31,9 @@
                             corners: currentCorners,
                             center: currentViewCenter
                         });
+
+                        // refresh the posts
+                        console.log('refresh map');
                     }
                 }, 200);
             });
